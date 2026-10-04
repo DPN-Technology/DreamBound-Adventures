@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contract for DreamBound v0.9 modular Lunar Guardian preview."""
+"""Contract for DreamBound v1.0 modular Advanced World runtime."""
 from pathlib import Path
 import re
 import sys
@@ -21,14 +21,14 @@ required_files=[
 missing=[p for p in required_files if not (root/p).is_file()]
 
 for marker in [
-  "DreamBound v0.9 Lunar Guardian Preview",
+  "DreamBound v1.0 Advanced World Engine",
   "connect-src 'none'",
   'src/vnext/core.js','src/vnext/input.js','src/vnext/space-center.js','src/vnext/ui.js','src/vnext/lunar-guardian.js','src/vnext/bootstrap.js'
 ]:
     if marker not in html: missing.append("html marker: "+marker)
 
 for marker in [
-  "DBX.VERSION='0.9.0-dev'","sanitize(raw)","dreambound-vnext-space-v1",
+  "DBX.VERSION='1.0.0-dev'","sanitize(raw)","dreambound-vnext-space-v1",
   "localStorage.getItem","localStorage.setItem"
 ]:
     if marker not in core: missing.append("core marker: "+marker)
@@ -59,6 +59,6 @@ if re.search(r"https?://",runtime_text,re.I): missing.append("external URL in mo
 if re.search(r"\b(fetch|XMLHttpRequest|WebSocket|EventSource)\b",runtime_text): missing.append("network-capable API in modular runtime")
 
 if missing:
-    print("::error::DreamBound v0.9 modular runtime contract failed: "+", ".join(missing))
+    print("::error::DreamBound v1.0 modular runtime contract failed: "+", ".join(missing))
     sys.exit(1)
-print("DreamBound v0.9 modular runtime contract: PASS")
+print("DreamBound v1.0 modular runtime contract: PASS")
