@@ -26,7 +26,8 @@ function update(dt,t){
   DBX.livingNpcs?.tick();
   const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
   let handled=false;
-  if(DBX.worldSystems?.movement)handled=DBX.worldSystems.movement(dt,v);
+  if(DBX.traversal?.handleMovement)handled=DBX.traversal.handleMovement(dt,v);
+  if(!handled&&DBX.worldSystems?.movement)handled=DBX.worldSystems.movement(dt,v);
   if(!handled&&DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
   if(!handled&&(v.x||v.y)){
     const speed=s.player.speed||250;
@@ -87,6 +88,7 @@ function updateTelemetry(){
   const crystals=document.querySelector('#vnextCrystals');if(crystals)crystals.textContent=s.moonCrystals||0;
   const eventWins=document.querySelector('#vnextEventWins');if(eventWins)eventWins.textContent=s.eventWins||0;
   const mastery=document.querySelector('#vnextMasteryValue');if(mastery)mastery.textContent=(DBX.achievements?.mastery?.()||0)+'%';
+  const vehicle=document.querySelector('#vnextVehicle');if(vehicle)vehicle.textContent=DBX.traversal?.telemetry?.()||(s.roverActive?'🛻 MOON ROVER':DBX.worldSystems?.state.skimmerActive?'🛸 MOON SKIMMER':'🥾 ON FOOT');
 }
 function draw(t){
   ctx.clearRect(0,0,innerWidth,innerHeight);
@@ -97,7 +99,8 @@ function draw(t){
   DBX.autonomousWorld?.drawZones(ctx,t);
   DBX.worldSystems?.draw(ctx,t);
   DBX.fx?.drawWorld(ctx,t);
-  if(DBX.worldSystems?.state.skimmerActive)DBX.worldSystems.drawVehicle(ctx,t);
+  if(DBX.traversal?.state.selected==='glider')DBX.traversal.draw(ctx,t);
+  else if(DBX.worldSystems?.state.skimmerActive)DBX.worldSystems.drawVehicle(ctx,t);
   else if(DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
   else drawPlayer(t);
   DBX.companion?.draw(ctx,t);
