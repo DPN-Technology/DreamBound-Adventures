@@ -10,7 +10,7 @@ function step(dt,input){
   runtime.vx+=input.x*accel*dt;runtime.vy+=input.y*accel*dt;
   runtime.vx*=friction;runtime.vy*=friction;
   const speed=Math.hypot(runtime.vx,runtime.vy);
-  if(speed>max){runtime.vx=runtime.vx/speed*max;runtime.vy=runtime.vy/speed*max}
+  if(speed>max){runtime.vx=runtime.vx/speed*max;runtime.vy=runtime.vy/speed*max;}
   const moving=Math.hypot(runtime.vx,runtime.vy)>8;
   if(moving){
     s.player.x=DBX.util.clamp(s.player.x+runtime.vx*dt,40,DBX.WORLD.w-40);

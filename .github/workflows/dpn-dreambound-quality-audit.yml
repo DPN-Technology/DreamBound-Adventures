@@ -1,0 +1,96 @@
+name: DPN DreamBound Quality Audit
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dreambound-quality-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Quality Audit (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            sarif: javascript
+          - language: python
+            sarif: python
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL quality audit
+        uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Analyze without uploading
+        uses: github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
+        with:
+          category: "/quality-audit:${{ matrix.language }}"
+          upload: false
+          output: quality-audit-results
+
+      - name: Summarize SARIF and enforce zero findings
+        shell: python
+        run: |
+          import json
+          import pathlib
+          import sys
+
+          root = pathlib.Path("quality-audit-results")
+          files = sorted(root.glob("*.sarif"))
+          if not files:
+              print("::error::No SARIF output was produced.")
+              sys.exit(2)
+
+          findings = []
+          for path in files:
+              data = json.loads(path.read_text(encoding="utf-8"))
+              for run in data.get("runs", []):
+                  rules = {
+                      rule.get("id"): rule
+                      for rule in run.get("tool", {}).get("driver", {}).get("rules", [])
+                  }
+                  for result in run.get("results", []):
+                      loc = {}
+                      locations = result.get("locations") or []
+                      if locations:
+                          physical = locations[0].get("physicalLocation", {})
+                          loc = physical.get("artifactLocation", {}) | physical.get("region", {})
+                      message = (result.get("message") or {}).get("text", "")
+                      rule_id = result.get("ruleId", "unknown")
+                      rule = rules.get(rule_id, {})
+                      findings.append({
+                          "rule": rule_id,
+                          "name": rule.get("name") or rule.get("shortDescription", {}).get("text", ""),
+                          "level": result.get("level", "warning"),
+                          "file": loc.get("uri", ""),
+                          "line": loc.get("startLine", 0),
+                          "message": message,
+                      })
+
+          findings.sort(key=lambda x: (x["file"], x["line"], x["rule"]))
+          print("DREAMBOUND_QUALITY_FINDINGS="+str(len(findings)))
+          counts = {}
+          for finding in findings:
+              counts[finding["rule"]] = counts.get(finding["rule"], 0) + 1
+              print(json.dumps(finding, ensure_ascii=False))
+          print("RULE_COUNTS="+json.dumps(counts, sort_keys=True))
+          if findings:
+              print(f"::error::{len(findings)} CodeQL security-and-quality findings remain.")
+              sys.exit(1)
+          print("DREAMBOUND QUALITY AUDIT: ZERO FINDINGS")

@@ -89,7 +89,7 @@ function openAnalyzer(){
   document.querySelector('#envClose').onclick=DBX.ui.closeModal;
 }
 function analyzeSample(id){
-  if(state.analyzed.includes(id)){DBX.ui.toast('Already analyzed','This sample is already in your lab notes.');return}
+  if(state.analyzed.includes(id)){DBX.ui.toast('Already analyzed','This sample is already in your lab notes.');return;}
   const notes={
     meteor:'Meteorites can help scientists learn about the early Solar System.',
     crystal:'Crystals have repeating structures that can bend and reflect light in interesting ways.',
@@ -170,7 +170,7 @@ function draw(ctx,t){
     const on=state.activated.includes(n.id),pulse=(DBX.accessibility?.shouldAnimate?.()??true)?Math.sin(t/300+n.x)*3:0;
     ctx.shadowColor=on?'#8ff8ef':'#9b91d8';ctx.shadowBlur=on?18:7;
     ctx.font=(on?'31':'27')+'px serif';ctx.textAlign='center';ctx.fillText(n.icon,n.x,n.y+pulse);
-    if(on){ctx.font='800 8px system-ui';ctx.fillStyle='#d8fff8';ctx.fillText('ONLINE',n.x,n.y+34)}
+    if(on){ctx.font='800 8px system-ui';ctx.fillStyle='#d8fff8';ctx.fillText('ONLINE',n.x,n.y+34);}
   }
   if(state.resonanceSolved){
     ctx.strokeStyle='rgba(133,244,233,.40)';ctx.lineWidth=3;ctx.setLineDash([8,8]);

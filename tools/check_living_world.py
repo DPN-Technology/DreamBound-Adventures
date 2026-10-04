@@ -69,6 +69,7 @@ try:
     if scripts.index("src/vnext/bootstrap.js") < scripts.index("src/vnext/engine/cinematic.js"):
         missing.append("bootstrap must load after Living Moon modules")
 except ValueError:
+    # Missing script entries are reported by the marker checks above.
     pass
 
 if missing:

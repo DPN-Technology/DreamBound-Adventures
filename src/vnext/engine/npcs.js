@@ -37,7 +37,7 @@ function draw(ctx,t){
     ctx.font='900 10px system-ui';ctx.lineWidth=4;ctx.strokeStyle='#292c61';ctx.fillStyle='#fff';
     ctx.strokeText(n.name,p.x,p.y-31);ctx.fillText(n.name,p.x,p.y-31);
     const friendship=DBX.state.npcFriendship?.[n.id]||0;
-    if(friendship>=5){ctx.font='14px serif';ctx.fillText('⭐',p.x+22,p.y-19)}
+    if(friendship>=5){ctx.font='14px serif';ctx.fillText('⭐',p.x+22,p.y-19);}
   }
   ctx.restore();
 }

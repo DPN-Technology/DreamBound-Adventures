@@ -56,7 +56,7 @@ function toggleSkimmer(){
     return;
   }
   state.skimmerActive=!state.skimmerActive;
-  if(state.skimmerActive){DBX.state.roverActive=false;DBX.state.player.speed=430}
+  if(state.skimmerActive){DBX.state.roverActive=false;DBX.state.player.speed=430;}
   else DBX.state.player.speed=250;
   save();DBX.events.emit('hud:update');
   DBX.ui?.toast(state.skimmerActive?'🛸 Skimmer online':'Skimmer parked',state.skimmerActive?'Fast exploration mode enabled.':'Back on foot.');
@@ -80,7 +80,7 @@ function update(dt,t){
   runtime.timeLeft-=dt;
   if(runtime.timeLeft<=0)rotateWeather();
   unlockSkimmer();
-  if(state.skimmerActive&&DBX.scene?.id==='station'){state.skimmerActive=false;save()}
+  if(state.skimmerActive&&DBX.scene?.id==='station'){state.skimmerActive=false;save();}
   if((state.weather==='stardust'||state.weather==='crystal-glow')&&performance.now()-runtime.lastParticle>120){
     runtime.lastParticle=performance.now();
     runtime.particles.push({x:1260+((t/7+runtime.particles.length*83)%500),y:120+((t/11+runtime.particles.length*47)%650),life:1});

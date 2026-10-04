@@ -53,6 +53,7 @@ try:
     if scripts.index("src/vnext/bootstrap.js") < scripts.index("src/vnext/engine/settings.js"):
         missing.append("bootstrap must load after engine modules")
 except ValueError:
+    # Missing script entries are reported by the marker checks above.
     pass
 
 if missing:

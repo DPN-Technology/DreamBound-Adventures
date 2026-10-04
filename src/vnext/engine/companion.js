@@ -9,7 +9,7 @@ function update(dt,t){
   if(!DBX.state.lumaRescued)return;
   ensure();
   const p=DBX.state.player,targetX=p.x+55*Math.cos(p.dir+Math.PI),targetY=p.y+55*Math.sin(p.dir+Math.PI)+18;
-  if(!runtime.x&&!runtime.y){runtime.x=targetX;runtime.y=targetY}
+  if(!runtime.x&&!runtime.y){runtime.x=targetX;runtime.y=targetY;}
   const dx=targetX-runtime.x,dy=targetY-runtime.y;
   runtime.vx+=dx*dt*7;runtime.vy+=dy*dt*7;
   runtime.vx*=Math.pow(.08,dt);runtime.vy*=Math.pow(.08,dt);

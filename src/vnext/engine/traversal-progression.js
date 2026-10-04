@@ -39,7 +39,7 @@ function vehicleStats(id){
   }[id];
   if(!base)return null;
   const out={...base};
-  if(id==='rover'&&has('rover-torque')){out.speed+=55;out.traction+=.2}
+  if(id==='rover'&&has('rover-torque')){out.speed+=55;out.traction+=.2;}
   if(id==='rover'&&has('rover-battery'))out.efficiency*=.72;
   if(id==='skimmer'&&has('skimmer-stability'))out.traction+=.22;
   if(id==='skimmer'&&has('skimmer-drive'))out.boost+=85;
@@ -112,7 +112,7 @@ function updateProgress(){
   ];
   for(const [id,test] of discovers){
     if(state.discoveries.includes(id))continue;
-    let yes=false;try{yes=!!test()}catch{}
+    let yes=false;try{yes=!!test();}catch{}
     if(!yes)continue;
     state.discoveries.push(id);state.traversalXP+=30;
     DBX.simulation.emit('traversal-discovery',z,40);
