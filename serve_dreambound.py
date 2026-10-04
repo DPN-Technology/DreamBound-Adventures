@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT=Path(__file__).resolve().parent
-ALLOWED={"/index.html","/styles.css","/game.js","/profile-sanitizer.js"}
+ALLOWED={"/index.html","/styles.css","/game.js","/profile-sanitizer.js","/dom-collection-bridge.js"}
 CSP=("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
      "img-src 'self' data:; font-src 'self' data:; media-src 'self'; "
      "connect-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; "
