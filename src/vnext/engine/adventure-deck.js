@@ -102,7 +102,7 @@ function open(){
 function renderChip(){
   const btn=document.querySelector('#vnextDeckBtn');if(!btn)return;
   const done=state.active.filter(x=>progress(x).complete).length;
-  btn.innerHTML='🎴 DECK <b>'+done+'/3</b>';
+  btn.textContent='🎴 DECK '+done+'/3';
   btn.classList.toggle('ready',done>0);
 }
 const hud=document.querySelector('.advanced-hud');

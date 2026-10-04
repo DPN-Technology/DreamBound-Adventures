@@ -149,7 +149,7 @@ function tick(){ensure();complete();renderChip()}
 function renderChip(){
   const btn=document.querySelector('#vnextChainBtn');if(!btn)return;
   const p=progress();
-  btn.innerHTML=p?'🔗 CHAIN <b>'+p.done+'/'+p.total+'</b>':'🔗 CHAIN';
+  btn.textContent=p?'🔗 CHAIN '+p.done+'/'+p.total:'🔗 CHAIN';
   btn.classList.toggle('ready',!!p?.complete);
 }
 function open(){

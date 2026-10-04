@@ -47,6 +47,8 @@ jobs:
         run: python3 tools/check_story_contract.py
       - name: Runtime security contract
         run: python3 tools/check_runtime_security.py
+      - name: Raw DOM sink guard
+        run: python3 tools/check_dom_sinks.py
       - name: Profile sanitizer fuzz
         run: node tools/fuzz_profile_sanitizer.js
       - name: World expansion contract
