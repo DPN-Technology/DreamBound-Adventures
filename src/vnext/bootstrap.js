@@ -73,7 +73,7 @@ function updateTelemetry(){
   }
   const bond=document.querySelector('#vnextBond');if(bond)bond.textContent=Math.floor(s.lumaBond||0)+'/10';
   const compass=document.querySelector('#vnextCompass');if(compass)compass.textContent=DBX.polish?.compassText()||'N';
-  const zone=document.querySelector('#vnextZone');if(zone)zone.textContent=DBX.scene?.id==='station'?'LUNAR STATION':(s.player.x>1250?'MOON SURFACE':'SPACE CENTER');
+  const zone=document.querySelector('#vnextZone');if(zone)zone.textContent=DBX.cinematic?.zoneName?.()||(DBX.scene?.id==='station'?'LUNAR STATION':(s.player.x>1250?'MOON SURFACE':'SPACE CENTER'));\n  const crystals=document.querySelector('#vnextCrystals');if(crystals)crystals.textContent=s.moonCrystals||0;\n  const eventWins=document.querySelector('#vnextEventWins');if(eventWins)eventWins.textContent=s.eventWins||0;
 }
 function draw(t){
   ctx.clearRect(0,0,innerWidth,innerHeight);
@@ -110,10 +110,10 @@ function loop(t){
 document.querySelector('#vnextInteract').onclick=()=>DBX.input.requestAction();
 document.querySelector('#vnextJournal').onclick=()=>DBX.quests?.renderJournal();
 document.querySelector('#vnextSettings').onclick=()=>DBX.settings?.open();
-document.querySelector('#vnextBuddy').onclick=()=>DBX.companion?.interact();
+document.querySelector('#vnextBuddy').onclick=()=>DBX.companion?.interact();\ndocument.querySelector('#vnextCodex').onclick=()=>DBX.codex?.open();\ndocument.querySelector('#vnextBase').onclick=()=>DBX.baseBuilder?.open();
 document.querySelector('#vnextReset').onclick=()=>{
   DBX.storage.reset();DBX.vehicle?.reset();DBX.ui.closeModal();DBX.ui.updateHUD();
-  DBX.ui.toast('Adventure reset','v1.0 modular progress cleared on this device.');
+  DBX.ui.toast('Adventure reset','v1.1 living-world progress cleared on this device.');
 };
 DBX.events.on('state:reset',()=>{cam={x:0,y:0}});
 DBX.events.on('scene:changed',({id})=>{
