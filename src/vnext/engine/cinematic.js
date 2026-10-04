@@ -18,7 +18,7 @@ function update(dt){
   if(name!==lastZone&&timer<=0){
     lastZone=name;timer=4;
     const card=document.querySelector('#vnextCinematic');
-    if(card){card.querySelector('small').textContent='NOW EXPLORING';card.querySelector('strong').textContent=name;card.classList.add('show');setTimeout(()=>card.classList.remove('show'),2600)}
+    if(card){card.querySelector('small').textContent='NOW EXPLORING';card.querySelector('strong').textContent=name;card.classList.add('show');setTimeout(()=>card.classList.remove('show'),2600)};
     DBX.audio?.magic();
   }
 }
