@@ -9,8 +9,8 @@ game=(ROOT/"game.js").read_text(encoding="utf-8",errors="replace")
 server=(ROOT/"serve_dreambound.py").read_text(encoding="utf-8",errors="replace")
 bat=(ROOT/"PLAY-DREAMBOUND.bat").read_text(encoding="utf-8",errors="replace")
 ps1=(ROOT/"PLAY-DREAMBOUND.ps1").read_text(encoding="utf-8",errors="replace")
-required_html=["Content-Security-Policy","connect-src 'none'","object-src 'none'","frame-src 'none'","base-uri 'none'","profile-sanitizer.js"]
-required_server=['("127.0.0.1",args.port)','"X-Content-Type-Options","nosniff"','"X-Frame-Options","DENY"','"Referrer-Policy","no-referrer"','"Permissions-Policy"','ALLOWED={']
+required_html=["Content-Security-Policy","connect-src 'none'","object-src 'none'","frame-src 'none'","base-uri 'none'","profile-sanitizer.js","dom-collection-bridge.js"]
+required_server=['("127.0.0.1",args.port)','"X-Content-Type-Options","nosniff"','"X-Frame-Options","DENY"','"Referrer-Policy","no-referrer"','"Permissions-Policy"','ALLOWED={','"/dom-collection-bridge.js"']
 missing=[x for x in required_html if x not in html]
 missing += [x for x in required_server if x not in server]
 if "serve_dreambound.py" not in bat or "serve_dreambound.py" not in ps1: missing.append("secure launcher server")
