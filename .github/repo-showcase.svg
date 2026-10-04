@@ -1,10 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="250" viewBox="0 0 1280 250" role="img" aria-label="DreamBound feature showcase">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171135"/><stop offset="1" stop-color="#243d70"/></linearGradient></defs>
-<rect width="1280" height="250" rx="28" fill="url(#g)"/>
-<text x="50" y="46" fill="#fff" font-family="Arial" font-size="18" font-weight="800" letter-spacing="4">DPN DREAMBOUND // ACTIVE SYSTEMS</text>
-<g font-family="Arial" text-anchor="middle">
-<g transform="translate(45 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#ff74ba"/><text x="137" y="37" font-size="28">🌎 🧭 🐾</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">EXPLORE</text><text x="137" y="96" fill="#cfc8f4" font-size="13">6 lands • 14 adventures</text></g>
-<g transform="translate(345 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#9a73ff"/><text x="137" y="37" font-size="28">🧱 🏡 🎨</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">CREATE</text><text x="137" y="96" fill="#cfc8f4" font-size="13">Builder Mode • Dream Home</text></g>
-<g transform="translate(645 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#65dbe8"/><text x="137" y="37" font-size="28">🏎️ 🦴 🪄</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">PLAY</text><text x="137" y="96" fill="#cfc8f4" font-size="13">Racing • Dinos • Magic</text></g>
-<g transform="translate(945 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#67e38c"/><text x="137" y="37" font-size="28">🛡️ 💾 💖</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">DREAMSHIELD</text><text x="137" y="96" fill="#cfc8f4" font-size="13">Local-first • child-safe gates</text></g>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="290" viewBox="0 0 1280 290" role="img" aria-labelledby="title desc">
+  <title id="title">DreamBound gameplay pillars</title>
+  <desc id="desc">Five neon panels representing exploration, creation, discovery, sibling play, and DreamShield.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0c1028"/><stop offset=".5" stop-color="#17143b"/><stop offset="1" stop-color="#102f49"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1280" height="290" rx="30" fill="url(#bg)"/>
+  <text x="50" y="42" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="800" letter-spacing="4">DPN DREAMBOUND // ADVENTURE SYSTEMS</text>
+  <text x="1230" y="42" fill="#84eee9" text-anchor="end" font-family="monospace" font-size="13">LIVE PROJECT VIEW</text>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <g transform="translate(35 70)">
+      <rect width="226" height="173" rx="22" fill="#ffffff0b" stroke="#ff6fbd" stroke-width="2"/>
+      <circle cx="113" cy="48" r="26" fill="#ff6fbd22" stroke="#ff6fbd"/><path d="M98 52 C102 34 125 31 132 47 C126 63 108 68 98 52Z" fill="none" stroke="#ff9bd2" stroke-width="4"/><circle cx="116" cy="48" r="5" fill="#ffffff"/>
+      <text x="113" y="92" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="900">EXPLORE</text>
+      <text x="113" y="118" text-anchor="middle" fill="#d6d0f4" font-size="13">6 lands + Moon</text><text x="113" y="139" text-anchor="middle" fill="#d6d0f4" font-size="13">18 guided adventures</text><text x="113" y="160" text-anchor="middle" fill="#ff9bd2" font-size="11" font-weight="700">STORIES • QUESTS • WORLDS</text>
+    </g>
+    <g transform="translate(281 70)">
+      <rect width="226" height="173" rx="22" fill="#ffffff0b" stroke="#aa7bff" stroke-width="2"/>
+      <circle cx="113" cy="48" r="26" fill="#aa7bff22" stroke="#aa7bff"/><path d="M96 55 h34 v-25 h-34z M104 30 v-10 M122 30 v-10 M103 65 v10 M123 65 v10" fill="none" stroke="#c9adff" stroke-width="4" stroke-linecap="round"/>
+      <text x="113" y="92" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="900">CREATE</text>
+      <text x="113" y="118" text-anchor="middle" fill="#d6d0f4" font-size="13">Dream Home + Builder</text><text x="113" y="139" text-anchor="middle" fill="#d6d0f4" font-size="13">Moon Base Architect</text><text x="113" y="160" text-anchor="middle" fill="#c9adff" font-size="11" font-weight="700">BUILD • CUSTOMIZE • GROW</text>
+    </g>
+    <g transform="translate(527 70)">
+      <rect width="226" height="173" rx="22" fill="#ffffff0b" stroke="#56dff0" stroke-width="2"/>
+      <circle cx="113" cy="48" r="26" fill="#56dff022" stroke="#56dff0"/><path d="M105 35 a12 12 0 1 1 0 24 a12 12 0 1 1 0-24 M116 57 l15 14" fill="none" stroke="#8df1f7" stroke-width="4" stroke-linecap="round"/>
+      <text x="113" y="92" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="900">DISCOVER</text>
+      <text x="113" y="118" text-anchor="middle" fill="#d6d0f4" font-size="13">Creatures + Codex</text><text x="113" y="139" text-anchor="middle" fill="#d6d0f4" font-size="13">Events + Mastery</text><text x="113" y="160" text-anchor="middle" fill="#8df1f7" font-size="11" font-weight="700">SCIENCE • SECRETS • REWARDS</text>
+    </g>
+    <g transform="translate(773 70)">
+      <rect width="226" height="173" rx="22" fill="#ffffff0b" stroke="#6fe39b" stroke-width="2"/>
+      <circle cx="113" cy="48" r="26" fill="#6fe39b22" stroke="#6fe39b"/><circle cx="103" cy="43" r="7" fill="#9af0ba"/><circle cx="124" cy="43" r="7" fill="#9af0ba"/><path d="M91 66 C96 52 108 52 113 66 M113 66 C118 52 130 52 135 66" fill="none" stroke="#9af0ba" stroke-width="4" stroke-linecap="round"/>
+      <text x="113" y="92" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="900">TOGETHER</text>
+      <text x="113" y="118" text-anchor="middle" fill="#d6d0f4" font-size="13">Same-screen sibling co-op</text><text x="113" y="139" text-anchor="middle" fill="#d6d0f4" font-size="13">Team challenges + rewards</text><text x="113" y="160" text-anchor="middle" fill="#9af0ba" font-size="11" font-weight="700">2 EXPLORERS • 1 ADVENTURE</text>
+    </g>
+    <g transform="translate(1019 70)">
+      <rect width="226" height="173" rx="22" fill="#ffffff0b" stroke="#ff536f" stroke-width="2"/>
+      <circle cx="113" cy="48" r="26" fill="#ff536f22" stroke="#ff536f"/><path d="M113 29 l18 7 v12 c0 13-8 21-18 27-10-6-18-14-18-27V36Z" fill="none" stroke="#ff8d9f" stroke-width="4"/><path d="M104 49 l7 7 13-15" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="113" y="92" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="900">DREAMSHIELD</text>
+      <text x="113" y="118" text-anchor="middle" fill="#d6d0f4" font-size="13">Local-first runtime</text><text x="113" y="139" text-anchor="middle" fill="#d6d0f4" font-size="13">Child-safety gates</text><text x="113" y="160" text-anchor="middle" fill="#ff9cab" font-size="11" font-weight="700">NO ADS • NO PUBLIC CHAT</text>
+    </g>
+  </g>
+  <path d="M44 265 H1236" stroke="#ffffff" opacity=".08"/>
+  <text x="640" y="278" text-anchor="middle" fill="#9ea7d8" font-family="monospace" font-size="11" letter-spacing="2">DEVELOP • PIONEER • NAVIGATE // BUILT FOR YOUNG EXPLORERS</text>
+</svg>
