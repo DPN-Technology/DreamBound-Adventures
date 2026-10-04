@@ -99,7 +99,7 @@ DBX.storage={
       stationDiscoveries:DBX.util.list(r.stationDiscoveries,['Earthrise','Moon crystal pattern','Lunar dust sample'],3),
       completedQuests:DBX.util.list(r.completedQuests,['launch-path','lunar-guardian','station-scientist','buddy-bond','living-moon','moon-architect','world-scholar'],7),
       lumaBond:DBX.util.num(r.lumaBond,0,10,0),
-      sceneVisits:DBX.util.list(r.sceneVisits,['surface','station'],2),
+      sceneVisits:DBX.util.list(r.sceneVisits,['surface','station','home-valley','magic-grove','racing-ridge','dino-valley','builder-bay','ocean-cove'],8),
       badges:DBX.util.list(r.badges,['Space Pathfinder','Lunar Guardian','Station Scientist','Best Moon Friends','Living Moon Explorer','Moon Architect','World Scholar'],12),
       totalDistance:DBX.util.num(r.totalDistance,0,999999999,0),
       moonCrystals:DBX.util.int(r.moonCrystals,0,999,0),
