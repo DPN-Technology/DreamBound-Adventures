@@ -28,5 +28,11 @@ DBX.events.on('worldevent:start',def=>{
   card.querySelector('strong').textContent=def.title.toUpperCase();
   card.classList.add('show');setTimeout(()=>card.classList.remove('show'),3000);
 });
+DBX.events.on('story:beat',beat=>{
+  const card=document.querySelector('#vnextCinematic');if(!card)return;
+  card.querySelector('small').textContent=beat?.label||'STORY';
+  card.querySelector('strong').textContent=(beat?.title||'NEW CHAPTER').toUpperCase();
+  card.classList.add('show');setTimeout(()=>card.classList.remove('show'),3400);
+});
 DBX.cinematic={update,zoneName};
 })();
