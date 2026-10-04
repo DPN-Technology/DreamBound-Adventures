@@ -37,7 +37,7 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 
 > **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
 
-## 🌈 Storybook World Build — v0.4.1
+## 🌈 Co-op Development Build — v0.5.0-dev
 
 | System | Current capability |
 | --- | --- |
@@ -53,6 +53,7 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 | 🛴 **Travel** | Explorer Scooter plus Rainbow Portal fast travel |
 | 🧠 **Adaptive play** | Age-scaled Brain Sparks and challenge difficulty |
 | 💾 **Profiles** | Three local child profiles with automatic saving |
+| 👥 **Sibling Co-op** | Two local explorers, two DreamBuddies, shared rewards, DreamLink tether and 3 cooperative gates |
 
 ## 🛡️ DPN DreamShield Security Gates
 
@@ -115,6 +116,12 @@ If Python is unavailable, the launcher falls back to opening **index.html** dire
 | Builder Mode | 🧱 |
 | Map / Fast Travel | 🗺️ |
 | Settings | ⚙️ / Esc |
+
+## 👥 Local sibling co-op
+
+The v0.5 development branch introduces same-screen two-player play. Player 1 hosts the world; Player 2 joins from another saved child profile. Player 2 uses **I/J/K/L + O** or a second gamepad. Both explorers keep their own identity and receive co-op rewards. Three **DreamLink Gates** require both kids to stand on paired pads together.
+
+The system includes a one-screen DreamLink tether to keep younger players together and avoid split-screen complexity in the first co-op milestone.
 
 ## 🗺️ Current lands
 

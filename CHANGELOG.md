@@ -1,3 +1,17 @@
+## v0.5.0-dev — Local Sibling Co-op
+
+- Added profile-aware local sibling co-op foundation.
+- Player 2 joins from another existing child profile.
+- Added I/J/K/L + O keyboard controls for Player 2.
+- Added second-gamepad support.
+- Added second explorer and second DreamBuddy rendering.
+- Added shared-screen midpoint camera and DreamLink tether.
+- Added shared star/gem/falling-star rewards while co-op is active.
+- Added three cooperative DreamLink Gates across Home Valley, Builder Bay and Ocean Cove.
+- Added Dream Team quest, sticker, achievements and teamwork progression.
+- Added co-op HUD status and co-op profile picker.
+- Preserved single-player behavior and existing profile/save compatibility.
+
 # Changelog
 
 ## v0.4.1 — DreamBound Rebrand

@@ -403,7 +403,7 @@ function drawQuestCompass(){if(state.talking||!$('#modalLayer').classList.contai
 function openHomeBase(){v4EnsureProfile();const upgrades=state.profile.homeUpgrades||[],themes=[['sky','☀️','Sunny Sky',0],['forest','🌿','Forest Hideout',5],['space','🚀','Star Cabin',7],['ocean','🐠','Ocean Room',7]],items=[['bed','🛏️','Dream Bed',4],['plant','🪴','Jungle Plant',3],['arcade','🕹️','Mini Arcade',8],['rocket','🚀','Rocket Model',6]],furn={bed:['🛏️','fv-bed'],plant:['🪴','fv-plant'],arcade:['🕹️','fv-arcade'],rocket:['🚀','fv-rocket']};const room=()=>`<div class="home-room-v4 theme-${state.profile.homeStyle}" style="--room-color:${state.profile.color}"><span class="window"></span><span class="rug"></span><div class="shelf">${(state.profile.stickers||[]).slice(0,5).map(()=> '🏆').join(' ')||'✨'}</div><span class="room-player"></span><span class="room-buddy">${state.profile.buddy}</span>${upgrades.map(id=>`<span class="furn-v4 ${furn[id][1]}">${furn[id][0]}</span>`).join('')}</div>`;openModal(`<h2>🏡 My Dream Home</h2><div id="homeRoomWrap">${room()}</div><div class="room-theme-row">${themes.map(([id,icon,label,cost])=>{const own=state.profile.homeThemes.includes(id);return `<button class="room-theme ${state.profile.homeStyle===id?'active':''}" data-theme="${id}" data-cost="${cost}">${icon} ${label}${own?'':` • 💎${cost}`}</button>`}).join('')}</div><div class="room-actions"><button id="roomDance">🎵 Dance Party</button><button id="roomNap">🌙 Dream Time</button><button id="roomBuddy">💖 Buddy Play</button></div><p style="text-align:center;font-weight:900">Decorate your room with gems you discover while exploring.</p><div class="collection-grid">${items.map(([id,icon,label,cost])=>`<button class="collect-card home-buy ${upgrades.includes(id)?'locked':''}" data-id="${id}" ${upgrades.includes(id)?'disabled':''}><div class="big-icon">${icon}</div><strong>${label}</strong><small>${upgrades.includes(id)?'Owned':`💎 ${cost}`}</small></button>`).join('')}</div>`);$$('.room-theme').forEach(b=>b.onclick=()=>{const id=b.dataset.theme,cost=+b.dataset.cost;if(!state.profile.homeThemes.includes(id)){if((state.profile.gems||0)<cost){toastQuest('Need More Gems!',`This room theme costs ${cost} 💎.`);Audio.tone(180,.12,'sawtooth');return}state.profile.gems-=cost;state.profile.homeThemes.push(id);addXP(5,'Home theme')}state.profile.homeStyle=id;saveProfile();updateHUD();openHomeBase()});$$('.home-buy:not([disabled])').forEach(b=>b.onclick=()=>{const it=items.find(x=>x[0]===b.dataset.id);if((state.profile.gems||0)<it[3]){toastQuest('Need More Gems!',`${it[2]} costs ${it[3]} 💎.`);Audio.tone(180,.12,'sawtooth');return}state.profile.gems-=it[3];state.profile.homeUpgrades.push(it[0]);addXP(5,'Home upgrade');saveProfile();updateHUD();Audio.success();openHomeBase()});$('#roomDance').onclick=()=>{state.profile.buddyLevel=Math.min(20,(state.profile.buddyLevel||1)+1);addXP(3,'Dance party');saveProfile();Audio.success();confetti();showCombo('DANCE PARTY! 🎵');openHomeBase()};$('#roomNap').onclick=()=>{state.dayClock=.76;Audio.tone(440,.2,'sine',.03);toastQuest('Dream Time 🌙','The sky outside your Dream Home turned to a cozy evening.');saveProfile()};$('#roomBuddy').onclick=()=>{closeModal();openBuddyCenter()}}
 function openCollection(){v4EnsureProfile();const creatures=CREATURES.map(c=>{const got=state.profile.creatures.includes(c.id);return `<div class="collect-card ${got?'':'locked'}"><div class="big-icon">${got?c.icon:'❔'}</div><strong>${got?c.name:'Mystery Friend'}</strong><small>${got?c.zone:'Keep exploring!'}</small></div>`}).join('');const stickers=STICKERS.map(([icon,name])=>{const got=state.profile.stickers.includes(name);return `<div class="collect-card ${got?'':'locked'}"><div class="big-icon">${got?icon:'🔒'}</div><strong>${got?name:'Locked Sticker'}</strong><small>${got?'Collected!':'Complete adventures'}</small></div>`}).join('');const photos=ZONES.map(z=>{const got=state.profile.photos.includes(z.name);return `<div class="collect-card photo-card ${got?'':'locked'}"><div class="photo-snapshot">${got?z.emoji:'📷'}</div><strong>${got?z.name:'Mystery Land'}</strong><small>${got?'Safari photo':'Take a photo here'}</small></div>`}).join('');const landmarks=LANDMARKS_V4.map(l=>{const got=state.profile.landmarks.includes(l.id);return `<div class="collect-card ${got?'':'locked'}"><div class="big-icon">${got?l.icon:'❔'}</div><strong>${got?l.name:'Hidden Landmark'}</strong><small>${got?l.zone:'Explore every land'}</small></div>`}).join('');const treasures=`<div class="collection-grid"><div class="collect-card"><div class="big-icon">🦴</div><strong>Fossils</strong><small>${state.profile.fossils||0} complete</small></div><div class="collect-card"><div class="big-icon">⭐</div><strong>Dream Stars</strong><small>${state.profile.stars||0} collected</small></div><div class="collect-card"><div class="big-icon">💎</div><strong>Gems</strong><small>${state.profile.gems||0} ready to spend</small></div><div class="collect-card"><div class="big-icon">🏗️</div><strong>Creations</strong><small>${(state.profile.buildings||[]).length} built</small></div><div class="collect-card"><div class="big-icon">🌠</div><strong>Falling Stars</strong><small>${state.profile.worldEvents||0} chased</small></div><div class="collect-card"><div class="big-icon">💖</div><strong>Buddy Play</strong><small>${state.profile.buddyPlays||0} play-times</small></div></div>`;openModal(`<h2>🎒 Dream Collection</h2><div class="game-pill-row"><button class="game-pill active" data-tab="creatures">🐾 Creatures</button><button class="game-pill" data-tab="stickers">🎟️ Stickers</button><button class="game-pill" data-tab="photos">📸 Photos</button><button class="game-pill" data-tab="landmarks">🏛️ Landmarks</button><button class="game-pill" data-tab="treasures">🦴 Treasures</button></div><div id="collectionBody"><div class="collection-grid">${creatures}</div></div>`);$$('.game-pill').forEach(b=>b.onclick=()=>{$$('.game-pill').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(b.dataset.tab==='creatures')$('#collectionBody').innerHTML=`<div class="collection-grid">${creatures}</div>`;if(b.dataset.tab==='stickers')$('#collectionBody').innerHTML=`<div class="collection-grid">${stickers}</div>`;if(b.dataset.tab==='photos')$('#collectionBody').innerHTML=`<div class="collection-grid">${photos}</div>`;if(b.dataset.tab==='landmarks')$('#collectionBody').innerHTML=`<div class="collection-grid">${landmarks}</div>`;if(b.dataset.tab==='treasures')$('#collectionBody').innerHTML=treasures})}
 function openMap(){v4EnsureProfile();const current=zoneAt(state.player.x,state.player.y).name;openModal(`<h2>🗺️ DreamBound Story Map</h2><p style="text-align:center;font-weight:900">Every land now has its own special landmark to discover.</p><div class="world-map-grid">${ZONES.map((z,i)=>{const seen=state.profile.discoveredZones.includes(z.name),photo=state.profile.photos.includes(z.name),lm=LANDMARKS_V4.find(l=>l.zone===z.name),found=lm&&state.profile.landmarks.includes(lm.id);return `<button class="map-zone ${seen?'seen':'locked'} ${z.name===current?'current':''}" data-i="${i}" ${seen?'':'disabled'}><span>${seen?z.emoji:'❔'}</span><strong>${seen?z.name:'Undiscovered Land'}</strong><small>${z.name===current?'📍 You are here':seen?`${photo?'📸':'📷'} ${found?'🏛️':'🔎'} ${found?'Landmark found':'Landmark hidden'}`:'Keep exploring!'}</small></button>`}).join('')}</div><div class="map-stats"><span>🗺️ ${state.profile.discoveredZones.length}/6 lands</span><span>📸 ${state.profile.photos.length}/6 photos</span><span>🏛️ ${state.profile.landmarks.length}/6 landmarks</span><span>🌠 ${state.profile.worldEvents||0} falling stars</span></div>`);$$('.map-zone.seen').forEach(b=>b.onclick=()=>{const z=ZONES[+b.dataset.i];state.player.x=z.x+z.w/2;state.player.y=z.y+z.h/2;state.buddy.x=state.player.x-50;state.buddy.y=state.player.y+35;closeModal();showZoneBanner(z);Audio.success()})}
-function openHow(){openModal(`<h2>✨ Welcome to DreamBound Adventures v0.4.1!</h2><div class="modal-grid"><div class="menu-tile"><strong>🎨 Storybook World</strong><small>Every land now has richer scenery, animated water, roads, buildings and landmarks.</small></div><div class="menu-tile"><strong>🏛️ Landmark Hunt</strong><small>Walk close to each land's special landmark to add it to your collection.</small></div><div class="menu-tile"><strong>🏡 Dream Home</strong><small>Unlock room themes, decorate, dance and spend time with your buddy.</small></div><div class="menu-tile"><strong>🕹️ Explore</strong><small>Use arrow keys, WASD, touch controls, or a gamepad.</small></div><div class="menu-tile"><strong>✨ Talk & Discover</strong><small>Walk near friends and press Space/E or the sparkle button.</small></div><div class="menu-tile"><strong>⭐ Collect</strong><small>Find stars and gems hidden all over the world.</small></div><div class="menu-tile"><strong>🧱 Build</strong><small>Use gems to add your own creations to DreamBound.</small></div><div class="menu-tile"><strong>🧠 Play</strong><small>Mini-games quietly adjust to each explorer's age.</small></div><div class="menu-tile"><strong>💖 DreamBuddy</strong><small>Pet, play and grow your friendship.</small></div><div class="menu-tile"><strong>📸 Photo Safari</strong><small>Photograph every land for your adventure book.</small></div><div class="menu-tile"><strong>🛴 Ride</strong><small>Unlock a scooter with an animated sparkle trail.</small></div><div class="menu-tile"><strong>🌠 World Events</strong><small>Chase surprise falling stars for special rewards.</small></div></div>`)}
+function openHow(){openModal(`<h2>✨ Welcome to DreamBound Adventures v0.5.0-dev!</h2><div class="modal-grid"><div class="menu-tile"><strong>🎨 Storybook World</strong><small>Every land now has richer scenery, animated water, roads, buildings and landmarks.</small></div><div class="menu-tile"><strong>🏛️ Landmark Hunt</strong><small>Walk close to each land's special landmark to add it to your collection.</small></div><div class="menu-tile"><strong>🏡 Dream Home</strong><small>Unlock room themes, decorate, dance and spend time with your buddy.</small></div><div class="menu-tile"><strong>🕹️ Explore</strong><small>Use arrow keys, WASD, touch controls, or a gamepad.</small></div><div class="menu-tile"><strong>✨ Talk & Discover</strong><small>Walk near friends and press Space/E or the sparkle button.</small></div><div class="menu-tile"><strong>⭐ Collect</strong><small>Find stars and gems hidden all over the world.</small></div><div class="menu-tile"><strong>🧱 Build</strong><small>Use gems to add your own creations to DreamBound.</small></div><div class="menu-tile"><strong>🧠 Play</strong><small>Mini-games quietly adjust to each explorer's age.</small></div><div class="menu-tile"><strong>💖 DreamBuddy</strong><small>Pet, play and grow your friendship.</small></div><div class="menu-tile"><strong>📸 Photo Safari</strong><small>Photograph every land for your adventure book.</small></div><div class="menu-tile"><strong>🛴 Ride</strong><small>Unlock a scooter with an animated sparkle trail.</small></div><div class="menu-tile"><strong>🌠 World Events</strong><small>Chase surprise falling stars for special rewards.</small></div></div>`)}
 
 // controls
 addEventListener('keydown',e=>{state.keys[e.key]=true;state.keys[e.key.toLowerCase()]=true;if([' ','e','E','Enter'].includes(e.key)&&state.running){e.preventDefault();interact()}if(e.key==='Escape'&&state.running){if(state.talking)closeTalk();else if(state.buildMode)toggleBuild(false);else openSettings()}});addEventListener('keyup',e=>{state.keys[e.key]=false;state.keys[e.key.toLowerCase()]=false});
@@ -414,6 +414,383 @@ $('#ageSelect').onchange=drawAvatarPreview;
 
 // basic gamepad support
 function pollGamepad(){const gp=navigator.getGamepads?.()[0];if(gp&&state.running){state.keys.ArrowLeft=gp.axes[0]<-.35;state.keys.ArrowRight=gp.axes[0]>.35;state.keys.ArrowUp=gp.axes[1]<-.35;state.keys.ArrowDown=gp.axes[1]>.35;if(gp.buttons[0]?.pressed&&!pollGamepad.pressed){pollGamepad.pressed=true;interact()}if(!gp.buttons[0]?.pressed)pollGamepad.pressed=false}requestAnimationFrame(pollGamepad)}requestAnimationFrame(pollGamepad);
+
+
+// DreamBound v0.5.0-dev — Local Sibling Co-op
+const DREAMLINK_GATES=[
+  {id:'home-link',zone:'Home Valley',name:'Rainbow Team Gate',a:{x:930,y:690},b:{x:1035,y:690},color:'#ff72bd'},
+  {id:'builder-link',zone:'Builder Bay',name:'Builder Team Gate',a:{x:1450,y:1320},b:{x:1560,y:1320},color:'#7f72ff'},
+  {id:'ocean-link',zone:'Ocean Cove',name:'Ocean Team Gate',a:{x:2500,y:1540},b:{x:2610,y:1540},color:'#58dfdf'}
+];
+
+STICKERS.push(['🤝','Dream Team']);
+QUEST_TARGETS.teamwork=[982,690];
+
+const defaultQuestsV5=defaultQuests;
+defaultQuests=function(){
+  const qs=defaultQuestsV5();
+  if(!qs.some(q=>q.id==='teamwork'))qs.push({id:'teamwork',title:'Dream Team',text:'Activate all 3 DreamLink Gates with a sibling.',done:false,reward:10,xp:30,progress:0,target:3,icon:'🤝'});
+  return qs;
+};
+
+const unlockStickerForQuestV5=unlockStickerForQuest;
+unlockStickerForQuest=function(id){
+  unlockStickerForQuestV5(id);
+  if(id==='teamwork')unlockSticker('Dream Team');
+};
+
+function v5PrepareProfile(p){
+  if(!p)return null;
+  p.explorerLevel=p.explorerLevel||1;
+  p.xp=p.xp||0;
+  p.stars=p.stars||0;
+  p.gems=p.gems||0;
+  p.buddyLevel=p.buddyLevel||1;
+  p.achievements=p.achievements||[];
+  p.stickers=p.stickers||[];
+  p.creatures=p.creatures||[];
+  p.discoveredZones=p.discoveredZones||['Home Valley'];
+  p.coopGates=p.coopGates||[];
+  p.coopSessions=p.coopSessions||0;
+  p.teamworkPoints=p.teamworkPoints||0;
+  const oldQ=new Map((p.quests||[]).map(q=>[q.id,q]));
+  p.quests=defaultQuests().map(q=>Object.assign(q,oldQ.get(q.id)||{}));
+  return p;
+}
+
+state.coop={
+  enabled:false,slot:null,profile:null,
+  player:{x:600,y:545,r:24,speed:250,dir:0},
+  buddy:{x:655,y:580},
+  near:null,lastZone:'Home Valley',gp:{x:0,y:0,interact:false},
+  tetherNotice:0
+};
+
+function saveGuestProfile(){
+  if(!state.coop.enabled||state.coop.slot===null||!state.coop.profile)return;
+  state.coop.profile.lastPlayed=Date.now();
+  localStorage.setItem(profileKey(state.coop.slot),JSON.stringify(state.coop.profile));
+}
+
+function v5AddXPToProfile(p,amount){
+  if(!p)return;
+  p.xp=(p.xp||0)+amount;
+  while(p.xp>=xpNeeded(p.explorerLevel||1)){
+    p.xp-=xpNeeded(p.explorerLevel||1);
+    p.explorerLevel=(p.explorerLevel||1)+1;
+    p.gems=(p.gems||0)+2;
+  }
+}
+
+function v5GuestAchievement(name){
+  const p=state.coop.profile;
+  if(!p)return;
+  if(!p.achievements.includes(name))p.achievements.push(name);
+}
+
+function updateCoopStatus(){
+  const el=$('#coopStatus');
+  if(!el)return;
+  if(!state.coop.enabled){
+    el.classList.add('hidden');
+    return;
+  }
+  const p=state.coop.profile;
+  el.classList.remove('hidden');
+  $('#coopP1Name').textContent=state.profile.name;
+  $('#coopP1Avatar').textContent=state.profile.buddy;
+  $('#coopP1Avatar').style.background=state.profile.color;
+  $('#coopP2Name').textContent=p.name;
+  $('#coopP2Avatar').textContent=p.buddy;
+  $('#coopP2Avatar').style.background=p.color;
+  $('#coopGateCount').textContent=(state.profile.coopGates||[]).length+'/3';
+}
+
+function openCoopCenter(){
+  const candidates=[];
+  for(let i=0;i<3;i++){
+    if(i===state.currentSlot)continue;
+    const p=readStoredProfile(i);
+    if(p)candidates.push([i,v5PrepareProfile(p)]);
+  }
+  if(state.coop.enabled){
+    const p=state.coop.profile;
+    openModal('<h2>👥 Sibling Co-op</h2>'+
+      '<div class="coop-joined-card"><div class="coop-big-avatar" style="background:'+p.color+'">'+p.buddy+'</div>'+
+      '<div><strong>'+escapeHTML(p.name)+' joined the adventure!</strong><small>Player 2 • I/J/K/L + O • second gamepad supported</small></div></div>'+
+      '<div class="coop-guide-grid"><div>🤝<strong>DreamLink Gates</strong><small>Stand on both glowing pads together.</small></div>'+
+      '<div>⭐<strong>Shared Rewards</strong><small>Stars, gems and co-op rewards help both explorers.</small></div>'+
+      '<div>🧲<strong>DreamLink Tether</strong><small>Keeps both players together on one screen.</small></div>'+
+      '<div>🎮<strong>Two Controllers</strong><small>Gamepad 1 controls P1, gamepad 2 controls P2.</small></div></div>'+
+      '<button id="leaveCoopBtn" class="big-btn secondary">👋 END CO-OP SESSION</button>');
+    $('#leaveCoopBtn').onclick=leaveCoop;
+    return;
+  }
+  const cards=candidates.map(([slot,p])=>'<button class="coop-profile-card" data-slot="'+slot+'">'+
+    '<span class="coop-big-avatar" style="background:'+p.color+'">'+p.buddy+'</span>'+
+    '<span><strong>'+escapeHTML(p.name)+'</strong><small>Age '+p.age+' • Level '+(p.explorerLevel||1)+'</small></span><b>JOIN →</b></button>').join('');
+  openModal('<h2>👥 Sibling Co-op</h2>'+
+    '<p class="coop-intro">Pick another saved explorer. Both kids will play together in the same DreamBound world.</p>'+
+    (cards||'<div class="empty-coop">🌟 Create another child profile first, then come back here to start co-op.</div>')+
+    '<div class="coop-controls-card"><strong>Player 1</strong><span>WASD / Arrows + E/Space</span><strong>Player 2</strong><span>I/J/K/L + O</span></div>');
+  $('.coop-profile-card').forEach(b=>b.onclick=()=>joinCoop(+b.dataset.slot));
+}
+
+function joinCoop(slot){
+  const p=v5PrepareProfile(readStoredProfile(slot));
+  if(!p||slot===state.currentSlot)return;
+  state.coop.enabled=true;
+  state.coop.slot=slot;
+  state.coop.profile=p;
+  state.coop.player.x=clamp(state.player.x+85,45,WORLD.w-45);
+  state.coop.player.y=clamp(state.player.y+35,60,WORLD.h-45);
+  state.coop.player.dir=state.player.dir;
+  state.coop.buddy.x=state.coop.player.x+55;
+  state.coop.buddy.y=state.coop.player.y+35;
+  state.coop.lastZone=zoneAt(state.coop.player.x,state.coop.player.y).name;
+  p.coopSessions=(p.coopSessions||0)+1;
+  state.profile.coopSessions=(state.profile.coopSessions||0)+1;
+  state.profile.coopGates=state.profile.coopGates||[];
+  state.profile.teamworkPoints=state.profile.teamworkPoints||0;
+  saveProfile();
+  saveGuestProfile();
+  updateCoopStatus();
+  closeModal();
+  Audio.success();
+  confetti();
+  toastQuest('Sibling Co-op Ready! 👥',state.profile.name+' + '+p.name+' are DreamLinked!');
+  speak('Sibling co-op ready! Work together to find the DreamLink Gates.');
+}
+
+function leaveCoop(){
+  if(!state.coop.enabled)return;
+  saveGuestProfile();
+  state.coop.enabled=false;
+  state.coop.slot=null;
+  state.coop.profile=null;
+  updateCoopStatus();
+  closeModal();
+  toastQuest('Co-op Session Saved','Player 2 progress and teamwork rewards were saved.');
+}
+
+function coopNearest(){
+  if(!state.coop.enabled)return null;
+  let nearest=null,nd=95;
+  [...state.npcs,...state.interactables,...state.creatures].forEach(n=>{
+    const d=dist(n,state.coop.player);
+    if(d<nd){nearest=n;nd=d}
+  });
+  return nearest;
+}
+
+function coopInteract(){
+  if(!state.coop.enabled||state.talking)return;
+  const n=coopNearest();
+  if(!n){
+    toastQuest('Player 2','Move closer to a friend, creature, or activity.');
+    return;
+  }
+  if(n.type==='creature'){
+    v5AddXPToProfile(state.coop.profile,2);
+    state.coop.profile.teamworkPoints=(state.coop.profile.teamworkPoints||0)+1;
+    saveGuestProfile();
+    rescueCreature(n);
+    return;
+  }
+  talkTo(n);
+}
+
+function v5AwardCollectible(c){
+  c.taken=true;
+  state.profile.taken=state.profile.taken||[];
+  state.profile.taken.push(c.id);
+  const guest=state.coop.enabled?state.coop.profile:null;
+  if(c.type==='super'){
+    state.profile.stars+=3;state.profile.gems+=5;state.profile.worldEvents=(state.profile.worldEvents||0)+1;addXP(12,'Falling Star');
+    if(guest){guest.stars+=3;guest.gems+=5;guest.worldEvents=(guest.worldEvents||0)+1;v5AddXPToProfile(guest,12);guest.teamworkPoints=(guest.teamworkPoints||0)+3}
+    Audio.success();spawnBurst(c.x,c.y,'#fff36b');spawnBurst(c.x,c.y,'#ff7ad9');showCombo(state.coop.enabled?'TEAM FALLING STAR! 🌠':'FALLING STAR! 🌠');achievement('Star Chaser');unlockSticker('Star Chaser');state.worldEvent=null;$('#worldEvent').classList.add('hidden');
+  }else if(c.type==='star'){
+    state.profile.stars++;questProgress('stars',1);addXP(1);
+    if(guest){guest.stars++;v5AddXPToProfile(guest,1);guest.teamworkPoints=(guest.teamworkPoints||0)+1}
+    Audio.collect();spawnBurst(c.x,c.y,'#ffd84f');showCombo(state.coop.enabled?'TEAM STAR! ⭐':'STAR! ⭐');
+  }else{
+    state.profile.gems++;addXP(1);
+    if(guest){guest.gems++;v5AddXPToProfile(guest,1);guest.teamworkPoints=(guest.teamworkPoints||0)+1}
+    Audio.tone(1100,.12,'triangle');spawnBurst(c.x,c.y,'#48e6ff');showCombo(state.coop.enabled?'TEAM GEM! 💎':'GEM! 💎');
+  }
+  if(guest)saveGuestProfile();
+  updateHUD();saveProfile();
+}
+
+checkCollectibles=function(){
+  state.collectibles.forEach(c=>{
+    if(c.taken)return;
+    const p1=dist(c,state.player)<43;
+    const p2=state.coop.enabled&&dist(c,state.coop.player)<43;
+    if(p1||p2)v5AwardCollectible(c);
+  });
+};
+
+function v5GateActive(g){
+  if(!state.coop.enabled)return false;
+  const p1a=Math.hypot(state.player.x-g.a.x,state.player.y-g.a.y)<58;
+  const p1b=Math.hypot(state.player.x-g.b.x,state.player.y-g.b.y)<58;
+  const p2a=Math.hypot(state.coop.player.x-g.a.x,state.coop.player.y-g.a.y)<58;
+  const p2b=Math.hypot(state.coop.player.x-g.b.x,state.coop.player.y-g.b.y)<58;
+  return (p1a&&p2b)||(p1b&&p2a);
+}
+
+function checkDreamLinkGates(){
+  if(!state.coop.enabled)return;
+  state.profile.coopGates=state.profile.coopGates||[];
+  for(const g of DREAMLINK_GATES){
+    if(state.profile.coopGates.includes(g.id)||!v5GateActive(g))continue;
+    state.profile.coopGates.push(g.id);
+    const gp=state.coop.profile;
+    gp.coopGates=gp.coopGates||[];
+    if(!gp.coopGates.includes(g.id))gp.coopGates.push(g.id);
+    state.profile.gems+=3;
+    gp.gems+=3;
+    state.profile.teamworkPoints=(state.profile.teamworkPoints||0)+10;
+    gp.teamworkPoints=(gp.teamworkPoints||0)+10;
+    addXP(10,'DreamLink Gate');
+    v5AddXPToProfile(gp,10);
+    questProgress('teamwork',1);
+    if(state.profile.coopGates.length===1){
+      unlockSticker('Dream Team');
+      if(!gp.stickers.includes('Dream Team'))gp.stickers.push('Dream Team');
+      v5GuestAchievement('Dream Team');
+    }
+    saveProfile();saveGuestProfile();updateCoopStatus();
+    Audio.success();confetti();spawnBurst(g.a.x,g.a.y,g.color);spawnBurst(g.b.x,g.b.y,'#65f1e8');
+    toastQuest('DreamLink Gate Activated! 🤝',g.name+' • Both explorers earned 3 💎 and 10 XP!');
+  }
+}
+
+function updateCoop(dt){
+  if(!state.coop.enabled||!state.coop.profile)return;
+  const p=state.coop.player;
+  if(!state.talking&&!state.buildMode&&$('#modalLayer').classList.contains('hidden')){
+    let dx=(state.keys.l?1:0)-(state.keys.j?1:0)+state.coop.gp.x;
+    let dy=(state.keys.k?1:0)-(state.keys.i?1:0)+state.coop.gp.y;
+    if(dx||dy){
+      const len=Math.hypot(dx,dy);dx/=len;dy/=len;
+      p.x=clamp(p.x+dx*p.speed*dt,45,WORLD.w-45);
+      p.y=clamp(p.y+dy*p.speed*dt,60,WORLD.h-45);
+      p.dir=Math.atan2(dy,dx);
+    }
+  }
+  const buddyTargetX=p.x-Math.cos(p.dir)*56,buddyTargetY=p.y-Math.sin(p.dir)*56+16;
+  state.coop.buddy.x+=(buddyTargetX-state.coop.buddy.x)*Math.min(1,dt*5);
+  state.coop.buddy.y+=(buddyTargetY-state.coop.buddy.y)*Math.min(1,dt*5);
+
+  const dx=p.x-state.player.x,dy=p.y-state.player.y,d=Math.hypot(dx,dy);
+  if(d>1100){
+    p.x=clamp(state.player.x+90,45,WORLD.w-45);p.y=clamp(state.player.y+45,60,WORLD.h-45);
+    state.coop.buddy.x=p.x+45;state.coop.buddy.y=p.y+35;
+    toastQuest('DreamLink! 🧲','Player 2 zoomed back to the team.');
+  }else if(d>720){
+    const pull=(d-720)/d;
+    p.x-=dx*pull;p.y-=dy*pull;
+    if(state.coop.tetherNotice<=0){showCombo('STAY DREAMLINKED! 🤝');state.coop.tetherNotice=4}
+  }
+  state.coop.tetherNotice=Math.max(0,state.coop.tetherNotice-dt);
+
+  const z=zoneAt(p.x,p.y);
+  if(z.name!==state.coop.lastZone){
+    state.coop.lastZone=z.name;
+    if(!state.coop.profile.discoveredZones.includes(z.name)){
+      state.coop.profile.discoveredZones.push(z.name);
+      v5AddXPToProfile(state.coop.profile,2);
+      saveGuestProfile();
+    }
+  }
+
+  checkDreamLinkGates();
+
+  const midX=(state.player.x+p.x)/2,midY=(state.player.y+p.y)/2;
+  const targetCamX=clamp(midX-innerWidth/2,0,Math.max(0,WORLD.w-innerWidth));
+  const targetCamY=clamp(midY-innerHeight/2,0,Math.max(0,WORLD.h-innerHeight));
+  state.cam.x+=(targetCamX-state.cam.x)*Math.min(1,dt*7);
+  state.cam.y+=(targetCamY-state.cam.y)*Math.min(1,dt*7);
+}
+
+function drawDreamLinkGates(){
+  const done=state.profile.coopGates||[];
+  for(const g of DREAMLINK_GATES){
+    const completed=done.includes(g.id);
+    const active=v5GateActive(g);
+    [g.a,g.b].forEach((p,idx)=>{
+      ctx.save();
+      ctx.globalAlpha=completed ? .3 : 1;
+      ctx.shadowBlur=active?24:10;
+      ctx.shadowColor=idx?'#60f1e6':g.color;
+      ctx.lineWidth=6;
+      ctx.strokeStyle=idx?'#60f1e6':g.color;
+      ctx.fillStyle=active?'#fffbd8':'#25245288';
+      ctx.beginPath();ctx.arc(p.x,p.y,38,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.font='900 22px sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.fillText(idx?'P2':'P1',p.x,p.y+8);
+      ctx.restore();
+    });
+    if(!completed){
+      ctx.save();ctx.strokeStyle=active?'#fff48d':'#ffffff55';ctx.lineWidth=active?7:3;ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(g.a.x,g.a.y);ctx.lineTo(g.b.x,g.b.y);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    }
+  }
+}
+
+function drawCoopExplorer(){
+  if(!state.coop.enabled||!state.coop.profile)return;
+  const p=state.coop.player,b=state.coop.buddy,profile=state.coop.profile;
+  const d=Math.hypot(p.x-state.player.x,p.y-state.player.y);
+  if(d>430){
+    ctx.save();ctx.strokeStyle='rgba(255,255,255,.42)';ctx.lineWidth=4;ctx.setLineDash([10,12]);ctx.beginPath();ctx.moveTo(state.player.x,state.player.y);ctx.lineTo(p.x,p.y);ctx.stroke();ctx.restore();
+  }
+  drawCharacter(ctx,p.x,p.y,1,profile.color,p.dir);
+  const bob=Math.sin(performance.now()/260+1.2)*5;
+  v4Shadow(b.x,b.y+23,20,7,.12);
+  drawEmoji(b.x,b.y+bob,profile.buddy,43);
+  ctx.save();ctx.font='1000 13px sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.strokeStyle='#4b3a80';ctx.lineWidth=5;ctx.strokeText(profile.name+' • P2',p.x,p.y-55);ctx.fillText(profile.name+' • P2',p.x,p.y-55);ctx.restore();
+}
+
+const drawInteractablesV5=drawInteractables;
+drawInteractables=function(){drawInteractablesV5();drawDreamLinkGates()};
+
+const drawPlayerV5=drawPlayer;
+drawPlayer=function(){drawPlayerV5();drawCoopExplorer()};
+
+const updateV5=update;
+update=function(dt){updateV5(dt);if(state.running)updateCoop(dt)};
+
+const openHowV5=openHow;
+openHow=function(){
+  openHowV5();
+  const grid=$('#modalCard .modal-grid');
+  if(grid)grid.insertAdjacentHTML('beforeend','<div class="menu-tile"><strong>👥 Sibling Co-op</strong><small>Player 2 joins from another saved profile. Use I/J/K/L + O or a second gamepad, then activate DreamLink Gates together.</small></div>');
+};
+
+function pollCoopGamepad(){
+  const gp=navigator.getGamepads?.()[1];
+  if(state.coop.enabled&&gp){
+    state.coop.gp.x=Math.abs(gp.axes[0]||0)>.35?(gp.axes[0]||0):0;
+    state.coop.gp.y=Math.abs(gp.axes[1]||0)>.35?(gp.axes[1]||0):0;
+    const pressed=!!gp.buttons[0]?.pressed;
+    if(pressed&&!state.coop.gp.interact)coopInteract();
+    state.coop.gp.interact=pressed;
+  }else{
+    state.coop.gp.x=0;state.coop.gp.y=0;state.coop.gp.interact=false;
+  }
+  requestAnimationFrame(pollCoopGamepad);
+}
+requestAnimationFrame(pollCoopGamepad);
+
+addEventListener('keydown',e=>{
+  if(e.key.toLowerCase()==='o'&&state.running&&state.coop.enabled&&!e.repeat){
+    e.preventDefault();coopInteract();
+  }
+});
+
+$('#coopBtn').onclick=openCoopCenter;
+updateCoopStatus();
 
 showScreen('titleScreen');
 })();
