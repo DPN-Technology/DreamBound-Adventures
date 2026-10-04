@@ -54,7 +54,7 @@ The modular DreamBound runtime has moved beyond a small Space Center preview int
 - **Controller support** — analog stick/D-pad movement, A-button interaction and trigger boost.
 - **Advanced security** — every engine module is scanned by DreamShield and vNext save state is fuzzed with 3,500 randomized hostile inputs.
 
-The original Storybook World remains available while its larger content library is progressively migrated into this modular engine.
+DreamBound now launches as one unified Living World runtime. The former Storybook implementation is retained only as migration source while its strongest content is moved into the unified engine.
 
 Architecture: `docs/VNEXT_ARCHITECTURE.md`.
 
@@ -104,7 +104,7 @@ The modular preview now continues beyond launch into a persistent **Lunar Guardi
 
 ## 🚀 v0.8 Modular Space Center Preview
 
-DreamBound now includes an **opt-in modular runtime preview** alongside the established v0.7 game.
+DreamBound now uses the modular Living World runtime as the single player-facing game. The previous parallel-runtime split has been retired.
 
 - Separate state/storage, input, world, UI, and bootstrap modules under `src/vnext/`.
 - Playable Space Center campus with Mission Control, Solar Array, Rocket Workshop, and Launch Pad.
@@ -114,7 +114,7 @@ DreamBound now includes an **opt-in modular runtime preview** alongside the esta
 - The secure local server explicitly allowlists every preview asset.
 - DreamShield validates the preview files, JavaScript syntax, network isolation, packaging, and smoke-test reachability.
 
-Use **🚀 PLAY ADVANCED WORLD v1.0** on the DreamBound title screen.
+Launch DreamBound normally; the advanced Living World is now the only player-facing runtime.
 
 ### v0.7.1 reliability hardening
 
