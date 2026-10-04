@@ -37,6 +37,27 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 
 > **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
 
+## 🚀 DreamBound v1.0 — Advanced World Engine
+
+The modular DreamBound runtime has moved beyond a small Space Center preview into a reusable **Advanced World Engine**.
+
+### Engine upgrades
+
+- **Real scene system** — walkable Lunar Station interior with independent scene bounds and transitions instead of modal-only fake rooms.
+- **Advanced rendering/FX** — particles, reward bursts, camera shake, flashes, ambient lighting, animated route markers, moving clouds and Moon shimmer.
+- **Live world console** — minimap, compass, current zone, rover energy and Luma Bond telemetry.
+- **Vehicle physics** — acceleration, friction, speed limiting, battery drain/recharge, boost, dust trails and optional controller rumble.
+- **Procedural audio** — local WebAudio tones/chords/noise; no downloaded sound files or remote audio.
+- **Data-driven missions** — reusable quest definitions, milestone rewards and an in-game Mission Journal.
+- **Companion AI** — Luma follow physics, moods, emotes and persistent bond progression.
+- **Accessibility controls** — audio toggle, reduced motion, high contrast and large UI modes.
+- **Controller support** — analog stick/D-pad movement, A-button interaction and trigger boost.
+- **Advanced security** — every engine module is scanned by DreamShield and vNext save state is fuzzed with 3,500 randomized hostile inputs.
+
+The original Storybook World remains available while its larger content library is progressively migrated into this modular engine.
+
+Architecture: `docs/VNEXT_ARCHITECTURE.md`.
+
 ## 🌈 Three Worlds Expansion — v0.7.1-dev
 
 | System | Current capability |
@@ -93,7 +114,7 @@ DreamBound now includes an **opt-in modular runtime preview** alongside the esta
 - The secure local server explicitly allowlists every preview asset.
 - DreamShield validates the preview files, JavaScript syntax, network isolation, packaging, and smoke-test reachability.
 
-Use **🚀 SPACE CENTER PREVIEW** on the DreamBound title screen.
+Use **🚀 PLAY ADVANCED WORLD v1.0** on the DreamBound title screen.
 
 ### v0.7.1 reliability hardening
 
