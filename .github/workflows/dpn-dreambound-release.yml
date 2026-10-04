@@ -33,7 +33,7 @@ jobs:
           (cd dist && zip -qr "${NAME}.zip" "${NAME}")
           (cd dist && sha256sum "${NAME}.zip" > "${NAME}.zip.sha256")
       - name: Upload validated package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dreambound-release
           path: |
