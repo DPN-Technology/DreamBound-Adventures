@@ -101,22 +101,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          repo="$GITHUB_REPOSITORY"
+          base_commit="$(gh api "repos/$repo/git/ref/heads/main" --jq '.object.sha')"
+          base_tree="$(gh api "repos/$repo/git/commits/$base_commit" --jq '.tree.sha')"
+          : > /tmp/tree-elements.jsonl
+
           for file in .github/screenshots/*.png; do
-            path="$file"
-            content="$(base64 -w0 "$file")"
-            sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$path?ref=main" --jq '.sha' 2>/dev/null || true)"
-            args=(
-              -X PUT
-              -H "Accept: application/vnd.github+json"
-              -H "X-GitHub-Api-Version: 2022-11-28"
-              "repos/$GITHUB_REPOSITORY/contents/$path"
-              -f "message=docs: refresh verified DreamBound gameplay evidence"
-              -f "content=$content"
-              -f "branch=main"
-            )
-            if [[ -n "$sha" ]]; then
-              args+=( -f "sha=$sha" )
-            fi
-            gh api "${args[@]}" >/dev/null
-            echo "Published $path"
+            base64 -w0 "$file" > /tmp/blob-content.b64
+            jq -n --rawfile content /tmp/blob-content.b64 \
+              '{content:$content,encoding:"base64"}' > /tmp/blob.json
+            blob_sha="$(gh api -X POST "repos/$repo/git/blobs" --input /tmp/blob.json --jq '.sha')"
+            jq -n --arg path "$file" --arg sha "$blob_sha" \
+              '{path:$path,mode:"100644",type:"blob",sha:$sha}' >> /tmp/tree-elements.jsonl
+            echo "Prepared $file"
           done
+
+          jq -s --arg base_tree "$base_tree" \
+            '{base_tree:$base_tree,tree:.}' /tmp/tree-elements.jsonl > /tmp/tree.json
+          new_tree="$(gh api -X POST "repos/$repo/git/trees" --input /tmp/tree.json --jq '.sha')"
+
+          jq -n --arg tree "$new_tree" --arg parent "$base_commit" \
+            '{message:"docs: refresh verified DreamBound gameplay evidence",tree:$tree,parents:[$parent]}' > /tmp/commit.json
+          new_commit="$(gh api -X POST "repos/$repo/git/commits" --input /tmp/commit.json --jq '.sha')"
+
+          jq -n --arg sha "$new_commit" '{sha:$sha,force:false}' > /tmp/ref.json
+          gh api -X PATCH "repos/$repo/git/refs/heads/main" --input /tmp/ref.json >/dev/null
+          echo "Published verified screenshots in commit $new_commit"
