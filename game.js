@@ -2,7 +2,7 @@
 'use strict';
 
 const $ = s => document.querySelector(s);
-const $ = s => [...document.querySelectorAll(s)];
+const $$ = s => [...document.querySelectorAll(s)];
 const setMarkup=(el,html)=>window.DreamBoundDOM.setHTML(el,html);
 const appendMarkup=(el,html)=>window.DreamBoundDOM.appendHTML(el,html);
 const insertMarkup=(el,pos,html)=>window.DreamBoundDOM.insertHTML(el,pos,html);
