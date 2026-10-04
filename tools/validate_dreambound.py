@@ -9,7 +9,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 RUNTIME = [ROOT / "index.html", ROOT / "styles.css", ROOT / "game.js"]
 REQUIRED = [
-    "index.html", "styles.css", "game.js",
+    "index.html", "styles.css", "game.js", "profile-sanitizer.js", "serve_dreambound.py",
     "PLAY-DREAMBOUND.bat", "PLAY-DREAMBOUND.ps1",
     "README.md", "SECURITY.md", "CONTRIBUTING.md",
     "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md",
@@ -37,8 +37,8 @@ SECRET_PATTERNS = {
     r"(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*[\"'][^\"']{12,}[\"']": "embedded credential-like value",
 }
 EXPECTED_TEXT = {
-    "index.html": ["DreamBound"],
-    "game.js": ["DreamBound", "localStorage"],
+    "index.html": ["DreamBound", "profile-sanitizer.js", "Content-Security-Policy"],
+    "game.js": ["DreamBound", "localStorage", "DreamBoundSanitizer.sanitizeProfile"],
     "README.md": ["DreamShield", "DPN Technology"],
 }
 

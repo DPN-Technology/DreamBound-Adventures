@@ -30,13 +30,15 @@ jobs:
           python3 tools/validate_dreambound.py --mode all
           python3 tools/check_coop_contract.py
           python3 tools/check_workflow_security.py
+          python3 tools/check_runtime_security.py
+          node tools/fuzz_profile_sanitizer.js
       - name: Build source package
         shell: bash
         run: |
           VERSION="${GITHUB_REF_NAME:-manual-${GITHUB_RUN_NUMBER}}"
           NAME="DreamBound-Adventures-${VERSION}"
           mkdir -p "dist/${NAME}"
-          cp index.html styles.css game.js PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md "dist/${NAME}/"
+          cp index.html styles.css game.js profile-sanitizer.js serve_dreambound.py PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md "dist/${NAME}/"
           cp -R docs "dist/${NAME}/docs"
           (cd dist && zip -qr "${NAME}.zip" "${NAME}")
           (cd dist && sha256sum "${NAME}.zip" > "${NAME}.zip.sha256")

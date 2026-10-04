@@ -37,7 +37,7 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 
 > **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
 
-## 🌈 Home & Magic Story Build — v0.6.0-dev
+## 🌈 Security-Hardened Story Build — v0.6.1-dev
 
 | System | Current capability |
 | --- | --- |
@@ -57,6 +57,16 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 | 🧠 **Adaptive play** | Age-scaled Brain Sparks and challenge difficulty |
 | 💾 **Profiles** | Three local child profiles with automatic saving |
 | 👥 **Sibling Co-op** | Two explorers, two DreamBuddies, shared rewards, DreamLink tether, 3 cooperative gates and 4 team activities |
+
+### Runtime hardening
+
+- Local profiles are treated as **untrusted input** and sanitized before use.
+- Malformed or oversized saves are quarantined locally instead of crashing the game.
+- The Windows launcher uses a dedicated **127.0.0.1-only** DreamBound server.
+- The local server exposes only the runtime files needed to play, blocking accidental access to repository files.
+- CSP disables runtime network connections, remote scripts, frames, workers and forms.
+- Security headers disable framing, MIME sniffing, referrer leakage and sensitive browser permissions.
+- CI fuzzes the profile sanitizer with thousands of hostile/randomized inputs.
 
 ## 🛡️ DPN DreamShield Security Gates
 
@@ -99,7 +109,7 @@ Read the full model in [Security Gates](docs/SECURITY_GATES.md) and [Threat Mode
 
 1. Download or clone the repository.
 2. Double-click **PLAY-DREAMBOUND.bat**.
-3. DreamBound starts a local web server and opens in the default browser.
+3. DreamBound starts its loopback-only secure local server and opens in the default browser.
 
 If Python is unavailable, the launcher falls back to opening **index.html** directly.
 
