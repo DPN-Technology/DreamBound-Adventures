@@ -114,7 +114,8 @@ await page.reload({ waitUntil: 'networkidle' });
 await page.waitForFunction(() => !!window.DreamBoundVNext?.scene && window.DreamBoundVNext?.state?.lumaRescued === true);
 await shot('unified-moon');
 
-await page.click('#vnextEnvironmentBtn');
+await page.waitForFunction(() => typeof window.DreamBoundVNext?.environmentNetwork?.open === 'function');
+await page.evaluate(() => window.DreamBoundVNext.environmentNetwork.open());
 await page.waitForSelector('#vnextModal:not(.hidden)');
 await shot('unified-systems');
 await page.evaluate(() => window.DreamBoundVNext.ui.closeModal());
