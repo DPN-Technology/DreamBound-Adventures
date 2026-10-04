@@ -6,7 +6,13 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const ownObject=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
-  const finite=(value,fallback=0)=>{const n=Number(value);return Number.isFinite(n)?n:fallback};
+  const finite=(value,fallback=0)=>{
+    if(typeof value==='number')return Number.isFinite(value)?value:fallback;
+    if(typeof value==='string'&&value.trim()!==''){
+      const n=Number(value);return Number.isFinite(n)?n:fallback;
+    }
+    return fallback;
+  };
   const int=(value,min,max,fallback)=>Math.max(min,Math.min(max,Math.trunc(finite(value,fallback))));
   const bool=(value,fallback=false)=>typeof value==='boolean'?value:fallback;
   const cleanText=(value,max=64)=>{
