@@ -1,83 +1,58 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-  <meta name="theme-color" content="#5b3df5" />
-  <meta name="referrer" content="no-referrer" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; media-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'" />
-  <title>DreamBound Adventures v0.7.1-dev</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#272b62">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>DreamBound Adventures · Living World</title>
+  <link rel="stylesheet" href="vnext.css">
+  <link rel="stylesheet" href="src/vnext/engine/odyssey.css">
+  <link rel="stylesheet" href="src/vnext/engine/adventure-deck.css">
 </head>
 <body>
-  <div id="app">
-    <section id="titleScreen" class="screen active" aria-label="DreamBound Adventures title screen">
-      <div class="sky-decor" aria-hidden="true">
-        <span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span>
-        <span class="star s1">★</span><span class="star s2">★</span><span class="star s3">★</span><div class="title-world" aria-hidden="true"><i class="hill h1"></i><i class="hill h2"></i><i class="hill h3"></i><i class="river"></i><i class="tower"></i><i class="house"></i><i class="tree t1"></i><i class="tree t2"></i><i class="tree t3"></i></div>
+  <main id="vnextApp">
+    <canvas id="vnextCanvas" aria-label="DreamBound Odyssey Network"></canvas>
+    <header class="vnext-hud advanced-hud">
+      <div class="back-link" aria-label="DreamBound Adventures">✦ DREAMBOUND ADVENTURES</div>
+      <div class="preview-chip">UNIFIED LIVING WORLD</div>
+      <div id="vnextZone" class="zone-chip">SPACE CENTER</div>
+      <div class="compass-chip">🧭 <b id="vnextCompass">N</b></div>
+      <div id="vnextVehicle" class="vehicle-chip">🥾 ON FOOT</div>
+      <div class="resource-chip">💠 <b id="vnextCrystals">0</b></div>
+      <button id="vnextDirectorBtn" class="director-chip">🧠 <b>GUIDED</b></button>
+      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
+    </header>
+    <aside class="world-console">
+      <div class="minimap-frame"><canvas id="vnextMinimap" width="170" height="112" aria-label="DreamBound minimap"></canvas><span>LIVE WORLD MAP</span></div>
+      <div class="telemetry-stack">
+        <label>ROVER ENERGY <i><b id="vnextEnergyBar"></b></i></label>
+        <label>LUMA BOND <strong>💜 <b id="vnextBond">0/10</b></strong></label>
+        <label>WORLD EVENTS <strong>🌌 <b id="vnextEventWins">0</b></strong></label>
+        <label>MASTERY <strong>🏆 <b id="vnextMasteryValue">0%</b></strong></label>
       </div>
-      <div class="title-card glass">
-        <div class="logo-orbit"><div class="logo-core">DB</div><span>★</span><span>✦</span><span>●</span></div>
-        <h1>DreamBound</h1>
-        <div class="brand-series">ADVENTURES</div>
-        <p class="subtitle">Every Adventure Starts With Imagination.</p><div class="version-chip">DREAMBOUND LIVING WORLD DIRECTOR • v1.2-dev</div>
-        <a href="vnext.html" class="big-btn primary advanced-launch" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">🌌 PLAY LIVING WORLD v1.2</a>
-        <button id="playBtn" class="big-btn secondary">🌈 PLAY STORYBOOK WORLD</button>
-        <button id="howBtn" class="big-btn secondary">✨ HOW TO PLAY</button>
-        <p class="safe-note">Family game • Local saves • No ads • No public chat</p>
-      </div>
-    </section>
-
-    <section id="profileScreen" class="screen" aria-label="Choose player">
-      <div class="panel wide glass">
-        <div class="panel-title-row"><button class="icon-btn" data-back="titleScreen">←</button><h2>Who is playing?</h2><span></span></div>
-        <div id="profileSlots" class="profile-grid"></div>
-        <button id="parentBtn" class="parent-btn">🔒 Parent Corner</button>
-      </div>
-    </section>
-
-    <section id="creatorScreen" class="screen" aria-label="Create character">
-      <div class="panel wide glass">
-        <div class="panel-title-row"><button class="icon-btn" data-back="profileScreen">←</button><h2>Create Your Explorer</h2><span></span></div>
-        <div class="creator-layout">
-          <div class="avatar-preview-wrap"><canvas id="avatarPreview" width="320" height="320"></canvas><div id="buddyPreview" class="buddy-preview">🐉</div></div>
-          <div class="creator-controls">
-            <label>Explorer name<input id="nameInput" maxlength="12" placeholder="Your name" autocomplete="off" /></label>
-            <label>Age<select id="ageSelect"><option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option></select></label>
-            <div><span class="field-label">Favorite color</span><div id="colorChoices" class="choice-row"></div></div>
-            <div><span class="field-label">Choose a DreamBuddy</span><div id="buddyChoices" class="choice-row buddy-row"></div></div>
-            <button id="createProfileBtn" class="big-btn primary">🌟 START MY ADVENTURE</button>
-          </div>
-        </div>
+    </aside>
+    <section class="mission-card advanced-mission">
+      <small>ACTIVE ADVENTURE <b id="vnextStage">1/10</b></small>
+      <strong id="vnextObjective">Decode the star signal in Mission Control.</strong>
+      <div class="progress-track"><i id="vnextProgress"></i></div>
+      <div class="mission-actions">
+        <button id="vnextJournal">📖 JOURNAL</button><button id="vnextSettings">⚙️ SETTINGS</button><button id="vnextBuddy">🐇 LUMA</button><button id="vnextCodex">📚 CODEX</button><button id="vnextBase">🏗️ BASE</button><button id="vnextMastery">🏆 MASTERY</button><button id="vnextWorldSystems">🌦️ WORLD</button>
       </div>
     </section>
-
-    <section id="gameScreen" class="screen game-screen" aria-label="DreamBound Adventures game">
-      <canvas id="gameCanvas"></canvas>
-      <div id="weatherLayer" aria-hidden="true"></div>
-      <header class="hud top-hud">
-        <div class="hud-card player-card"><div id="hudAvatar" class="mini-avatar"></div><div><strong id="hudName">Explorer</strong><small id="zoneLabel">Home Valley</small></div></div>
-        <div class="hud-card stats-card"><span title="Explorer Level">🧭 <b id="explorerLevel">1</b></span><span title="Dream Stars">⭐ <b id="starCount">0</b></span><span title="Gems">💎 <b id="gemCount">0</b></span><span title="Buddy friendship">💖 <b id="buddyLevel">1</b></span></div>
-        <div class="hud-card action-card"><button id="adventureBtn" class="round-btn" title="Adventure Board">🧭</button><button id="buddyBtn" class="round-btn" title="DreamBuddy">💖</button><button id="photoBtn" class="round-btn" title="Photo Safari">📸</button><button id="rideBtn" class="round-btn" title="Ride">🛴</button><button id="collectionBtn" class="round-btn" title="Dream Collection">🎒</button><button id="journalBtn" class="round-btn" title="Adventure Journal">📖</button><button id="magicBtn" class="round-btn locked" title="Magic Wand">🪄</button><button id="buildBtn" class="round-btn" title="Builder Mode">🧱</button><button id="mapBtn" class="round-btn" title="World Map">🗺️</button><button id="coopBtn" class="round-btn coop-btn" title="Sibling Co-op">👥</button><button id="settingsBtn" class="round-btn" title="Settings">⚙️</button></div>
-      </header>
-
-      <div id="zoneBanner" class="zone-banner hidden"><span id="zoneBannerEmoji">🏡</span><div><small>NOW EXPLORING</small><strong id="zoneBannerName">Home Valley</strong></div></div><div id="levelBar" class="level-bar"><span>LEVEL <b id="levelNum">1</b></span><div><i id="levelFill"></i></div><small id="xpText">0 / 25 XP</small></div><div id="questTracker" class="quest-tracker"><span id="trackerIcon">⭐</span><div><small>NEXT ADVENTURE</small><strong id="trackerTitle">Explore DreamBound</strong><p id="trackerText">Find something wonderful!</p></div><button id="trackerBtn" title="Next quest">↻</button></div><div id="worldEvent" class="world-event hidden"><span>🌠</span><div><small>WORLD EVENT</small><strong id="worldEventTitle">A Falling Star!</strong></div></div><div id="coopStatus" class="coop-status hidden"><div class="coop-mini"><span id="coopP1Avatar" class="coop-avatar"></span><strong id="coopP1Name">P1</strong></div><span class="coop-link">🤝</span><div class="coop-mini"><span id="coopP2Avatar" class="coop-avatar"></span><strong id="coopP2Name">P2</strong></div><small>GATES <b id="coopGateCount">0/3</b> • TEAM <b id="coopActivityCount">0/3</b></small></div><div id="questToast" class="quest-toast hidden"><span class="quest-icon">⭐</span><div><strong id="questTitle">Quest</strong><p id="questText"></p></div></div>
-      <div id="talkBubble" class="talk-bubble hidden"><div id="speakerFace" class="speaker-face">🤖</div><div><strong id="speakerName"></strong><p id="speakerText"></p></div></div>
-      <button id="interactBtn" class="interact-btn hidden">✨ DO</button>
-      <div id="mobileControls" class="mobile-controls">
-        <div class="dpad"><button data-dir="up">▲</button><div><button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button></div></div>
-        <button id="mobileAction" class="mobile-action">✨</button>
-      </div>
-      <div id="buildToolbar" class="build-toolbar hidden"></div>
-    </section>
-
-    <div id="modalLayer" class="modal-layer hidden" role="dialog" aria-modal="true"><div id="modalCard" class="modal-card glass"></div></div>
-    <div id="confettiLayer" aria-hidden="true"></div>
-    <div id="achievement" class="achievement hidden"><span>🏆</span><div><small>ACHIEVEMENT</small><strong id="achievementText">DreamBound Begins!</strong></div></div>
-  </div>
-  <script src="safe-dom.js"></script>
-  <script src="dom-collection-bridge.js"></script>
-  <script src="profile-sanitizer.js"></script>
-  <script src="game.js"></script>
+    <section id="vnextWorldEvent" class="world-event-card"><strong>LIVING WORLD</strong><span>Preparing dynamic world events…</span></section>
+    <div id="vnextCinematic" class="cinematic-card"><small>NOW EXPLORING</small><strong>SPACE CENTER CAMPUS</strong></div>
+    <div id="vnextDirectorHint" class="director-hint">The Adventure Director is reading your journey…</div>
+    <section id="vnextPrompt" class="interact-prompt hidden"><strong>🛰️ Mission Control</strong><span>Press E / Space / ✨</span></section>
+    <button id="vnextInteract" class="interact-btn">✨ DO</button>
+    <nav class="mobile-pad" aria-label="Movement controls"><button data-move="up">▲</button><div><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div></nav>
+    <button id="vnextAction" class="mobile-action">✨</button>
+    <button id="vnextReset" class="reset-btn">Reset Adventure</button>
+    <div id="vnextToast" class="toast hidden"><strong></strong><span></span></div>
+    <div id="vnextModal" class="modal-layer hidden" role="dialog" aria-modal="true"><div id="vnextModalCard" class="modal-card"></div></div>
+  </main>
+  <script src="safe-dom.js"></script><script src="src/vnext/core.js"></script><script src="src/vnext/input.js"></script><script src="src/vnext/space-center.js"></script><script src="src/vnext/ui.js"></script><script src="src/vnext/lunar-guardian.js"></script>
+  <script src="src/vnext/engine/fx.js"></script><script src="src/vnext/engine/audio.js"></script><script src="src/vnext/engine/vehicle.js"></script><script src="src/vnext/engine/scenes.js"></script><script src="src/vnext/engine/quests.js"></script><script src="src/vnext/engine/companion.js"></script><script src="src/vnext/engine/world-polish.js"></script><script src="src/vnext/engine/settings.js"></script><script src="src/vnext/engine/accessibility-performance.js"></script><script src="src/vnext/engine/simulation-kernel.js"></script><script src="src/vnext/engine/autonomous-world.js"></script><script src="src/vnext/engine/world-events.js"></script><script src="src/vnext/engine/npcs.js"></script><script src="src/vnext/engine/living-npcs.js"></script><script src="src/vnext/engine/living-ecology.js"></script><script src="src/vnext/engine/world-systems.js"></script><script src="src/vnext/engine/base-builder.js"></script><script src="src/vnext/engine/codex.js"></script><script src="src/vnext/engine/cinematic.js"></script><script src="src/vnext/engine/story-arcs.js"></script><script src="src/vnext/engine/adventure-director.js"></script><script src="src/vnext/engine/achievements.js"></script><script src="src/vnext/engine/odyssey.js"></script><script src="src/vnext/engine/adventure-deck.js"></script><script src="src/vnext/engine/procedural-adventures.js"></script><script src="src/vnext/engine/systemic-chains.js"></script><script src="src/vnext/engine/traversal-progression.js"></script><script src="src/vnext/engine/environment-network.js"></script><script src="src/vnext/engine/emergent-ecology.js"></script><script src="src/vnext/engine/world-memory.js"></script><script src="src/vnext/bootstrap.js"></script>
 </body>
 </html>
