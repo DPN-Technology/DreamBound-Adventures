@@ -14,12 +14,12 @@ const objectiveText=()=>{
   return 'Space Pathfinder complete — keep exploring the Moon!';
 };
 function openModal(html){
-  $('#vnextModalCard').innerHTML=html;
+  window.DreamBoundDOM.setHTML($('#vnextModalCard'),html);
   $('#vnextModal').classList.remove('hidden');
 }
-function closeModal(){$('#vnextModal').classList.add('hidden');$('#vnextModalCard').innerHTML=''}
+function closeModal(){$('#vnextModal').classList.add('hidden');window.DreamBoundDOM.clear($('#vnextModalCard'))}
 function toast(title,text){
-  const el=$('#vnextToast');el.innerHTML='<strong>'+title+'</strong><span>'+text+'</span>';el.classList.remove('hidden');
+  const el=$('#vnextToast'),strong=el.querySelector('strong'),span=el.querySelector('span');strong.textContent=String(title??'');span.textContent=String(text??'');el.classList.remove('hidden');
   clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.add('hidden'),2600);
 }
 function reward(stars,gems,label){
