@@ -1,7 +1,7 @@
 (() => {
 'use strict';
 const DBX=window.DreamBoundVNext=window.DreamBoundVNext||{};
-DBX.VERSION='0.8.0-dev';
+DBX.VERSION='0.9.0-dev';
 DBX.WORLD={w:1800,h:1200};
 DBX.util={
   clamp:(v,min,max)=>Math.max(min,Math.min(max,v)),
@@ -26,6 +26,12 @@ const defaults=()=>({
   launched:false,
   moonRoute:false,
   moonRocks:[],
+  stationVisited:false,
+  stationGarden:false,
+  roverUnlocked:false,
+  roverActive:false,
+  lumaRescued:false,
+  lunarBadge:false,
   stars:0,
   gems:0,
   sessionStarted:Date.now()
@@ -50,6 +56,12 @@ DBX.storage={
       launched:DBX.util.bool(r.launched,false),
       moonRoute:DBX.util.bool(r.moonRoute,false),
       moonRocks:Array.isArray(r.moonRocks)?r.moonRocks.filter(x=>['rock-a','rock-b','rock-c'].includes(x)).slice(0,3):[],
+      stationVisited:DBX.util.bool(r.stationVisited,false),
+      stationGarden:DBX.util.bool(r.stationGarden,false),
+      roverUnlocked:DBX.util.bool(r.roverUnlocked,false),
+      roverActive:DBX.util.bool(r.roverActive,false),
+      lumaRescued:DBX.util.bool(r.lumaRescued,false),
+      lunarBadge:DBX.util.bool(r.lunarBadge,false),
       stars:DBX.util.int(r.stars,0,9999,0),
       gems:DBX.util.int(r.gems,0,9999,0)
     };
@@ -70,6 +82,8 @@ DBX.storage={
       localStorage.setItem(this.key,JSON.stringify({
         player:s.player,questStep:s.questStep,signalSolved:s.signalSolved,solarFixed:s.solarFixed,
         rocketFixed:s.rocketFixed,launched:s.launched,moonRoute:s.moonRoute,moonRocks:s.moonRocks,
+        stationVisited:s.stationVisited,stationGarden:s.stationGarden,roverUnlocked:s.roverUnlocked,
+        roverActive:s.roverActive,lumaRescued:s.lumaRescued,lunarBadge:s.lunarBadge,
         stars:s.stars,gems:s.gems
       }));
     }catch{}

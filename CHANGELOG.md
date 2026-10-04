@@ -1,3 +1,17 @@
+## v0.9.0-dev — Lunar Guardian
+
+- Added a dedicated `lunar-guardian.js` extension module instead of expanding the original monolith.
+- Added persistent Space Station visit, Moon Garden, rover, Luma rescue, and Lunar Guardian badge state.
+- Added an enterable Lunar Space Station interior with observatory, discovery lab, power core, and hydroponics.
+- Added a Moon Garden restoration puzzle.
+- Added unlockable and toggleable Moon Rover mode with faster explorer movement.
+- Added Rover Mode HUD state.
+- Added Luma, a stranded lunar creature with a gentle no-fail rescue sequence.
+- Luma follows the explorer after rescue.
+- Expanded vNext progression from Space Pathfinder into a 10-stage Lunar Guardian journey.
+- Added lunar module to the secure server allowlist, DreamShield child-safety scanning, smoke tests, and modular runtime contract.
+- No network APIs, remote assets, analytics, ads, accounts, or chat added.
+
 ## v0.8.0-dev — Modular Space Center Preview
 
 - Added DreamBound's first modular vNext runtime under `src/vnext/`.

@@ -68,6 +68,19 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 - **Co-op Sonar** — when sibling co-op is active, sonar steps alternate between Player 1 and Player 2.
 - **Interior Explorer + Pathfinder** — persistent sticker/achievement progression.
 
+## 🌙 v0.9 Lunar Guardian
+
+The modular preview now continues beyond launch into a persistent **Lunar Guardian** chapter.
+
+- Enter the **Lunar Space Station** interior.
+- Restore the station's Moon Garden and power loop.
+- Unlock and board the **Moon Rover** with a visibly faster driving mode.
+- Use the rover rescue kit to reach **Luma**, a stranded Moon creature.
+- Complete a gentle beacon puzzle to rescue Luma.
+- Luma becomes a persistent explorer companion after rescue.
+- Progress is sanitized and stored locally with the rest of the vNext preview.
+- All new code lives in the separate `src/vnext/lunar-guardian.js` module.
+
 ## 🚀 v0.8 Modular Space Center Preview
 
 DreamBound now includes an **opt-in modular runtime preview** alongside the established v0.7 game.
