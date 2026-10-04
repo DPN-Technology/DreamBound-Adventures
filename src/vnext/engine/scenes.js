@@ -69,7 +69,7 @@ const scene={
     DBX.ui.updateHUD();
     return true;
   },
-  exit(){return scene.enter('surface',{x:1375,y:640})},
+  exit(){return scene.enter('surface',positions.surface||{x:1090,y:760})},
   clamp(p){
     p.x=DBX.util.clamp(p.x,45,scene.bounds.w-45);
     p.y=DBX.util.clamp(p.y,90,scene.bounds.h-45);
