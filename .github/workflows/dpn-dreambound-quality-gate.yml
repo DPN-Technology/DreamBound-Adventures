@@ -53,6 +53,12 @@ jobs:
         run: python3 tools/check_world_expansion_contract.py
       - name: DOM collection bridge contract
         run: python3 tools/check_dom_collection_bridge.py
+      - name: Modular runtime syntax
+        shell: bash
+        run: |
+          for file in src/vnext/*.js; do node --check "$file"; done
+      - name: Modular runtime contract
+        run: python3 tools/check_modular_runtime.py
 
   child-safety:
     name: DreamShield Child Safety
