@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DreamBound v1.2 Living World Director contract."""
+"""DreamBound v1.3 Odyssey Network contract."""
 from pathlib import Path
 import re
 import sys
@@ -23,14 +23,14 @@ for name in modules:
         missing.append("server allowlist: "+name)
 
 for marker in [
-    "DreamBound v1.2 Living World Director","v1.2 LIVING WORLD","vnextWorldEvent",
+    "DreamBound v1.3 Odyssey Network","v1.3 ODYSSEY NETWORK","vnextWorldEvent",
     "vnextCinematic","vnextCodex","vnextBase","vnextCrystals","vnextEventWins"
 ]:
     if marker not in html:
         missing.append("html marker: "+marker)
 
 for marker in [
-    "DBX.VERSION='1.2.0-dev'","moonCrystals","baseModules","codexEntries",
+    "DBX.VERSION='1.3.0-dev'","moonCrystals","baseModules","codexEntries",
     "completedWorldEvents","npcFriendship","meteorSamples","auroraSeen","eventWins"
 ]:
     if marker not in core:
@@ -72,7 +72,7 @@ except ValueError:
     pass
 
 if missing:
-    print("::error::DreamBound v1.2 Living World Director contract failed: "+", ".join(missing))
+    print("::error::DreamBound v1.3 Odyssey Network contract failed: "+", ".join(missing))
     sys.exit(1)
 
-print("DreamBound v1.2 Living World Director contract: PASS")
+print("DreamBound v1.3 Odyssey Network contract: PASS")
