@@ -35,12 +35,19 @@ jobs:
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/game.js -o /tmp/game.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/styles.css -o /tmp/styles.css
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/profile-sanitizer.js -o /tmp/profile-sanitizer.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/dom-collection-bridge.js -o /tmp/dom-collection-bridge.js\n          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/vnext.html -o /tmp/vnext.html\n          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/core.js -o /tmp/vnext-core.js\n          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/bootstrap.js -o /tmp/vnext-bootstrap.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/dom-collection-bridge.js -o /tmp/dom-collection-bridge.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/vnext.html -o /tmp/vnext.html
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/core.js -o /tmp/vnext-core.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/bootstrap.js -o /tmp/vnext-bootstrap.js
           grep -qi "DreamBound" /tmp/index.html
           test -s /tmp/game.js
           test -s /tmp/styles.css
           test -s /tmp/profile-sanitizer.js
-          test -s /tmp/dom-collection-bridge.js\n          test -s /tmp/vnext.html\n          test -s /tmp/vnext-core.js\n          test -s /tmp/vnext-bootstrap.js\n          grep -qi "Space Center Preview" /tmp/vnext.html
+          test -s /tmp/dom-collection-bridge.js
+          test -s /tmp/vnext.html
+          test -s /tmp/vnext-core.js
+          test -s /tmp/vnext-bootstrap.js
+          grep -qi "Space Center Preview" /tmp/vnext.html
           echo "DreamBound local runtime shell: reachable on loopback only"
       - name: Verify security headers
         shell: bash
