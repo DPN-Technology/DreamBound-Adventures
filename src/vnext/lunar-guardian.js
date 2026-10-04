@@ -62,7 +62,7 @@ function reward(stars,gems,label){
 }
 function openStation(){
   const s=DBX.state;
-  if(!s.launched){DBX.ui.toast('Station offline','Reach the Moon first.');return};
+  if(!s.launched){DBX.ui.toast('Station offline','Reach the Moon first.');return;}
   s.stationVisited=true;DBX.storage.save();DBX.ui.updateHUD();
   const garden=s.stationGarden
     ?'<div class="station-status good">🌱 Hydroponics online</div>'
