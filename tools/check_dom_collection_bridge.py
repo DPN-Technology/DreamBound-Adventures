@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Guard DreamBound's legacy single-selector collection compatibility surface."""
+"""Guard migration-only legacy selector debt while keeping it out of the shipped runtime."""
 from pathlib import Path
 import re
 import sys
@@ -23,14 +23,16 @@ for marker in [
     "Object.defineProperty(Element.prototype",
 ]:
     if marker not in bridge:
-        missing.append("bridge marker: "+marker)
-if 'src="dom-collection-bridge.js"' not in html:
-    missing.append("bridge script tag")
-if html.find('src="dom-collection-bridge.js"') > html.find('src="game.js"'):
-    missing.append("bridge must load before game.js")
-if '"/dom-collection-bridge.js"' not in server:
-    missing.append("secure server allowlist entry")
+        missing.append("legacy bridge source marker: "+marker)
+if 'src="dom-collection-bridge.js"' in html:
+    missing.append("legacy bridge must not load in unified index")
+if '"/dom-collection-bridge.js"' in server:
+    missing.append("legacy bridge must not be served by unified runtime")
+if 'src="game.js"' in html:
+    missing.append("legacy game must not load in unified index")
+if '"/game.js"' in server:
+    missing.append("legacy game must not be served by unified runtime")
 if missing:
-    print("::error::DreamBound DOM collection bridge contract failed: "+", ".join(missing))
+    print("::error::DreamBound migration-debt guard failed: "+", ".join(missing))
     sys.exit(1)
-print(f"DreamBound DOM collection bridge contract: PASS ({len(legacy)} legacy sites, cap 9)")
+print(f"DreamBound migration-debt guard: PASS ({len(legacy)} legacy selector sites, cap 9; runtime exposure 0)")

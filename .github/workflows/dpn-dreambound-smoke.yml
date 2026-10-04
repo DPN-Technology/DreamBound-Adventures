@@ -25,58 +25,36 @@ jobs:
         run: |
           python3 serve_dreambound.py --port 4173 --no-open > /tmp/dreambound-http.log 2>&1 &
           echo $! > /tmp/dreambound-http.pid
-      - name: Verify game shell
+      - name: Verify unified game shell
         shell: bash
         run: |
           for i in {1..15}; do
             if curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/index.html -o /tmp/index.html; then break; fi
             sleep 1
           done
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/game.js -o /tmp/game.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/styles.css -o /tmp/styles.css
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/profile-sanitizer.js -o /tmp/profile-sanitizer.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/dom-collection-bridge.js -o /tmp/dom-collection-bridge.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/vnext.html -o /tmp/vnext.html
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/core.js -o /tmp/vnext-core.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/bootstrap.js -o /tmp/vnext-bootstrap.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/lunar-guardian.js -o /tmp/vnext-lunar.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/fx.js -o /tmp/vnext-fx.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/scenes.js -o /tmp/vnext-scenes.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/quests.js -o /tmp/vnext-quests.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/world-events.js -o /tmp/vnext-world-events.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/base-builder.js -o /tmp/vnext-base-builder.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/npcs.js -o /tmp/vnext-npcs.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/codex.js -o /tmp/vnext-codex.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/cinematic.js -o /tmp/vnext-cinematic.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/adventure-director.js -o /tmp/vnext-director.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/achievements.js -o /tmp/vnext-achievements.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/odyssey.js -o /tmp/vnext-odyssey.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/adventure-deck.js -o /tmp/vnext-adventure-deck.js
-          grep -qi "DreamBound" /tmp/index.html
-          test -s /tmp/game.js
-          test -s /tmp/styles.css
-          test -s /tmp/profile-sanitizer.js
-          test -s /tmp/dom-collection-bridge.js
-          test -s /tmp/vnext.html
-          test -s /tmp/vnext-core.js
-          test -s /tmp/vnext-bootstrap.js
-          test -s /tmp/vnext-lunar.js
-          test -s /tmp/vnext-fx.js
-          test -s /tmp/vnext-scenes.js
-          test -s /tmp/vnext-quests.js
-          test -s /tmp/vnext-world-events.js
-          test -s /tmp/vnext-base-builder.js
-          test -s /tmp/vnext-npcs.js
-          test -s /tmp/vnext-codex.js
-          test -s /tmp/vnext-cinematic.js
-          test -s /tmp/vnext-director.js
-          test -s /tmp/vnext-achievements.js
-          test -s /tmp/vnext-odyssey.js
-          test -s /tmp/vnext-adventure-deck.js
-          grep -qi "Odyssey Network" /tmp/vnext.html
-          grep -q "Explorer Rank" /tmp/vnext-odyssey.js
-          grep -q "Adventure Deck" /tmp/vnext-adventure-deck.js
-          echo "DreamBound local runtime shell: reachable on loopback only"
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/vnext.css -o /tmp/vnext.css
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/safe-dom.js -o /tmp/safe-dom.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/core.js -o /tmp/core.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/bootstrap.js -o /tmp/bootstrap.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/scenes.js -o /tmp/scenes.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/unified-realms.js -o /tmp/unified-realms.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/unified-world.css -o /tmp/unified-world.css
+          grep -q "UNIFIED LIVING WORLD" /tmp/index.html
+          grep -q "src/vnext/engine/unified-realms.js" /tmp/index.html
+          grep -q "DreamGate Atlas" /tmp/unified-realms.js
+          grep -q "url=index.html" /tmp/vnext.html
+          test -s /tmp/vnext.css
+          test -s /tmp/safe-dom.js
+          test -s /tmp/core.js
+          test -s /tmp/bootstrap.js
+          test -s /tmp/scenes.js
+          test -s /tmp/unified-world.css
+          for legacy in game.js styles.css profile-sanitizer.js dom-collection-bridge.js; do
+            code="$(curl --silent --output /dev/null --write-out '%{http_code}' "http://127.0.0.1:4173/$legacy")"
+            test "$code" = "404"
+          done
+          echo "DreamBound unified runtime: reachable; legacy runtime: not served"
       - name: Verify security headers
         shell: bash
         run: |

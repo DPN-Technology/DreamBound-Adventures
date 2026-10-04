@@ -4,7 +4,7 @@ const DBX=window.DreamBoundVNext;
 if(!DBX)return;
 let timer=0,lastZone='';
 function zoneName(){
-  if(DBX.scene?.id==='station')return 'LUNAR SPACE STATION';
+  if(DBX.scene?.id&&DBX.scene.id!=='surface')return (DBX.scene.config?.()?.name||DBX.scene.id).toUpperCase();
   const p=DBX.state.player;
   if(p.x<1250)return 'SPACE CENTER CAMPUS';
   if(p.y>960)return 'MOON BASE PLATEAU';
