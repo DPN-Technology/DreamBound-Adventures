@@ -63,8 +63,12 @@ jobs:
         run: python3 tools/check_advanced_engine.py
       - name: Living World contract
         run: python3 tools/check_living_world.py
+      - name: DreamCreature ecology contract
+        run: python3 tools/check_living_ecology.py
       - name: Director and Mastery contract
         run: python3 tools/check_v12_director.py
+      - name: Odyssey Network contract
+        run: python3 tools/check_odyssey_network.py
       - name: vNext state fuzz
         run: node tools/fuzz_vnext_state.js
 

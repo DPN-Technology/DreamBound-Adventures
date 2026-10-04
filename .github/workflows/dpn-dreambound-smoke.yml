@@ -50,6 +50,8 @@ jobs:
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/cinematic.js -o /tmp/vnext-cinematic.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/adventure-director.js -o /tmp/vnext-director.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/achievements.js -o /tmp/vnext-achievements.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/odyssey.js -o /tmp/vnext-odyssey.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/adventure-deck.js -o /tmp/vnext-adventure-deck.js
           grep -qi "DreamBound" /tmp/index.html
           test -s /tmp/game.js
           test -s /tmp/styles.css
@@ -69,7 +71,11 @@ jobs:
           test -s /tmp/vnext-cinematic.js
           test -s /tmp/vnext-director.js
           test -s /tmp/vnext-achievements.js
-          grep -qi "Living World Director" /tmp/vnext.html
+          test -s /tmp/vnext-odyssey.js
+          test -s /tmp/vnext-adventure-deck.js
+          grep -qi "Odyssey Network" /tmp/vnext.html
+          grep -q "Explorer Rank" /tmp/vnext-odyssey.js
+          grep -q "Adventure Deck" /tmp/vnext-adventure-deck.js
           echo "DreamBound local runtime shell: reachable on loopback only"
       - name: Verify security headers
         shell: bash
