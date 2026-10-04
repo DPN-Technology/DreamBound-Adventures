@@ -21,7 +21,7 @@ function sanitizeTree(root){
   const remove=[];
   while(walker.nextNode()){
     const el=walker.currentNode;
-    if(BLOCKED.has(el.tagName)){remove.push(el);continue}
+    if(BLOCKED.has(el.tagName)){remove.push(el);continue;}
     for(const attr of [...el.attributes]){
       const name=attr.name.toLowerCase();
       if(name.startsWith('on')||name==='srcdoc'||name==='nonce'){
