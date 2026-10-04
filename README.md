@@ -1,190 +1,147 @@
-<!-- DREAMBOUND-DPN-HERO:START -->
-<p align="center"><img src=".github/readme-hero.svg" alt="DreamBound Adventures — DPN Technology" width="100%"></p>
 <p align="center">
-  <img alt="DPN Technology" src="https://img.shields.io/badge/DPN-Technology-111111?style=flat-square&logo=github">
-  <img alt="DreamBound" src="https://img.shields.io/badge/DreamBound-Adventures-8B5CFF?style=flat-square">
-  <img alt="Ages 4–8" src="https://img.shields.io/badge/Ages-4--8-FF73B9?style=flat-square">
-  <img alt="Local First" src="https://img.shields.io/badge/Play-Local--First-42D6C5?style=flat-square">
+  <img src=".github/readme-hero.svg" alt="DreamBound Adventures — a DPN Technology imagination-first adventure game for ages 4–8" width="100%">
 </p>
-<!-- DREAMBOUND-DPN-HERO:END -->
 
 <p align="center">
   <strong>DPN DREAMBOUND // IMAGINATION NETWORK</strong><br>
-  <sub>Every Adventure Starts With Imagination.</sub>
+  <em>Every Adventure Starts With Imagination.</em>
 </p>
 
 <p align="center">
-  <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-quality-gate.yml"><img alt="DPN DreamBound Quality Gate" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-quality-gate.yml/badge.svg"></a>
+  <a href="#-play-dreambound"><strong>🎮 Play</strong></a>
+  ·
+  <a href="#-choose-your-adventure"><strong>🌈 Explore the Game</strong></a>
+  ·
+  <a href="#-dreamshield--child-first-by-design"><strong>🛡️ Child Safety</strong></a>
+  ·
+  <a href="#-for-developers--testers"><strong>🧪 Build & Test</strong></a>
+  ·
+  <a href="#-project-roadmap"><strong>🚀 Roadmap</strong></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-quality-gate.yml"><img alt="DreamShield Quality Gate" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-quality-gate.yml/badge.svg"></a>
   <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-codeql.yml"><img alt="CodeQL" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-codeql.yml/badge.svg"></a>
   <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-supply-chain.yml"><img alt="Supply Chain" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-supply-chain.yml/badge.svg"></a>
   <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-smoke.yml"><img alt="Game Smoke Test" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-smoke.yml/badge.svg"></a>
 </p>
 
 <p align="center">
-  <img alt="Latest release" src="https://img.shields.io/github/v/release/DPN-Technology/DreamBound-Adventures?display_name=tag&sort=semver&style=flat-square&label=release">
-  <img alt="Last commit" src="https://img.shields.io/github/last-commit/DPN-Technology/DreamBound-Adventures?style=flat-square&label=last%20commit">
-  <img alt="Open issues" src="https://img.shields.io/github/issues/DPN-Technology/DreamBound-Adventures?style=flat-square">
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/DPN-Technology/DreamBound-Adventures?style=flat-square">
+  <img alt="Ages 4–8" src="https://img.shields.io/badge/Ages-4--8-ff65b3?style=for-the-badge">
+  <img alt="Local First" src="https://img.shields.io/badge/Runtime-Local--First-47d7d0?style=for-the-badge">
+  <img alt="No Ads" src="https://img.shields.io/badge/Ads-None-64d98b?style=for-the-badge">
+  <img alt="No Accounts" src="https://img.shields.io/badge/Child_Accounts-Not_Required-9a78ff?style=for-the-badge">
 </p>
 
-<p align="center"><img src=".github/repo-showcase.svg" alt="DreamBound systems overview" width="100%"></p>
+---
 
-## ✨ What is DreamBound?
+## 🌟 DreamBound at a glance
 
-**DreamBound Adventures** is DPN Technology's local-first children's adventure game for ages **4–8**. It mixes exploration, imagination, collecting, building, racing, dinosaurs, magic, creative play, light learning, and DreamBuddy friendship in one connected world.
+**DreamBound Adventures** is a local-first children's adventure game from **DPN Technology**, designed for young explorers ages **4–8**. It combines story-driven exploration, puzzles, building, racing, dinosaurs, magic, discovery, creative play, light learning, companion friendship, and same-screen sibling co-op inside one growing universe.
 
-The design goal is simple: **make learning feel like an adventure, not homework**.
+The goal is simple: **make discovery feel like an adventure instead of homework.**
 
-> **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
+| For kids | For families | For testers & developers |
+| --- | --- | --- |
+| Explore magical lands, the Space Center, and the Moon | Local-first play with no required child account | Modular JavaScript runtime plus a legacy Storybook runtime |
+| Rescue DreamCreatures and befriend Luma | No ads, in-app purchases, analytics, or public chat | DreamShield validation, CodeQL, supply-chain gates, smoke tests |
+| Build, race, discover, solve, customize, and play together | Three local child profiles and automatic saving | Sanitized local state, loopback-only server, release integrity checks |
+| Choose guided or more independent challenges | Accessibility controls and age-scaled activities | Architecture, threat model, release, and security documentation |
 
-## 🚀 DreamBound v1.0 — Advanced World Engine
+> **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no required online accounts, no strangers, and no external child-facing links in the game runtime.
 
-The modular DreamBound runtime has moved beyond a small Space Center preview into a reusable **Advanced World Engine**.
+<p align="center">
+  <img src=".github/repo-showcase.svg" alt="DreamBound gameplay pillars: Explore, Create, Discover, Together, and DreamShield" width="100%">
+</p>
 
-### Engine upgrades
+## 🎮 Play DreamBound
 
-- **Real scene system** — walkable Lunar Station interior with independent scene bounds and transitions instead of modal-only fake rooms.
-- **Advanced rendering/FX** — particles, reward bursts, camera shake, flashes, ambient lighting, animated route markers, moving clouds and Moon shimmer.
-- **Live world console** — minimap, compass, current zone, rover energy and Luma Bond telemetry.
-- **Vehicle physics** — acceleration, friction, speed limiting, battery drain/recharge, boost, dust trails and optional controller rumble.
-- **Procedural audio** — local WebAudio tones/chords/noise; no downloaded sound files or remote audio.
-- **Data-driven missions** — reusable quest definitions, milestone rewards and an in-game Mission Journal.
-- **Companion AI** — Luma follow physics, moods, emotes and persistent bond progression.
-- **Accessibility controls** — audio toggle, reduced motion, high contrast and large UI modes.
-- **Controller support** — analog stick/D-pad movement, A-button interaction and trigger boost.
-- **Advanced security** — every engine module is scanned by DreamShield and vNext save state is fuzzed with 3,500 randomized hostile inputs.
+### Windows — fastest path
 
-The original Storybook World remains available while its larger content library is progressively migrated into this modular engine.
+1. **Download or clone** this repository.
+2. Double-click **<code>PLAY-DREAMBOUND.bat</code>**.
+3. DreamBound starts its secure loopback-only local server and opens in your browser.
+4. Choose a local profile and start exploring.
 
-Architecture: `docs/VNEXT_ARCHITECTURE.md`.
+If Python is unavailable, the Windows launcher falls back to opening <code>index.html</code> directly.
 
-## 🌈 Three Worlds Expansion — v0.7.1-dev
+### Which mode should I choose?
 
-| System | Current capability |
+| Mode | Best for | What it includes |
+| --- | --- | --- |
+| 📖 **Storybook World** | The widest collection of family activities | Six lands, guided adventures, DreamCreatures, racing, dinosaurs, magic, building, interiors, discovery systems, and sibling co-op |
+| 🚀 **Advanced World** | The newest modular engine experience | Space Center, Moon exploration, Lunar Station, Moon Rover, Luma, quests, dynamic events, NPC friendships, Moon Base Architect, Codex, and Mastery |
+| 👥 **Sibling Co-op** | Two kids playing together on one screen | Two explorers, two DreamBuddies, team activities, shared rewards, DreamLink gates, and cooperative challenges |
+
+On the title screen, choose **🚀 PLAY ADVANCED WORLD** to enter the modular engine.
+
+## 🌈 Choose your adventure
+
+<p align="center">
+  <img src=".github/readme-world-map.svg" alt="DreamBound journey from Storybook World to Space Center, Moon exploration, Lunar Station, and the Living World systems" width="100%">
+</p>
+
+### 📖 Storybook World
+
+Travel through:
+
+**Home Valley → Magic Grove → Racing Ridge → Dino Valley → Builder Bay → Ocean Cove**
+
+Current Storybook systems include:
+
+| System | What young explorers can do |
 | --- | --- |
-| 🌎 **World** | Six connected regions with Storybook World procedural rendering |
-| 🌟 **Story** | Two connected chapters: The Sleeping Star + The Lost Explorer Map across five lands |
-| 🎨 **Avatar Studio** | Persistent hair and accessory customization |
-| 🚪 **Interiors** | Dream Home, Moonflower Tower, Star Chamber, Fossil Hall, Maker Workshop and Ocean Discovery Center |
-| 🧭 **Adventures** | 18 guided main adventures with objective tracking |
-| 🐾 **DreamCreatures** | Six rescueable creatures and a sanctuary |
-| 💖 **DreamBuddy** | Companion friendship and interaction system |
-| 🏎️ **Racing** | Rainbow Speedway / Ridge Raceway |
-| 🦴 **Dinosaurs** | Fossil digging and Dino Egg Memory |
-| 🪄 **Magic** | Lessons, unlockable spells, Moonflower Tower |
-| 🧱 **Creation** | Builder Mode and persistent Dream Home customization |
-| 📸 **Discovery** | Photo Safari, Landmark Hunt, collections and achievements |
-| 🛴 **Travel** | Explorer Scooter plus Rainbow Portal fast travel |
+| 🧭 **Adventures** | Follow **18 guided main adventures** with objective tracking |
+| 🌟 **Connected stories** | Play **The Sleeping Star** and **The Lost Explorer Map** |
+| 🐾 **DreamCreatures** | Rescue six creatures and visit the sanctuary |
+| 💖 **DreamBuddy** | Build friendship through interactions and shared activities |
+| 🏎️ **Racing** | Race at Rainbow Speedway / Ridge Raceway |
+| 🦴 **Dinosaurs** | Dig fossils and play Dino Egg Memory |
+| 🪄 **Magic** | Learn spells, explore Moonflower Tower, and solve the Star Chamber |
+| 🧱 **Creation** | Use Builder Mode and personalize a persistent Dream Home |
+| 🎨 **Avatar Studio** | Save hairstyles and playful accessories to each profile |
+| 📸 **Discovery** | Photo Safari, Landmark Hunt, collections, stickers, and achievements |
+| 🛴 **Travel** | Use the Explorer Scooter and Rainbow Portal fast travel |
 | 🧠 **Adaptive play** | Age-scaled Brain Sparks and challenge difficulty |
-| 💾 **Profiles** | Three local child profiles with automatic saving |
-| 👥 **Sibling Co-op** | Two explorers, two DreamBuddies, shared rewards, DreamLink tether, 3 cooperative gates and 4 team activities |
+| 💾 **Profiles** | Maintain three local child profiles with automatic saving |
+| 👥 **Sibling co-op** | Play same-screen with two explorers and cooperative activities |
 
-### v0.7 Three Worlds systems
+### 🚀 Advanced World
 
-- **Fossil Hall** — enterable Dino Valley museum and age-adaptive fossil scanner.
-- **Maker Workshop** — enterable Builder Bay engineering lab and blueprint-driven Gear Builder.
-- **Ocean Discovery Center** — enterable aquarium lab with protected submarine dock.
-- **The Lost Explorer Map** — one chapter linking all three interiors in sequence.
-- **Explorer Submarine** — unlockable, repeatable sonar expeditions with safe no-fail retries.
-- **Co-op Sonar** — when sibling co-op is active, sonar steps alternate between Player 1 and Player 2.
-- **Interior Explorer + Pathfinder** — persistent sticker/achievement progression.
+The newer modular engine begins at the **Space Center**, expands onto the **Moon**, and continues into a persistent living lunar adventure.
 
-## 🌙 v0.9 Lunar Guardian
+**Current Advanced World highlights**
 
-The modular preview now continues beyond launch into a persistent **Lunar Guardian** chapter.
+- 🛰️ **Space Center campus** — Mission Control, Solar Array, Rocket Workshop, and Launch Pad.
+- 🌙 **Moon exploration** — route navigation, discoveries, Moon rocks, region guidance, and ambient world polish.
+- 🏢 **Lunar Space Station** — a real walkable interior with Hydroponics, Observatory, Discovery Lab, Power Core, and Airlock.
+- 🚙 **Moon Rover** — acceleration, friction, boost, energy drain/recharge, dust trails, and optional controller rumble.
+- 💫 **Luma** — rescue a stranded lunar creature and grow a persistent companion bond.
+- 📖 **Mission Journal** — data-driven quests, progression milestones, and rewards.
+- 🌌 **Living World events** — Meteor Shower, Crystal Bloom, Aurora Wave, and Luma Star Parade rotations.
+- 🧑‍🚀 **Explorer NPCs** — Nova, Gear, and Moss move on schedules with changing dialogue and persistent friendship.
+- 🏗️ **Moon Base Architect** — build permanent Habitat, Observatory, Rover Garage, and Moon Greenhouse modules.
+- 🔭 **Discovery Codex** — tracks discoveries, rare events, Luma, engineering finds, base progress, and friendships.
+- 🧠 **Adventure Director** — adapts pacing and recommendations across Guided, Curious, Brave, and Master tiers.
+- 🏆 **Explorer Mastery** — long-term achievements across exploration, science, quests, friendships, base building, and travel.
 
-- Enter the **Lunar Space Station** interior.
-- Restore the station's Moon Garden and power loop.
-- Unlock and board the **Moon Rover** with a visibly faster driving mode.
-- Use the rover rescue kit to reach **Luma**, a stranded Moon creature.
-- Complete a gentle beacon puzzle to rescue Luma.
-- Luma becomes a persistent explorer companion after rescue.
-- Progress is sanitized and stored locally with the rest of the vNext preview.
-- All new code lives in the separate `src/vnext/lunar-guardian.js` module.
+## 👥 Local sibling co-op
 
-## 🚀 v0.8 Modular Space Center Preview
+DreamBound supports same-screen two-player play. Player 1 hosts the world while Player 2 joins from another local child profile.
 
-DreamBound now includes an **opt-in modular runtime preview** alongside the established v0.7 game.
+- **Player 1:** WASD / Arrow Keys / first gamepad
+- **Player 2:** I / J / K / L + O / second gamepad
+- **DreamLink tether:** keeps younger explorers together without split-screen complexity
+- **Team activities:** Team Raceway, Team Creature Rescue, DreamLink Magic Lesson, DreamLink Workshop, and Sibling Stars
+- **Shared progress:** cooperative rewards are applied while each explorer keeps their identity
 
-- Separate state/storage, input, world, UI, and bootstrap modules under `src/vnext/`.
-- Playable Space Center campus with Mission Control, Solar Array, Rocket Workshop, and Launch Pad.
-- Launch unlocks a Moon training sector with rover-route navigation and collectible Moon rocks.
-- Local preview progress is sanitized before use and stored only in the browser.
-- No remote assets, accounts, analytics, ads, chat, fetch/XHR/WebSocket, or external child links.
-- The secure local server explicitly allowlists every preview asset.
-- DreamShield validates the preview files, JavaScript syntax, network isolation, packaging, and smoke-test reachability.
-
-Use **🚀 PLAY ADVANCED WORLD v1.0** on the DreamBound title screen.
-
-### v0.7.1 reliability hardening
-
-- Added a narrow DOM collection compatibility bridge for nine legacy selector sites in the current monolithic runtime.
-- Restored multi-button interaction reliability in co-op magic, Star Chamber, Fossil Scanner, Gear Builder, and Submarine sonar.
-- CI now prevents this legacy selector-debt count from growing.
-- The bridge is included in child-safety validation, secure serving, smoke tests, runtime security, and release packaging.
-- The next architecture phase is modularizing `game.js` so these legacy sites can be corrected directly and the bridge removed.
-
-### Runtime hardening
-
-- Local profiles are treated as **untrusted input** and sanitized before use.
-- Malformed or oversized saves are quarantined locally instead of crashing the game.
-- The Windows launcher uses a dedicated **127.0.0.1-only** DreamBound server.
-- The local server exposes only the runtime files needed to play, blocking accidental access to repository files.
-- CSP disables runtime network connections, remote scripts, frames, workers and forms.
-- Security headers disable framing, MIME sniffing, referrer leakage and sensitive browser permissions.
-- CI fuzzes the profile sanitizer with thousands of hostile/randomized inputs.
-
-## 🛡️ DPN DreamShield Security Gates
-
-DreamBound uses a child-focused DPN security model called **DreamShield**.
-
-~~~mermaid
-flowchart LR
-  PR[Pull Request] --> QG[DPN DreamBound Quality Gate]
-  QG --> JS[JavaScript Syntax]
-  QG --> SAFE[Child-Safety Runtime Guard]
-  QG --> INT[Repository Integrity]
-  QG --> SEC[Secret / Dangerous API Guard]
-  JS --> GREEN[DreamShield Green Gate]
-  SAFE --> GREEN
-  INT --> GREEN
-  SEC --> GREEN
-  PR --> CQL[CodeQL]
-  PR --> DEP[Dependency Review]
-  GREEN --> MAIN[Protected Main Candidate]
-  CQL --> MAIN
-  DEP --> MAIN
-~~~
-
-### Security layers
-
-- **DPN DreamBound Quality Gate** — source integrity, syntax, child-safety policy and repository checks.
-- **Child-Safety Runtime Guard** — rejects remote scripts, external child-facing links, telemetry APIs, WebSockets, dynamic code execution and other unexpected network-capable runtime patterns.
-- **CodeQL** — JavaScript/TypeScript static analysis.
-- **Dependency Review** — PR supply-chain change analysis.
-- **OpenSSF Scorecard** — recurring repository security posture review.
-- **Dependabot** — weekly GitHub Actions dependency maintenance.
-- **Release Integrity** — tag builds create ZIP + SHA-256 checksum before publishing.
-- **Smoke Test** — launches the game through a local HTTP server and verifies the runtime shell is reachable.
-
-Read the full model in [Security Gates](docs/SECURITY_GATES.md) and [Threat Model](docs/THREAT_MODEL.md).
-
-## 🎮 Play locally
-
-### Windows
-
-1. Download or clone the repository.
-2. Double-click **PLAY-DREAMBOUND.bat**.
-3. DreamBound starts its loopback-only secure local server and opens in the default browser.
-
-If Python is unavailable, the launcher falls back to opening **index.html** directly.
-
-### Controls
+## 🎛️ Controls
 
 | Action | Controls |
 | --- | --- |
 | Move | WASD / Arrow Keys / Touch D-pad / Gamepad left stick |
 | Interact | E / Space / Enter / Sparkle button / Gamepad A |
+| Boost / Rover | Shift / gamepad trigger |
 | Adventure Board | 🧭 |
 | DreamBuddy | 💖 |
 | Photo Safari | 📸 |
@@ -196,135 +153,166 @@ If Python is unavailable, the launcher falls back to opening **index.html** dire
 | Map / Fast Travel | 🗺️ |
 | Settings | ⚙️ / Esc |
 
-## 🌟 Story Chapter: The Sleeping Star
+## 🧒 Built for younger explorers
 
-v0.6 begins DreamBound's first connected story chapter instead of treating every activity as a separate mini-game.
+DreamBound is intentionally designed around a young audience rather than simply shrinking a general-purpose game UI.
 
-**The Sleeping Star** sends the explorer through Home Valley and Magic Grove:
+- **Readable interaction prompts** and icon-led actions
+- **Gentle retries** instead of harsh failure loops
+- **Age-scaled challenges** for younger and older players in the 4–8 range
+- **Reduced motion**, **high contrast**, **large UI**, and audio controls
+- **Local progress** that does not require a child account
+- **One-screen co-op** that helps siblings stay together
+- **No public social layer** inside the child runtime
 
-1. Meet Pip and learn why the Dream Lantern went dark.
-2. Find three glowing **DreamPetals** hidden around Home Valley.
-3. Return to the Dream Home and uncover the **Star Compass**.
-4. Bring the compass to Mira in Magic Grove.
-5. Enter **Moonflower Tower** and solve the Star Chamber memory sequence.
-6. Restore the Dream Lantern and permanently reconnect the two lands with starlight.
+## 🛡️ DreamShield — child-first by design
 
-Finishing the chapter awards the **Star Keeper** sticker, a permanent Dream Lantern decoration, quest rewards, gems and a visible restored lantern in the world.
+DreamBound uses **DreamShield**, DPN Technology's child-focused repository and runtime security model.
 
-### 🎨 Avatar Studio
-
-The Dream Home now contains an Avatar Studio with persistent hairstyle and accessory customization. Current options include Star Spikes, Cloud Puffs, Adventure Swoop, Star Glasses, Explorer Cap, Magic Bow, Dino Hood and Star Crown.
-
-### 🚪 Enterable spaces
-
-Moonflower Tower now has a dedicated interior with a moon window, crystals, books, Mira, Magic Lessons and the story-specific Star Chamber. The existing Dream Home interior is expanded with story interactions, Avatar Studio and the permanent Dream Lantern reward.
-
-### 🐾 More expressive DreamCreatures
-
-Unrescued DreamCreatures now sway, bob, sparkle, react visually when the explorer approaches, and show their names nearby.
-
-## 👥 Local sibling co-op
-
-The v0.5 development branch introduces same-screen two-player play. Player 1 hosts the world; Player 2 joins from another saved child profile. Player 2 uses **I/J/K/L + O** or a second gamepad. Both explorers keep their own identity and receive co-op rewards. Three **DreamLink Gates** require both kids to stand on paired pads together.
-
-The system includes a one-screen DreamLink tether to keep younger players together and avoid split-screen complexity in the first co-op milestone.
-
-### Co-op activities now playable
-
-- **DreamLink Team Raceway** — two independently controlled karts with one team score.
-- **Team Creature Rescue** — both explorers must high-five before a creature joins both collections.
-- **DreamLink Magic Lesson** — alternating Player 1 / Player 2 pattern turns.
-- **DreamLink Workshop** — role-based repair challenge with separate Spark Engineer and Gear Engineer jobs.
-- **Sibling Stars** — persistent quest tracking unique co-op activities.
-
-## 🗺️ Current lands
-
-**Home Valley → Magic Grove → Racing Ridge → Dino Valley → Builder Bay → Ocean Cove**
-
-Each region has its own visual identity, activities, collectibles and signature landmark.
-
-## 🏡 Dream Home
-
-Players can personalize their Dream Home with persistent furniture and four room themes:
-
-- ☀️ Sunny Sky
-- 🌿 Forest Hideout
-- 🚀 Star Cabin
-- 🐠 Ocean Room
-
-The home also supports Dance Party, Dream Time and DreamBuddy play interactions.
-
-## 💾 Save migration
-
-DreamBound stores progress locally using browser localStorage. Existing WonderWorld v0.1–v0.4 profiles are automatically imported into the DreamBound namespace on first load while the legacy save is left untouched as a fallback.
-
-## 🔐 Child-safety architecture
-
-DreamBound intentionally has a narrow runtime trust boundary:
-
-~~~text
-Child Input
-   │
-   ▼
-Local Browser Game
-   │
-   ├── Local Canvas / Audio / UI
-   ├── Local Profile Save (localStorage)
-   └── Local HTTP launcher
-        │
-        └── No required cloud account, analytics or public multiplayer
+~~~mermaid
+flowchart LR
+  A[Code Change] --> B[DreamShield Quality Gate]
+  B --> C[Syntax + Runtime Contracts]
+  B --> D[Child-Safety Guard]
+  B --> E[Repository Integrity]
+  B --> F[Save-State Fuzzing]
+  A --> G[CodeQL]
+  A --> H[Supply-Chain Review]
+  C --> I[Green Candidate]
+  D --> I
+  E --> I
+  F --> I
+  G --> I
+  H --> I
+  I --> J[Smoke + Release Validation]
 ~~~
 
-Any future feature that expands this boundary—cloud saves, online co-op, accounts, telemetry, external content, AI, voice, chat or user-generated sharing—must receive an explicit security/privacy design review before merge.
+### Runtime trust boundary
 
-## 🧪 Local validation
+~~~text
+Young Explorer
+      │
+      ▼
+Local DreamBound Runtime
+      │
+      ├── Canvas / UI / procedural audio
+      ├── Sanitized local profile + progress
+      └── Loopback-only local server
+                │
+                └── No required cloud account, analytics,
+                    ads, public chat, or remote child runtime
+~~~
+
+Persistent profiles and vNext state are treated as **untrusted input**. DreamBound bounds and sanitizes stored values before use, quarantines malformed saves, and fuzz-tests state handling with thousands of randomized hostile inputs.
+
+<details>
+<summary><strong>🔐 DreamShield security layers</strong></summary>
+
+- **DPN DreamBound Quality Gate** — repository integrity, syntax, policy, and runtime contracts.
+- **Child-Safety Runtime Guard** — rejects unexpected network-capable APIs, remote scripts, external child-facing links, dynamic code execution, and other disallowed runtime patterns.
+- **CodeQL** — JavaScript/TypeScript static analysis.
+- **Dependency Review / Supply Chain** — reviews dependency changes and GitHub Actions supply-chain posture.
+- **OpenSSF Scorecard** — recurring repository security posture checks.
+- **Dependabot** — scheduled GitHub Actions dependency maintenance.
+- **Save-state fuzzing** — randomized malformed input testing across profile and modular state surfaces.
+- **Loopback smoke tests** — verifies the secure local server and runtime shell.
+- **Release integrity** — validated release packaging plus checksums/provenance controls.
+
+See [Security Gates](docs/SECURITY_GATES.md), [Threat Model](docs/THREAT_MODEL.md), and [Security Policy](SECURITY.md).
+
+</details>
+
+## 🏗️ Two runtimes, one DreamBound universe
+
+DreamBound is in an intentional migration phase:
+
+~~~text
+STORYBOOK WORLD
+legacy game.js
+  │
+  │  mature content library
+  │  six lands + co-op + activities
+  │
+  ▼
+progressive feature migration
+  │
+  ▼
+ADVANCED WORLD
+src/vnext/
+  ├── bounded state + storage
+  ├── input + controller support
+  ├── Space Center + Moon world
+  ├── Lunar Guardian
+  ├── FX + procedural audio
+  ├── vehicles + scenes
+  ├── quests + companion AI
+  └── Living World / Director systems
+~~~
+
+The Storybook World remains playable while mature systems are progressively migrated into the modular engine. New vNext gameplay belongs in modules rather than expanding the original monolithic runtime.
+
+## 🧪 For developers & testers
+
+### Quick validation
 
 ~~~bash
 node --check game.js
 python3 tools/validate_dreambound.py --mode all
 ~~~
 
-The validator checks project structure, child-safety invariants, dangerous browser APIs, unexpected external URLs, conflict markers, required policy files and repository metadata.
+DreamShield also validates modular JavaScript recursively, runtime security contracts, child-safety rules, save handling, workflow integrity, and release packaging.
 
-## 📚 Engineering documents
+### Engineering principles
+
+1. **Local-first child runtime** — no cloud dependency is required to play.
+2. **One authoritative owner per system** — avoid duplicate implementations across modules.
+3. **Stored state is untrusted** — validate and bound it before use.
+4. **New Advanced World gameplay is modular** — avoid growing the legacy monolith.
+5. **Security gates are product requirements** — not optional cleanup after development.
+6. **Repository claims must match real code** — no fake screenshots, features, or release claims.
+
+<details>
+<summary><strong>📚 Engineering & project documents</strong></summary>
 
 | Document | Purpose |
 | --- | --- |
-| [Security Policy](SECURITY.md) | Responsible disclosure and supported security reports |
+| [vNext Architecture](docs/VNEXT_ARCHITECTURE.md) | Advanced World module ownership and migration model |
+| [Security Policy](SECURITY.md) | Responsible disclosure and supported reports |
+| [Security Gates](docs/SECURITY_GATES.md) | CI/CD controls and merge expectations |
+| [Threat Model](docs/THREAT_MODEL.md) | Child-safety and runtime trust boundaries |
 | [Contributing](CONTRIBUTING.md) | Contribution and development rules |
-| [Security Gates](docs/SECURITY_GATES.md) | CI/CD controls and expected merge gates |
-| [Threat Model](docs/THREAT_MODEL.md) | Child-safety and local-runtime trust boundaries |
-| [Brand Transition](BRAND-TRANSITION.md) | WonderWorld → DreamBound compatibility notes |
-| [Verification](VERIFICATION.md) | v0.4.1 verification record |
-| [Changelog](CHANGELOG.md) | Version history |
 | [Release Process](docs/RELEASE_PROCESS.md) | Validated packaging and release rules |
 | [Third-Party Licenses](THIRD_PARTY_LICENSES.md) | Runtime and CI dependency/license ledger |
+| [Changelog](CHANGELOG.md) | Development history |
+| [Brand Transition](BRAND-TRANSITION.md) | WonderWorld → DreamBound compatibility notes |
+| [Verification](VERIFICATION.md) | Historical verification record |
 
-## 🌌 v1.2 Living World Director
+</details>
 
-DreamBound's modular engine now behaves like a persistent **living adventure world**, not a sequence of isolated activities.
+## 💾 Save compatibility
 
-- **Dynamic world events** rotate across the Moon: Meteor Shower, Crystal Bloom, Aurora Wave and Luma Star Parade.
-- **Physical event targets** appear in the world and award stars, gems, Moon crystals, science finds and persistent event history.
-- **Explorer NPCs** Nova, Gear and Moss follow schedules, move around the world, have changing dialogue and build persistent friendship.
-- **Moon Base Architect** lets players spend Moon crystals + gems on a permanent Habitat, Observatory, Rover Garage and Moon Greenhouse.
-- **Discovery Codex** tracks discoveries, rare events, Luma, engineering finds, base progress and NPC friendship.
-- **Cinematic region cards** identify Space Center Campus, Tranquility Basin, Crystal Ridge, Luma Hollow, Moon Base Plateau and Lunar Space Station.
-- **Dynamic Adventure Director** evaluates progress and changes event pacing, challenge length and recommendations across four tiers: Guided, Curious, Brave and Master.
-- **Explorer Mastery** adds long-term achievements across launch, Luma, world events, base building, science, friendships, travel distance and quests.
-- The HUD now surfaces Moon crystals, world-event wins, mastery %, Director tier, Codex, Base and Mastery controls.
-- All new state remains local-only, sanitized, fuzzed and covered by DreamShield.
+DreamBound stores progress locally using browser storage. Existing WonderWorld v0.1–v0.4 profiles are imported into the DreamBound namespace on first load while the legacy save is left untouched as a fallback.
 
-## 🚀 Roadmap direction
+Current modular state includes progression, Space Center and Lunar Guardian milestones, Moon discoveries, rover/Luma state, quests, badges, resources, Moon Base modules, world-event history, NPC friendship, Codex entries, and Mastery progress.
 
-The next major development phase is expected to focus on richer animated assets, deeper avatars, enterable interiors, creature habitats, additional vehicles, Space Center / Moon exploration, underwater submarine gameplay, cinematic story chapters and local sibling co-op.
+## 🚀 Project roadmap
 
-These are roadmap directions—not claims of features already shipped.
+DreamBound's next major engineering direction is focused on **depth and convergence**, not creating a second disconnected game.
 
-## 🧩 DPN Technology
+- Migrate mature Storybook systems into the modular Advanced World architecture.
+- Reduce and eventually remove the legacy DOM compatibility bridge.
+- Expand richer animated art, world feedback, and character presentation without introducing remote runtime dependencies.
+- Deepen avatars, interiors, creature habitats, vehicles, and cinematic story chapters.
+- Extend the shared vehicle/scene/quest contracts instead of creating one-off gameplay loops.
+- Continue expanding age-friendly accessibility, sibling co-op, and persistent discovery systems.
+- Keep every new system inside DreamShield's child-safety, security, and release gates.
 
-DreamBound is part of the broader **DPN Technology** ecosystem.
+Roadmap items are **directional** until they are implemented and verified in the repository.
 
-**DEVELOP. PIONEER. NAVIGATE.**
+---
 
-> Repository presentation rule: visuals, security badges and feature claims must remain tied to real repository evidence. DreamBound should look magical for kids without overstating what the build actually does.
+<p align="center">
+  <strong>DPN TECHNOLOGY // DREAMBOUND ADVENTURES</strong><br>
+  <sub>DEVELOP. PIONEER. NAVIGATE.</sub><br><br>
+  <em>Build worlds worth exploring. Build them safely.</em>
+</p>
