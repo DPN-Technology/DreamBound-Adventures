@@ -2,7 +2,10 @@
 'use strict';
 
 const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
+const $ = s => [...document.querySelectorAll(s)];
+const setMarkup=(el,html)=>window.DreamBoundDOM.setHTML(el,html);
+const appendMarkup=(el,html)=>window.DreamBoundDOM.appendHTML(el,html);
+const clearMarkup=el=>window.DreamBoundDOM.clear(el);
 const screens = $$('.screen');
 const canvas = $('#gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -117,12 +120,12 @@ function readStoredProfile(slot){
   return migrated;
 }
 function loadProfiles(){
-  const wrap=$('#profileSlots'); wrap.innerHTML='';
+  const wrap=$('#profileSlots'); clearMarkup(wrap);
   for(let i=0;i<3;i++){
     const p=readStoredProfile(i);
     const card=document.createElement('button'); card.className='profile-slot'; card.dataset.slot=i;
-    if(p){ card.innerHTML=`<div class="profile-avatar" style="background:${p.color}">${p.buddy}</div><strong>${escapeHTML(p.name)}</strong><small>Age ${p.age} • ⭐ ${p.stars||0}</small>`; }
-    else card.innerHTML='<div class="empty-plus">＋</div><strong>New Explorer</strong><small>Create a player</small>';
+    if(p){ setMarkup(card,`<div class="profile-avatar" style="background:${p.color}">${p.buddy}</div><strong>${escapeHTML(p.name)}</strong><small>Age ${p.age} • ⭐ ${p.stars||0}</small>`); }
+    else setMarkup(card,'<div class="empty-plus">＋</div><strong>New Explorer</strong><small>Create a player</small>');
     card.onclick=()=>selectSlot(i,p); wrap.appendChild(card);
   }
 }
@@ -130,8 +133,8 @@ function escapeHTML(s=''){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp
 function selectSlot(slot,p){ Audio.click(); state.currentSlot=slot; if(p){ state.profile=p; startGame(); } else { setupCreator(); showScreen('creatorScreen'); } }
 function setupCreator(){
   $('#nameInput').value=''; $('#ageSelect').value='6';
-  const cc=$('#colorChoices');cc.innerHTML=''; COLORS.forEach((c,i)=>{const b=document.createElement('button');b.className='choice'+(i===0?' selected':'');b.style.background=c;b.dataset.color=c;b.onclick=()=>{$$('.choice','#colorChoices'); [...cc.children].forEach(x=>x.classList.remove('selected'));b.classList.add('selected');drawAvatarPreview();};cc.appendChild(b)});
-  const bc=$('#buddyChoices');bc.innerHTML=''; BUDDIES.forEach((e,i)=>{const b=document.createElement('button');b.className='choice'+(i===0?' selected':'');b.textContent=e;b.dataset.buddy=e;b.onclick=()=>{[...bc.children].forEach(x=>x.classList.remove('selected'));b.classList.add('selected');$('#buddyPreview').textContent=e;};bc.appendChild(b)});
+  const cc=$('#colorChoices');clearMarkup(cc); COLORS.forEach((c,i)=>{const b=document.createElement('button');b.className='choice'+(i===0?' selected':'');b.style.background=c;b.dataset.color=c;b.onclick=()=>{$$('.choice','#colorChoices'); [...cc.children].forEach(x=>x.classList.remove('selected'));b.classList.add('selected');drawAvatarPreview();};cc.appendChild(b)});
+  const bc=$('#buddyChoices');clearMarkup(bc); BUDDIES.forEach((e,i)=>{const b=document.createElement('button');b.className='choice'+(i===0?' selected':'');b.textContent=e;b.dataset.buddy=e;b.onclick=()=>{[...bc.children].forEach(x=>x.classList.remove('selected'));b.classList.add('selected');$('#buddyPreview').textContent=e;};bc.appendChild(b)});
   drawAvatarPreview();
 }
 function drawAvatarPreview(){ const c=$('#avatarPreview'),x=c.getContext('2d'); x.clearRect(0,0,c.width,c.height); const color=$('#colorChoices .selected')?.dataset.color||COLORS[0]; x.fillStyle='#ffffff55';x.beginPath();x.arc(160,180,125,0,Math.PI*2);x.fill(); drawCharacter(x,160,170,2.25,color,0,true); }
@@ -277,8 +280,8 @@ function confetti(){const layer=$('#confettiLayer');for(let i=0;i<55;i++){const 
 function toggleBuild(force){state.buildMode=force??!state.buildMode; const bar=$('#buildToolbar');bar.classList.toggle('hidden',!state.buildMode);if(state.buildMode){bar.innerHTML='';BUILD_ITEMS.forEach(i=>{const b=document.createElement('button');b.className='build-tool'+(state.buildItem===i.id?' selected':'');b.title=`${i.label} • ${i.cost} gems`;b.innerHTML=`${i.icon}<small style="display:block;font-size:10px">💎${i.cost}</small>`;b.onclick=()=>{state.buildItem=i.id;[...bar.children].forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};bar.appendChild(b)});const done=document.createElement('button');done.className='build-tool';done.textContent='✅';done.onclick=()=>toggleBuild(false);bar.appendChild(done);toastQuest('Builder Mode','Click/tap the ground to place your creation.');} }
 canvas.addEventListener('pointerdown',e=>{if(!state.buildMode)return; const r=canvas.getBoundingClientRect(),x=e.clientX-r.left+state.cam.x,y=e.clientY-r.top+state.cam.y;const item=BUILD_ITEMS.find(i=>i.id===state.buildItem), gems=state.profile.gems||0;if(gems<item.cost){toastQuest('Need More Gems!',`Explore the world and collect 💎 gems. ${item.label} costs ${item.cost}.`);Audio.tone(180,.15,'sawtooth');return}state.profile.gems-=item.cost;const o={id:'b'+Date.now(),item:item.id,x:Math.round(x),y:Math.round(y)};state.profile.buildings=state.profile.buildings||[];state.profile.buildings.push(o);state.objects.push({...o,type:'building'});spawnBurst(x,y,'#fff36b');Audio.success();updateHUD();saveProfile();completeQuest('build')});
 
-function openModal(html){$('#modalCard').innerHTML=`<button class="close-modal" aria-label="Close">×</button>${html}`;$('#modalLayer').classList.remove('hidden');$('#modalCard .close-modal').onclick=closeModal;}
-function closeModal(){if(state.raceStop){const stop=state.raceStop;state.raceStop=null;stop()}$('#modalLayer').classList.add('hidden');$('#modalCard').innerHTML=''}
+function openModal(html){setMarkup($('#modalCard'),`<button class="close-modal" aria-label="Close">×</button>${html}`);$('#modalLayer').classList.remove('hidden');$('#modalCard .close-modal').onclick=closeModal;}
+function closeModal(){if(state.raceStop){const stop=state.raceStop;state.raceStop=null;stop()}$('#modalLayer').classList.add('hidden');clearMarkup($('#modalCard'))}
 function openJournal(){const qs=state.profile.quests.map(q=>`<div class="journal-item ${q.done?'done':''}"><strong>${q.done?'✅':'⭐'} ${q.title}</strong><div>${q.text}</div>${q.target&&!q.done?`<small>${q.progress||0}/${q.target}</small>`:''}</div>`).join('');openModal(`<h2>📖 Adventure Journal</h2><p style="text-align:center;font-weight:800">Every adventure helps DreamBound grow!</p>${qs}<h3>🏆 Stickers & Achievements</h3><div style="text-align:center;font-size:30px">${state.profile.achievements.length?state.profile.achievements.map(()=> '🌟').join(' '):'Go explore to earn your first one!'}</div>`)}
 function openMap(){const current=zoneAt(state.player.x,state.player.y).name;openModal(`<h2>🗺️ DreamBound Explorer Map</h2><p style="text-align:center;font-weight:900">Tap any discovered land to fast-travel there.</p><div class="world-map-grid">${ZONES.map((z,i)=>{const seen=state.profile.discoveredZones.includes(z.name),photo=state.profile.photos.includes(z.name);return `<button class="map-zone ${seen?'seen':'locked'} ${z.name===current?'current':''}" data-i="${i}" ${seen?'':'disabled'}><span>${seen?z.emoji:'❔'}</span><strong>${seen?z.name:'Undiscovered Land'}</strong><small>${z.name===current?'📍 You are here':seen?(photo?'📸 Photo collected':'✨ Discovered'):'Keep exploring!'}</small></button>`}).join('')}</div><div class="map-stats"><span>🗺️ ${state.profile.discoveredZones.length}/6 lands</span><span>📸 ${state.profile.photos.length}/6 photos</span><span>🌠 ${state.profile.worldEvents||0} falling stars</span></div>`);$$('.map-zone.seen').forEach(b=>b.onclick=()=>{const z=ZONES[+b.dataset.i];state.player.x=z.x+z.w/2;state.player.y=z.y+z.h/2;state.buddy.x=state.player.x-50;state.buddy.y=state.player.y+35;closeModal();showZoneBanner(z);Audio.success()})}
 function openSettings(){const s=state.profile.settings;openModal(`<h2>⚙️ Explorer Settings</h2><div class="settings-row"><strong>🗣️ Spoken instructions</strong><button id="narrToggle" class="toggle ${s.narration?'on':''}"></button></div><div class="settings-row"><strong>🌦️ Weather effects</strong><button id="weatherToggle" class="toggle ${s.weather?'on':''}"></button></div><div class="settings-row"><strong>🎯 Challenge level</strong><select id="diffSelect"><option value="adaptive" ${s.difficulty==='adaptive'?'selected':''}>Adaptive</option><option value="easy" ${s.difficulty==='easy'?'selected':''}>Gentle</option><option value="hard" ${s.difficulty==='hard'?'selected':''}>Big Brain</option></select></div><div class="settings-row"><strong>☀️ Change weather</strong><button id="changeWeather">Change</button></div><div class="settings-row"><strong>⏱️ Break reminder</strong><select id="breakSelect"><option value="0">Off</option><option value="20">20 min</option><option value="30">30 min</option><option value="45">45 min</option></select></div><button id="saveExit" class="big-btn secondary">💾 Save & Choose Player</button>`);$('#narrToggle').onclick=e=>{s.narration=!s.narration;e.currentTarget.classList.toggle('on',s.narration);saveProfile()};$('#weatherToggle').onclick=e=>{s.weather=!s.weather;e.currentTarget.classList.toggle('on',s.weather);setWeather(s.weather?state.weather:'sunny');saveProfile()};$('#diffSelect').onchange=e=>{s.difficulty=e.target.value;saveProfile()};$('#changeWeather').onclick=()=>{const arr=['sunny','rain','sparkles'];setWeather(arr[(arr.indexOf(state.weather)+1)%arr.length])};$('#breakSelect').value=String(s.sessionLimit||0);$('#breakSelect').onchange=e=>{s.sessionLimit=+e.target.value;saveProfile()};$('#saveExit').onclick=()=>{saveProfile();state.running=false;closeModal();loadProfiles();showScreen('profileScreen')};}
