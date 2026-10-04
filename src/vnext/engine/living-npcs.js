@@ -69,7 +69,7 @@ function openRoutine(npc){
   );
   const help=document.querySelector('#npcRoutineHelp');
   help.onclick=()=>{
-    if(state.helped.includes(r.id)){DBX.ui.toast('Already helped','You already helped with this routine.');return};
+    if(state.helped.includes(r.id)){DBX.ui.toast('Already helped','You already helped with this routine.');return;}
     state.helped.push(r.id);save();
     DBX.state.stars=(DBX.state.stars||0)+2;
     DBX.state.npcFriendship[npc.id]=Math.min(10,(DBX.state.npcFriendship[npc.id]||0)+1);
