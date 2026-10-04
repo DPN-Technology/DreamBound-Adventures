@@ -40,14 +40,14 @@ DBX.world.draw=(ctx,t)=>{
   }
 
   // Rover under the explorer while active.
-  if(s.roverActive){
+  if(s.roverActive&&!DBX.vehicle){
     ctx.save();ctx.translate(s.player.x,s.player.y+15);
     ctx.fillStyle='rgba(15,18,45,.22)';ctx.beginPath();ctx.ellipse(0,23,42,12,0,0,Math.PI*2);ctx.fill();
     ctx.font='53px serif';ctx.fillText('🛻',0,12);ctx.restore();
   }
 
   // Luma follows after rescue.
-  if(s.lumaRescued){
+  if(s.lumaRescued&&!DBX.companion){
     const lx=s.player.x+58+Math.cos(t/420)*6,ly=s.player.y+20+Math.sin(t/350)*5;
     ctx.font='31px serif';ctx.fillText('🐇',lx,ly);ctx.font='14px serif';ctx.fillText('✨',lx+20,ly-22);
   }

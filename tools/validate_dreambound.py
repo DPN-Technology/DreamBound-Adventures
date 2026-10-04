@@ -7,12 +7,12 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-RUNTIME = [ROOT / "index.html", ROOT / "styles.css", ROOT / "game.js", ROOT / "dom-collection-bridge.js", ROOT / "vnext.html", ROOT / "src/vnext/core.js", ROOT / "src/vnext/input.js", ROOT / "src/vnext/space-center.js", ROOT / "src/vnext/ui.js", ROOT / "src/vnext/lunar-guardian.js", ROOT / "src/vnext/bootstrap.js"]
+RUNTIME = [ROOT / "index.html", ROOT / "styles.css", ROOT / "game.js", ROOT / "dom-collection-bridge.js", ROOT / "vnext.html", ROOT / "src/vnext/core.js", ROOT / "src/vnext/input.js", ROOT / "src/vnext/space-center.js", ROOT / "src/vnext/ui.js", ROOT / "src/vnext/lunar-guardian.js", ROOT / "src/vnext/engine/fx.js", ROOT / "src/vnext/engine/audio.js", ROOT / "src/vnext/engine/vehicle.js", ROOT / "src/vnext/engine/scenes.js", ROOT / "src/vnext/engine/quests.js", ROOT / "src/vnext/engine/companion.js", ROOT / "src/vnext/engine/world-polish.js", ROOT / "src/vnext/engine/settings.js", ROOT / "src/vnext/bootstrap.js"]
 REQUIRED = [
-    "index.html", "styles.css", "game.js", "profile-sanitizer.js", "dom-collection-bridge.js", "serve_dreambound.py", "vnext.html", "vnext.css", "src/vnext/core.js", "src/vnext/input.js", "src/vnext/space-center.js", "src/vnext/ui.js", "src/vnext/lunar-guardian.js", "src/vnext/bootstrap.js",
+    "index.html", "styles.css", "game.js", "profile-sanitizer.js", "dom-collection-bridge.js", "serve_dreambound.py", "vnext.html", "vnext.css", "src/vnext/core.js", "src/vnext/input.js", "src/vnext/space-center.js", "src/vnext/ui.js", "src/vnext/lunar-guardian.js", "src/vnext/engine/fx.js", "src/vnext/engine/audio.js", "src/vnext/engine/vehicle.js", "src/vnext/engine/scenes.js", "src/vnext/engine/quests.js", "src/vnext/engine/companion.js", "src/vnext/engine/world-polish.js", "src/vnext/engine/settings.js", "src/vnext/bootstrap.js",
     "PLAY-DREAMBOUND.bat", "PLAY-DREAMBOUND.ps1",
     "README.md", "SECURITY.md", "CONTRIBUTING.md",
-    "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md",
+    "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md", "docs/VNEXT_ARCHITECTURE.md",
     ".github/CODEOWNERS", ".github/dependabot.yml",
     "THIRD_PARTY_LICENSES.md", "docs/RELEASE_PROCESS.md",
 ]

@@ -40,6 +40,9 @@ jobs:
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/core.js -o /tmp/vnext-core.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/bootstrap.js -o /tmp/vnext-bootstrap.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/lunar-guardian.js -o /tmp/vnext-lunar.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/fx.js -o /tmp/vnext-fx.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/scenes.js -o /tmp/vnext-scenes.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/quests.js -o /tmp/vnext-quests.js
           grep -qi "DreamBound" /tmp/index.html
           test -s /tmp/game.js
           test -s /tmp/styles.css
@@ -49,7 +52,10 @@ jobs:
           test -s /tmp/vnext-core.js
           test -s /tmp/vnext-bootstrap.js
           test -s /tmp/vnext-lunar.js
-          grep -qi "Lunar Guardian Preview" /tmp/vnext.html
+          test -s /tmp/vnext-fx.js
+          test -s /tmp/vnext-scenes.js
+          test -s /tmp/vnext-quests.js
+          grep -qi "Advanced World Engine" /tmp/vnext.html
           echo "DreamBound local runtime shell: reachable on loopback only"
       - name: Verify security headers
         shell: bash

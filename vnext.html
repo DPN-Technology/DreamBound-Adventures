@@ -3,42 +3,78 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-  <meta name="theme-color" content="#3b3f78">
+  <meta name="theme-color" content="#272b62">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>DreamBound v0.9 Lunar Guardian Preview</title>
+  <title>DreamBound v1.0 Advanced World Engine</title>
   <link rel="stylesheet" href="vnext.css">
 </head>
 <body>
   <main id="vnextApp">
-    <canvas id="vnextCanvas" aria-label="DreamBound modular Lunar Guardian playground"></canvas>
-    <header class="vnext-hud">
-      <a class="back-link" href="index.html">← DreamBound</a>
-      <div class="preview-chip">v0.9 LUNAR GUARDIAN</div>
-      <div id="vnextVehicle" class="vehicle-chip">🥾 ON FOOT</div>\n      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
+    <canvas id="vnextCanvas" aria-label="DreamBound Advanced World Engine"></canvas>
+
+    <header class="vnext-hud advanced-hud">
+      <a class="back-link" href="index.html">← DREAMBOUND</a>
+      <div class="preview-chip">v1.0 ADVANCED WORLD</div>
+      <div id="vnextZone" class="zone-chip">SPACE CENTER</div>
+      <div class="compass-chip">🧭 <b id="vnextCompass">N</b></div>
+      <div id="vnextVehicle" class="vehicle-chip">🥾 ON FOOT</div>
+      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
     </header>
-    <section class="mission-card">
-      <small>LUNAR GUARDIAN <b id="vnextStage">1/10</b></small>
+
+    <aside class="world-console">
+      <div class="minimap-frame">
+        <canvas id="vnextMinimap" width="170" height="112" aria-label="DreamBound minimap"></canvas>
+        <span>LIVE WORLD MAP</span>
+      </div>
+      <div class="telemetry-stack">
+        <label>ROVER ENERGY <i><b id="vnextEnergyBar"></b></i></label>
+        <label>LUMA BOND <strong>💜 <b id="vnextBond">0/10</b></strong></label>
+      </div>
+    </aside>
+
+    <section class="mission-card advanced-mission">
+      <small>ACTIVE ADVENTURE <b id="vnextStage">1/10</b></small>
       <strong id="vnextObjective">Decode the star signal in Mission Control.</strong>
       <div class="progress-track"><i id="vnextProgress"></i></div>
+      <div class="mission-actions">
+        <button id="vnextJournal">📖 JOURNAL</button>
+        <button id="vnextSettings">⚙️ SETTINGS</button>
+        <button id="vnextBuddy">🐇 LUMA</button>
+      </div>
     </section>
+
     <section id="vnextPrompt" class="interact-prompt hidden">
-      <strong>🛰️ Mission Control</strong><span>Interact</span>
+      <strong>🛰️ Mission Control</strong><span>Press E / Space / ✨</span>
     </section>
+
     <button id="vnextInteract" class="interact-btn">✨ DO</button>
     <nav class="mobile-pad" aria-label="Movement controls">
       <button data-move="up">▲</button>
       <div><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div>
     </nav>
     <button id="vnextAction" class="mobile-action">✨</button>
-    <button id="vnextReset" class="reset-btn">Reset Preview</button>
+    <button id="vnextReset" class="reset-btn">Reset v1.0</button>
+
     <div id="vnextToast" class="toast hidden"><strong></strong><span></span></div>
-    <div id="vnextModal" class="modal-layer hidden" role="dialog" aria-modal="true"><div id="vnextModalCard" class="modal-card"></div></div>
+    <div id="vnextModal" class="modal-layer hidden" role="dialog" aria-modal="true">
+      <div id="vnextModalCard" class="modal-card"></div>
+    </div>
   </main>
+
   <script src="src/vnext/core.js"></script>
   <script src="src/vnext/input.js"></script>
   <script src="src/vnext/space-center.js"></script>
-  <script src="src/vnext/ui.js"></script>\n  <script src="src/vnext/lunar-guardian.js"></script>
+  <script src="src/vnext/ui.js"></script>
+  <script src="src/vnext/lunar-guardian.js"></script>
+  <script src="src/vnext/engine/fx.js"></script>
+  <script src="src/vnext/engine/audio.js"></script>
+  <script src="src/vnext/engine/vehicle.js"></script>
+  <script src="src/vnext/engine/scenes.js"></script>
+  <script src="src/vnext/engine/quests.js"></script>
+  <script src="src/vnext/engine/companion.js"></script>
+  <script src="src/vnext/engine/world-polish.js"></script>
+  <script src="src/vnext/engine/settings.js"></script>
   <script src="src/vnext/bootstrap.js"></script>
 </body>
 </html>

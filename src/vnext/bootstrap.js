@@ -3,69 +3,125 @@
 const DBX=window.DreamBoundVNext;
 const canvas=document.querySelector('#vnextCanvas');
 const ctx=canvas.getContext('2d');
-let last=performance.now(),near=null,cam={x:0,y:0};
+const minimap=document.querySelector('#vnextMinimap');
+let last=performance.now(),near=null,cam={x:0,y:0},saveClock=0;
+
 function resize(){
   const dpr=Math.min(devicePixelRatio||1,2);
   canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
   canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';
   ctx.setTransform(dpr,0,0,dpr,0,0);
+  if(minimap){minimap.width=170;minimap.height=112}
 }
-function update(dt){
+function update(dt,t){
+  DBX.fx?.update(dt);
   if(!document.querySelector('#vnextModal').classList.contains('hidden'))return;
-  const s=DBX.state,v=DBX.input.vector();
-  if(v.x||v.y){
-    s.player.x=DBX.util.clamp(s.player.x+v.x*s.player.speed*dt,40,DBX.WORLD.w-40);
-    s.player.y=DBX.util.clamp(s.player.y+v.y*s.player.speed*dt,60,DBX.WORLD.h-40);
-    if(!s.launched&&s.player.x>1230)s.player.x=1230;
+  const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
+  let handled=false;
+  if(DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
+  if(!handled&&(v.x||v.y)){
+    const speed=s.player.speed||250;
+    s.player.x+=v.x*speed*dt;s.player.y+=v.y*speed*dt;
+    if(DBX.scene?.id!=='station'&&!s.launched&&s.player.x>1230)s.player.x=1230;
     s.player.dir=Math.atan2(v.y,v.x);
   }
-  cam.x+=(DBX.util.clamp(s.player.x-innerWidth/2,0,Math.max(0,DBX.WORLD.w-innerWidth))-cam.x)*Math.min(1,dt*5);
-  cam.y+=(DBX.util.clamp(s.player.y-innerHeight/2,0,Math.max(0,DBX.WORLD.h-innerHeight))-cam.y)*Math.min(1,dt*5);
+  if(DBX.scene?.clamp)DBX.scene.clamp(s.player);
+  else{
+    s.player.x=DBX.util.clamp(s.player.x,40,DBX.WORLD.w-40);
+    s.player.y=DBX.util.clamp(s.player.y,60,DBX.WORLD.h-40);
+  }
+  const moved=Math.hypot(s.player.x-beforeX,s.player.y-beforeY);
+  s.totalDistance=(s.totalDistance||0)+moved;
+
+  const bounds=DBX.scene?.bounds||DBX.WORLD;
+  cam.x+=(DBX.util.clamp(s.player.x-innerWidth/2,0,Math.max(0,bounds.w-innerWidth))-cam.x)*Math.min(1,dt*6);
+  cam.y+=(DBX.util.clamp(s.player.y-innerHeight/2,0,Math.max(0,bounds.h-innerHeight))-cam.y)*Math.min(1,dt*6);
+
   const closest=DBX.world.currentInteractable();
-  near=closest&&closest.d<105?closest:null;
+  near=closest&&closest.d<110?closest:null;
   const prompt=document.querySelector('#vnextPrompt');
   if(near){
-    prompt.classList.remove('hidden');prompt.querySelector('strong').textContent=near.icon+' '+near.name;
+    prompt.classList.remove('hidden');
+    prompt.querySelector('strong').textContent=near.icon+' '+near.name;
     prompt.querySelector('span').textContent=near.hint;
   }else prompt.classList.add('hidden');
-  if(DBX.input.consumeAction()&&near)DBX.ui.interact(near);
 
-  if(s.launched){
-    for(const rock of DBX.world.rocks){
+  if(DBX.input.consumeAction()){
+    if(near)DBX.ui.interact(near);
+    else if(s.lumaRescued)DBX.companion?.interact();
+  }
+
+  if(DBX.scene?.id!=='station'&&s.launched){
+    for(const rock of DBX.world.rocks||[]){
       if(s.moonRocks.includes(rock.id))continue;
       if(Math.hypot(s.player.x-rock.x,s.player.y-rock.y)<52)DBX.ui.moonRock(rock.id);
     }
   }
-  if((v.x||v.y)&&performance.now()%1000<34)DBX.storage.save();
+
+  DBX.companion?.update(dt,t);
+  saveClock+=dt;
+  if(saveClock>1.1&&moved>0){saveClock=0;DBX.storage.save()}
+  updateTelemetry();
+}
+function updateTelemetry(){
+  const s=DBX.state;
+  const energy=document.querySelector('#vnextEnergyBar');
+  if(energy){
+    const value=s.roverActive?(DBX.vehicle?.runtime.energy??100):100;
+    energy.style.width=value+'%';
+    energy.parentElement.classList.toggle('active',!!s.roverActive);
+  }
+  const bond=document.querySelector('#vnextBond');if(bond)bond.textContent=Math.floor(s.lumaBond||0)+'/10';
+  const compass=document.querySelector('#vnextCompass');if(compass)compass.textContent=DBX.polish?.compassText()||'N';
+  const zone=document.querySelector('#vnextZone');if(zone)zone.textContent=DBX.scene?.id==='station'?'LUNAR STATION':(s.player.x>1250?'MOON SURFACE':'SPACE CENTER');
 }
 function draw(t){
   ctx.clearRect(0,0,innerWidth,innerHeight);
-  ctx.save();ctx.translate(-cam.x,-cam.y);
+  const shake=DBX.fx?.cameraOffset()||{x:0,y:0};
+  ctx.save();ctx.translate(-cam.x+shake.x,-cam.y+shake.y);
   DBX.world.draw(ctx,t);
-  drawPlayer(t);
+  DBX.polish?.drawAfterWorld(ctx,t);
+  DBX.fx?.drawWorld(ctx,t);
+  if(DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
+  else drawPlayer(t);
+  DBX.companion?.draw(ctx,t);
   ctx.restore();
+  DBX.fx?.drawScreen(ctx,innerWidth,innerHeight,t);
+  DBX.polish?.drawMinimap(minimap);
 }
 function drawPlayer(t){
-  const s=DBX.state,p=s.player;
+  const p=DBX.state.player;
   ctx.save();ctx.translate(p.x,p.y);
   ctx.fillStyle='rgba(33,37,77,.22)';ctx.beginPath();ctx.ellipse(0,29,25,9,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#745cff';ctx.beginPath();ctx.roundRect(-20,-10,40,52,16);ctx.fill();
+  const body=ctx.createLinearGradient(-20,-10,20,42);body.addColorStop(0,'#8b78ff');body.addColorStop(1,'#5143c5');
+  ctx.fillStyle=body;ctx.beginPath();ctx.roundRect(-20,-10,40,52,16);ctx.fill();
   ctx.fillStyle='#ffd8bd';ctx.beginPath();ctx.arc(0,-22,19,0,Math.PI*2);ctx.fill();
   ctx.font='25px serif';ctx.textAlign='center';ctx.fillText('🪖',0,-29);
+  ctx.strokeStyle='rgba(255,255,255,.6)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,-22,14,Math.PI*.1,Math.PI*.9);ctx.stroke();
   ctx.restore();
-  const bx=p.x-46+Math.sin(t/500)*5,by=p.y+25+Math.cos(t/600)*4;
-  ctx.font='30px serif';ctx.textAlign='center';ctx.fillText('🤖',bx,by);
+  if(!DBX.state.lumaRescued){
+    const bx=p.x-46+Math.sin(t/500)*5,by=p.y+25+Math.cos(t/600)*4;
+    ctx.font='30px serif';ctx.textAlign='center';ctx.fillText('🤖',bx,by);
+  }
 }
 function loop(t){
-  const dt=Math.min(.034,(t-last)/1000);last=t;update(dt);draw(t);requestAnimationFrame(loop);
+  const dt=Math.min(.034,(t-last)/1000);last=t;update(dt,t);draw(t);requestAnimationFrame(loop);
 }
 document.querySelector('#vnextInteract').onclick=()=>DBX.input.requestAction();
+document.querySelector('#vnextJournal').onclick=()=>DBX.quests?.renderJournal();
+document.querySelector('#vnextSettings').onclick=()=>DBX.settings?.open();
+document.querySelector('#vnextBuddy').onclick=()=>DBX.companion?.interact();
 document.querySelector('#vnextReset').onclick=()=>{
-  DBX.storage.reset();DBX.ui.closeModal();DBX.ui.updateHUD();
-  DBX.ui.toast('Preview reset','Space Center progress cleared on this device.');
+  DBX.storage.reset();DBX.vehicle?.reset();DBX.ui.closeModal();DBX.ui.updateHUD();
+  DBX.ui.toast('Adventure reset','v1.0 modular progress cleared on this device.');
 };
 DBX.events.on('state:reset',()=>{cam={x:0,y:0}});
+DBX.events.on('scene:changed',({id})=>{
+  if(!DBX.state.sceneVisits.includes(id))DBX.state.sceneVisits.push(id);
+  DBX.storage.save();cam={x:0,y:0};
+});
 DBX.input.bindTouch();
-DBX.ui.updateHUD();
+DBX.settings?.apply();
+DBX.ui.updateHUD();DBX.quests?.tick();
 resize();addEventListener('resize',resize);requestAnimationFrame(loop);
 })();
