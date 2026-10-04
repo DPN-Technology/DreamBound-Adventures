@@ -18,7 +18,7 @@ function step(dt,input){
     s.player.dir=Math.atan2(runtime.vy,runtime.vx);
     const traveled=Math.hypot(runtime.vx*dt,runtime.vy*dt);
     runtime.distance+=traveled;
-    runtime.energy=Math.max(0,runtime.energy-traveled*(boosting?.016:.008));
+    runtime.energy=Math.max(0,runtime.energy-traveled*(boosting ? .016 : .008));
     if(boosting&&DBX.fx&&Math.random()<.35)DBX.fx.trail(s.player.x-runtime.vx*.05,s.player.y+18,'#8ff7ff');
     if(DBX.fx&&performance.now()-runtime.lastDust>75){
       runtime.lastDust=performance.now();
