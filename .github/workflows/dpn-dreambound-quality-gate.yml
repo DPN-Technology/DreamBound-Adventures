@@ -37,6 +37,8 @@ jobs:
           fi
       - name: DreamBound repository validator
         run: python3 tools/validate_dreambound.py --mode integrity
+      - name: Co-op wiring contract
+        run: python3 tools/check_coop_contract.py
 
   child-safety:
     name: DreamShield Child Safety

@@ -37,7 +37,7 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 
 > **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
 
-## 🌈 Co-op Development Build — v0.5.0-dev
+## 🌈 Teamplay Development Build — v0.5.1-dev
 
 | System | Current capability |
 | --- | --- |
@@ -53,7 +53,7 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 | 🛴 **Travel** | Explorer Scooter plus Rainbow Portal fast travel |
 | 🧠 **Adaptive play** | Age-scaled Brain Sparks and challenge difficulty |
 | 💾 **Profiles** | Three local child profiles with automatic saving |
-| 👥 **Sibling Co-op** | Two local explorers, two DreamBuddies, shared rewards, DreamLink tether and 3 cooperative gates |
+| 👥 **Sibling Co-op** | Two explorers, two DreamBuddies, shared rewards, DreamLink tether, 3 cooperative gates and 4 team activities |
 
 ## 🛡️ DPN DreamShield Security Gates
 
@@ -122,6 +122,14 @@ If Python is unavailable, the launcher falls back to opening **index.html** dire
 The v0.5 development branch introduces same-screen two-player play. Player 1 hosts the world; Player 2 joins from another saved child profile. Player 2 uses **I/J/K/L + O** or a second gamepad. Both explorers keep their own identity and receive co-op rewards. Three **DreamLink Gates** require both kids to stand on paired pads together.
 
 The system includes a one-screen DreamLink tether to keep younger players together and avoid split-screen complexity in the first co-op milestone.
+
+### Co-op activities now playable
+
+- **DreamLink Team Raceway** — two independently controlled karts with one team score.
+- **Team Creature Rescue** — both explorers must high-five before a creature joins both collections.
+- **DreamLink Magic Lesson** — alternating Player 1 / Player 2 pattern turns.
+- **DreamLink Workshop** — role-based repair challenge with separate Spark Engineer and Gear Engineer jobs.
+- **Sibling Stars** — persistent quest tracking unique co-op activities.
 
 ## 🗺️ Current lands
 

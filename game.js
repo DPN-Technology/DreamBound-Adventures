@@ -533,7 +533,7 @@ function openCoopCenter(){
     '<p class="coop-intro">Pick another saved explorer. Both kids will play together in the same DreamBound world.</p>'+
     (cards||'<div class="empty-coop">🌟 Create another child profile first, then come back here to start co-op.</div>')+
     '<div class="coop-controls-card"><strong>Player 1</strong><span>WASD / Arrows + E/Space</span><strong>Player 2</strong><span>I/J/K/L + O</span></div>');
-  $('.coop-profile-card').forEach(b=>b.onclick=()=>joinCoop(+b.dataset.slot));
+  $$('.coop-profile-card').forEach(b=>b.onclick=()=>joinCoop(+b.dataset.slot));
 }
 
 function joinCoop(slot){
@@ -791,6 +791,390 @@ addEventListener('keydown',e=>{
 
 $('#coopBtn').onclick=openCoopCenter;
 updateCoopStatus();
+
+
+// ===== DreamBound v0.5.1-dev CO-OP GAMEPLAY SYSTEMS =====
+STICKERS.push(['🌟','Sibling Stars']);
+
+const defaultQuestsV51=defaultQuests;
+defaultQuests=function(){
+  const qs=defaultQuestsV51();
+  if(!qs.some(q=>q.id==='teamplay'))qs.push({
+    id:'teamplay',
+    title:'Sibling Stars',
+    text:'Complete 3 different co-op activities together.',
+    done:false,reward:12,xp:36,progress:0,target:3,icon:'🌟'
+  });
+  return qs;
+};
+QUEST_TARGETS.teamplay=[1545,1670];
+
+const v5PrepareProfileV51=v5PrepareProfile;
+v5PrepareProfile=function(p){
+  p=v5PrepareProfileV51(p);
+  if(!p)return null;
+  p.coopActivities=p.coopActivities||[];
+  p.coopWins=p.coopWins||0;
+  p.teamRescues=p.teamRescues||0;
+  p.teamMagic=p.teamMagic||0;
+  p.teamRepairs=p.teamRepairs||0;
+  const oldQ=new Map((p.quests||[]).map(q=>[q.id,q]));
+  p.quests=defaultQuests().map(q=>Object.assign(q,oldQ.get(q.id)||{}));
+  return p;
+};
+
+function v51GuestQuestProgress(id,n=1){
+  const p=state.coop.profile;
+  if(!p)return;
+  const q=(p.quests||[]).find(q=>q.id===id);
+  if(!q||q.done)return;
+  q.progress=(q.progress||0)+n;
+  if(q.target&&q.progress>=q.target)v51CompleteQuestForProfile(p,id);
+}
+
+function v51CompleteQuestForProfile(p,id){
+  if(!p)return;
+  const q=(p.quests||[]).find(q=>q.id===id);
+  if(!q||q.done)return;
+  q.done=true;
+  p.stars=(p.stars||0)+(q.reward||0);
+  v5AddXPToProfile(p,q.xp||10);
+}
+
+function v51AwardTeamActivity(id,label){
+  if(!state.coop.enabled||!state.coop.profile)return;
+  const both=[state.profile,state.coop.profile];
+  let newlyAdded=false;
+  for(const p of both){
+    p.coopActivities=p.coopActivities||[];
+    if(!p.coopActivities.includes(id)){p.coopActivities.push(id);newlyAdded=true}
+    p.teamworkPoints=(p.teamworkPoints||0)+5;
+  }
+  if(newlyAdded){
+    questProgress('teamplay',1);
+    v51GuestQuestProgress('teamplay',1);
+  }
+  if((state.profile.coopActivities||[]).length>=3)unlockSticker('Sibling Stars');
+  if((state.coop.profile.coopActivities||[]).length>=3&&!state.coop.profile.stickers.includes('Sibling Stars'))state.coop.profile.stickers.push('Sibling Stars');
+  saveProfile();saveGuestProfile();updateCoopStatus();
+  toastQuest('Team Activity Complete! 🌟',label+' • '+(state.profile.coopActivities||[]).length+'/3 Sibling Stars activities');
+}
+
+const updateCoopStatusV51=updateCoopStatus;
+updateCoopStatus=function(){
+  updateCoopStatusV51();
+  if(!state.coop.enabled)return;
+  const activity=$('#coopActivityCount');
+  if(activity)activity.textContent=(state.profile.coopActivities||[]).length+'/3';
+};
+
+const closeModalV51=closeModal;
+closeModal=function(){
+  if(state.coop?.cleanup){
+    const cleanup=state.coop.cleanup;
+    state.coop.cleanup=null;
+    try{cleanup()}catch{}
+  }
+  closeModalV51();
+};
+
+const initWorldV51=initWorld;
+initWorld=function(){
+  initWorldV51();
+  if(!state.interactables.some(x=>x.action==='teamrepair')){
+    state.interactables.push({
+      id:'dreamlink-workshop',
+      name:'DreamLink Workshop',
+      face:'⚙️',
+      x:1710,y:1580,
+      text:'This machine needs two explorers! One powers the spark core while the other lines up the gears.',
+      action:'teamrepair'
+    });
+  }
+};
+
+const talkToV51=talkTo;
+talkTo=function(n){
+  talkToV51(n);
+  if(n.action==='teamrepair'){
+    setTimeout(()=>{
+      if(!state.talking)return;
+      if(state.coop.enabled)addTalkAction('🤝 START TEAM REPAIR',()=>{closeTalk();openTeamRepair()});
+      else addTalkAction('👥 NEED A SIBLING',()=>{closeTalk();openCoopCenter()});
+    },80);
+  }
+};
+
+function openTeamRepair(){
+  if(!state.coop.enabled){openCoopCenter();return}
+  let power=0,gears=0,done=false;
+  openModal(
+    '<h2>⚙️ DreamLink Workshop</h2>'+
+    '<p class="coop-intro">Two jobs. One machine. Work together!</p>'+
+    '<div class="team-role-grid">'+
+      '<div class="team-role p1"><span>⚡</span><strong>Player 1 — Spark Engineer</strong><small>Charge the power core 4 times.</small><div class="team-meter"><i id="repairPower"></i></div><button id="repairP1" class="big-btn primary">Q • POWER SPARK</button></div>'+
+      '<div class="team-role p2"><span>⚙️</span><strong>Player 2 — Gear Engineer</strong><small>Align the rainbow gears 4 times.</small><div class="team-meter"><i id="repairGears"></i></div><button id="repairP2" class="big-btn primary">P • ALIGN GEAR</button></div>'+
+    '</div>'+
+    '<div id="repairMachine" class="repair-machine">🔧 ⚙️ ✨ ⚙️ 🔧</div>'
+  );
+  function refresh(){
+    if($('#repairPower'))$('#repairPower').style.width=(power/4*100)+'%';
+    if($('#repairGears'))$('#repairGears').style.width=(gears/4*100)+'%';
+    if(power>=4&&gears>=4&&!done)finish();
+  }
+  function p1(){if(done||power>=4)return;power++;Audio.tone(520+power*80,.08,'triangle');refresh()}
+  function p2(){if(done||gears>=4)return;gears++;Audio.tone(640+gears*70,.08,'sine');refresh()}
+  function finish(){
+    done=true;
+    state.profile.gems+=4;state.coop.profile.gems+=4;
+    addXP(12,'Team repair');v5AddXPToProfile(state.coop.profile,12);
+    state.profile.teamRepairs=(state.profile.teamRepairs||0)+1;
+    state.coop.profile.teamRepairs=(state.coop.profile.teamRepairs||0)+1;
+    v51AwardTeamActivity('repair','DreamLink Workshop repaired');
+    Audio.success();confetti();
+    setTimeout(()=>{
+      openModal('<h2>✨ MACHINE ONLINE!</h2><div class="creature-pop">⚙️🌈⚡</div><p style="text-align:center;font-weight:1000">Perfect teamwork! Both explorers earned 4 💎 and 12 XP.</p><button id="repairDone" class="big-btn primary">TEAM HIGH-FIVE!</button>');
+      $('#repairDone').onclick=closeModal;
+    },260);
+  }
+  $('#repairP1').onclick=p1;$('#repairP2').onclick=p2;
+  const key=e=>{
+    if($('#modalLayer').classList.contains('hidden'))return;
+    if(e.key.toLowerCase()==='q'){e.preventDefault();p1()}
+    if(e.key.toLowerCase()==='p'){e.preventDefault();p2()}
+  };
+  addEventListener('keydown',key,true);
+  state.coop.cleanup=()=>removeEventListener('keydown',key,true);
+  refresh();
+}
+
+const rescueCreatureSingleV51=rescueCreature;
+rescueCreature=function(c){
+  if(!state.coop.enabled){rescueCreatureSingleV51(c);return}
+  let p1=false,p2=false,finished=false;
+  openModal(
+    '<h2>💖 Team Creature Rescue!</h2>'+
+    '<div class="creature-pop">'+c.icon+'</div>'+
+    '<p style="text-align:center;font-size:21px;font-weight:1000">'+escapeHTML(c.name)+' needs <b>two friendly high-fives!</b></p>'+
+    '<div class="team-rescue-row">'+
+      '<button id="rescueP1" class="team-highfive p1">🖐️<strong>'+escapeHTML(state.profile.name)+'</strong><small>PLAYER 1</small></button>'+
+      '<button id="rescueP2" class="team-highfive p2">🖐️<strong>'+escapeHTML(state.coop.profile.name)+'</strong><small>PLAYER 2</small></button>'+
+    '</div>'+
+    '<p id="rescueTeamStatus" class="coop-intro">Both explorers high-five to complete the rescue.</p>'
+  );
+  function tap(which){
+    if(finished)return;
+    if(which===1){p1=true;$('#rescueP1').classList.add('ready')}
+    else{p2=true;$('#rescueP2').classList.add('ready')}
+    Audio.collect();
+    $('#rescueTeamStatus').textContent=(p1?'✅':'⬜')+' P1  •  '+(p2?'✅':'⬜')+' P2';
+    if(p1&&p2)finish();
+  }
+  function finish(){
+    finished=true;
+    const gp=state.coop.profile;
+    for(const p of [state.profile,gp]){
+      if(!p.creatures.includes(c.id))p.creatures.push(c.id);
+      p.gems=(p.gems||0)+2;
+      p.buddyLevel=Math.min(20,(p.buddyLevel||1)+1);
+      p.teamRescues=(p.teamRescues||0)+1;
+    }
+    state.creatures=state.creatures.filter(x=>x.id!==c.id);
+    questProgress('creatures',1);v51GuestQuestProgress('creatures',1);
+    addXP(8,'Team creature rescue');v5AddXPToProfile(gp,8);
+    v51AwardTeamActivity('rescue','Team creature rescue');
+    unlockSticker('Creature Helper');
+    if(!gp.stickers.includes('Creature Helper'))gp.stickers.push('Creature Helper');
+    saveProfile();saveGuestProfile();updateHUD();
+    Audio.success();confetti();
+    setTimeout(()=>{
+      openModal('<h2>🐾 NEW TEAM FRIEND!</h2><div class="creature-pop">'+c.icon+'💖</div><p style="text-align:center;font-weight:1000">'+escapeHTML(c.name)+' joined both explorers’ Dream Collections! Both earned 2 💎.</p><button id="teamRescueDone" class="big-btn primary">WELCOME, '+escapeHTML(c.name.toUpperCase())+'!</button>');
+      $('#teamRescueDone').onclick=closeModal;
+    },260);
+  }
+  $('#rescueP1').onclick=()=>tap(1);$('#rescueP2').onclick=()=>tap(2);
+}
+
+const openRaceGameSingleV51=openRaceGame;
+openRaceGame=function(){
+  if(state.coop.enabled)openCoopRaceGame();
+  else openRaceGameSingleV51();
+};
+
+function openCoopRaceGame(){
+  let running=false,time=24,score=0,lane1=0,lane2=2,obs=[],lastSpawn=0,raf=0,finished=false;
+  openModal(
+    '<h2>🏎️ DreamLink Team Raceway</h2>'+
+    '<div id="raceStage" class="race-stage coop-race-stage"><div class="race-road"></div>'+
+      '<div class="race-hud"><span>TEAM ⭐ <b id="raceScore">0</b></span><span>TIME <b id="raceTime">24</b></span></div>'+
+      '<div id="raceKart1" class="race-kart coop-kart p1">🏎️<small>P1</small></div>'+
+      '<div id="raceKart2" class="race-kart coop-kart p2">🚙<small>P2</small></div>'+
+    '</div>'+
+    '<div class="coop-race-help"><span><b>P1</b> A/D or ←/→</span><span><b>P2</b> J/L</span></div>'+
+    '<button id="raceStart" class="big-btn primary">🏁 START TEAM RACE</button>'
+  );
+  const stage=$('#raceStage'),k1=$('#raceKart1'),k2=$('#raceKart2'),lanes=[29,50,71];
+  function setLane(player,delta){
+    if(player===1){lane1=clamp(lane1+delta,0,2);k1.style.left=lanes[lane1]+'%'}
+    else{lane2=clamp(lane2+delta,0,2);k2.style.left=lanes[lane2]+'%'}
+    Audio.click();
+  }
+  function spawn(){
+    const good=Math.random()<.33,el=document.createElement('div'),ln=Math.floor(Math.random()*3);
+    el.className='race-obstacle';el.textContent=good?'⭐':['🪨','🛞','🌵'][Math.floor(Math.random()*3)];
+    el.style.left=lanes[ln]+'%';el.style.top='44%';stage.appendChild(el);
+    obs.push({el,y:44,lane:ln,good,hit1:false,hit2:false});
+  }
+  function hit(o,player){
+    if(o.good){score++;Audio.collect();showCombo('TEAM +1 ⭐')}
+    else{score=Math.max(0,score-1);Audio.tone(150,.09,'sawtooth');haptic(50)}
+    $('#raceScore').textContent=score;
+    o.el.remove();o.removed=true;
+  }
+  function frame(ts){
+    if(!running)return;
+    if(ts-lastSpawn>570){spawn();lastSpawn=ts}
+    for(const o of obs){
+      o.y+=.5;o.el.style.top=o.y+'%';
+      if(o.y>82&&o.y<96&&!o.removed){
+        if(o.lane===lane1&&!o.hit1){o.hit1=true;hit(o,1)}
+        else if(o.lane===lane2&&!o.hit2){o.hit2=true;hit(o,2)}
+      }
+      if(o.y>103&&!o.removed){o.el.remove();o.removed=true}
+    }
+    obs=obs.filter(o=>!o.removed);
+    raf=requestAnimationFrame(frame);
+  }
+  function end(){
+    if(finished)return;finished=true;running=false;cancelAnimationFrame(raf);removeEventListener('keydown',key,true);
+    obs.forEach(o=>o.el.remove());state.raceStop=null;
+    const gems=Math.max(2,Math.floor(score/3));
+    state.profile.gems+=gems;state.coop.profile.gems+=gems;
+    state.profile.coopWins=(state.profile.coopWins||0)+1;state.coop.profile.coopWins=(state.coop.profile.coopWins||0)+1;
+    completeQuest('race');v51CompleteQuestForProfile(state.coop.profile,'race');
+    addXP(12+score,'Team race');v5AddXPToProfile(state.coop.profile,12+score);
+    unlockSticker('Racing Rookie');if(!state.coop.profile.stickers.includes('Racing Rookie'))state.coop.profile.stickers.push('Racing Rookie');
+    v51AwardTeamActivity('race','DreamLink Team Raceway');
+    saveProfile();saveGuestProfile();updateHUD();Audio.success();confetti();
+    openModal('<h2>🏁 TEAM FINISH!</h2><div class="creature-pop">🏆🏎️🚙</div><p style="text-align:center;font-size:21px;font-weight:1000">Team score: '+score+' ⭐<br>Both explorers earned '+gems+' 💎!</p><button id="raceDone" class="big-btn primary">TEAM VICTORY!</button>');
+    $('#raceDone').onclick=closeModal;
+  }
+  const key=e=>{
+    if(!running)return;
+    const k=e.key.toLowerCase();
+    if(e.key==='ArrowLeft'||k==='a'){e.preventDefault();setLane(1,-1)}
+    if(e.key==='ArrowRight'||k==='d'){e.preventDefault();setLane(1,1)}
+    if(k==='j'){e.preventDefault();setLane(2,-1)}
+    if(k==='l'){e.preventDefault();setLane(2,1)}
+  };
+  addEventListener('keydown',key,true);
+  state.raceStop=()=>{running=false;cancelAnimationFrame(raf);removeEventListener('keydown',key,true);obs.forEach(o=>o.el.remove())};
+  $('#raceStart').onclick=()=>{
+    if(running)return;running=true;$('#raceStart').disabled=true;Audio.success();
+    let tick=setInterval(()=>{
+      if(!running){clearInterval(tick);return}
+      time--;if($('#raceTime'))$('#raceTime').textContent=time;
+      if(time<=0){clearInterval(tick);end()}
+    },1000);
+    raf=requestAnimationFrame(frame);
+  };
+}
+
+const openMagicLessonSingleV51=openMagicLesson;
+openMagicLesson=function(){
+  if(state.coop.enabled)openCoopMagicLesson();
+  else openMagicLessonSingleV51();
+};
+
+function openCoopMagicLesson(){
+  const symbols=['✨','🌟','💜','🔮'];
+  const len=6;
+  const seq=Array.from({length:len},(_,i)=>({symbol:symbols[Math.floor(Math.random()*symbols.length)],player:i%2+1}));
+  let pos=0,showing=true;
+  openModal(
+    '<h2>🪄 DreamLink Magic Lesson</h2>'+
+    '<p class="coop-intro">Take turns! Pink steps belong to Player 1. Aqua steps belong to Player 2.</p>'+
+    '<div id="teamSpellSeq" class="team-spell-seq">'+seq.map(x=>'<span class="p'+x.player+'">'+x.symbol+'</span>').join('')+'</div>'+
+    '<div class="team-magic-grid">'+
+      '<div class="team-role p1"><strong>Player 1</strong><div id="teamMagicP1" class="spell-choice-row">'+symbols.map(x=>'<button class="spell-choice" data-symbol="'+x+'" data-player="1">'+x+'</button>').join('')+'</div></div>'+
+      '<div class="team-role p2"><strong>Player 2</strong><div id="teamMagicP2" class="spell-choice-row">'+symbols.map(x=>'<button class="spell-choice" data-symbol="'+x+'" data-player="2">'+x+'</button>').join('')+'</div></div>'+
+    '</div>'
+  );
+  $('.team-magic-grid button').forEach(b=>b.disabled=true);
+  setTimeout(()=>{
+    if(!$('#teamSpellSeq'))return;
+    showing=false;$('#teamSpellSeq').innerHTML=seq.map((x,i)=>'<span class="p'+x.player+'">'+(i===0?'❔':'○')+'</span>').join('');
+    $('.team-magic-grid button').forEach(b=>b.disabled=false);
+  },1900);
+  function render(){
+    if(!$('#teamSpellSeq'))return;
+    $('#teamSpellSeq').innerHTML=seq.map((x,i)=>{
+      const mark=i<pos?'✅':i===pos?'❔':'○';
+      return '<span class="p'+x.player+'">'+mark+'</span>';
+    }).join('');
+  }
+  function choose(player,symbol){
+    if(showing||pos>=seq.length)return;
+    const need=seq[pos];
+    if(player!==need.player){
+      Audio.tone(180,.1,'sawtooth');toastQuest('Take Turns!','It is Player '+need.player+'’s magic step.');return;
+    }
+    if(symbol===need.symbol){
+      pos++;Audio.tone(560+pos*70,.08,'triangle');render();
+      if(pos===seq.length)finish();
+    }else{
+      pos=0;Audio.tone(160,.14,'sawtooth');render();toastQuest('Magic Reset ✨','Good try! Start the team pattern again.');
+    }
+  }
+  function finish(){
+    const gp=state.coop.profile;
+    for(const p of [state.profile,gp]){
+      if(!p.spells.includes('sparkle'))p.spells.push('sparkle');
+      p.teamMagic=(p.teamMagic||0)+1;
+    }
+    completeQuest('magic');v51CompleteQuestForProfile(gp,'magic');
+    addXP(12,'Team magic');v5AddXPToProfile(gp,12);
+    v51AwardTeamActivity('magic','DreamLink Magic Lesson');
+    saveProfile();saveGuestProfile();updateHUD();Audio.success();confetti();
+    setTimeout(()=>{
+      openModal('<h2>✨ DREAMLINK MAGIC!</h2><div class="creature-pop">🪄🤝🌈</div><p style="text-align:center;font-weight:1000">You completed the pattern together! Both explorers awakened Sparkle Magic.</p><button id="teamMagicDone" class="big-btn primary">CAST TOGETHER!</button>');
+      $('#teamMagicDone').onclick=()=>{closeModal();for(let i=0;i<50;i++)spawnBurst((state.player.x+state.coop.player.x)/2+rand(-60,60),(state.player.y+state.coop.player.y)/2+rand(-40,40),['#fff36b','#ff77cc','#6ee7ff'][i%3]);showCombo('DREAMLINK MAGIC! ✨')};
+    },250);
+  }
+  $('.team-magic-grid button').forEach(b=>b.onclick=()=>choose(+b.dataset.player,b.dataset.symbol));
+}
+
+const openSanctuarySingleV51=openSanctuary;
+openSanctuary=function(){
+  if(!state.coop.enabled){openSanctuarySingleV51();return}
+  const rescued=CREATURES.filter(c=>state.profile.creatures.includes(c.id)||state.coop.profile.creatures.includes(c.id));
+  openModal(
+    '<h2>🐾 Team DreamCreature Sanctuary</h2>'+
+    '<div class="sanctuary-scene">'+(rescued.length?rescued.map(c=>'<span title="'+c.name+'">'+c.icon+'</span>').join(''):'<strong>Rescue DreamCreatures together and they will play here!</strong>')+'</div>'+
+    '<p style="text-align:center;font-weight:900">'+rescued.length+'/'+CREATURES.length+' team friends discovered</p>'+
+    (rescued.length?'<button id="sanctuaryTeamPlay" class="big-btn primary">🎉 TEAM CREATURE PARTY</button>':'')
+  );
+  if($('#sanctuaryTeamPlay'))$('#sanctuaryTeamPlay').onclick=()=>{
+    state.profile.buddyLevel=Math.min(20,(state.profile.buddyLevel||1)+1);
+    state.coop.profile.buddyLevel=Math.min(20,(state.coop.profile.buddyLevel||1)+1);
+    addXP(5,'Team sanctuary');v5AddXPToProfile(state.coop.profile,5);
+    saveProfile();saveGuestProfile();updateHUD();confetti();closeModal();showCombo('TEAM CREATURE PARTY! 🎉');
+  };
+}
+
+const openCoopCenterV51=openCoopCenter;
+openCoopCenter=function(){
+  openCoopCenterV51();
+  if(state.coop.enabled&&$('#modalCard')){
+    const guide=$('#modalCard .coop-guide-grid');
+    if(guide)guide.insertAdjacentHTML('beforeend',
+      '<div>🏎️<strong>Team Raceway</strong><small>Two karts, one team score.</small></div>'+
+      '<div>🪄<strong>Team Magic</strong><small>Take turns completing patterns.</small></div>'+
+      '<div>🐾<strong>Team Rescue</strong><small>Both kids high-five new creatures.</small></div>'+
+      '<div>⚙️<strong>Team Repair</strong><small>Two roles power the workshop.</small></div>'
+    );
+  }
+};
 
 showScreen('titleScreen');
 })();
