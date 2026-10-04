@@ -43,6 +43,8 @@ jobs:
         run: python3 tools/check_coop_contract.py
       - name: Workflow security contract
         run: python3 tools/check_workflow_security.py
+      - name: Story chapter contract
+        run: python3 tools/check_story_contract.py
 
   child-safety:
     name: DreamShield Child Safety

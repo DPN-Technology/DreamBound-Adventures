@@ -1176,5 +1176,381 @@ openCoopCenter=function(){
   }
 };
 
+
+// ===== DreamBound v0.6.0-dev — HOME & MAGIC STORY CHAPTER =====
+const V6_DREAM_PETALS=[
+  {id:'petal-home-1',x:610,y:650},
+  {id:'petal-home-2',x:950,y:365},
+  {id:'petal-home-3',x:515,y:895}
+];
+
+STICKERS.push(['🌟','Star Keeper']);
+QUEST_TARGETS['home-magic']=[775,485];
+
+const defaultQuestsV6=defaultQuests;
+defaultQuests=function(){
+  const qs=defaultQuestsV6();
+  if(!qs.some(q=>q.id==='home-magic'))qs.push({
+    id:'home-magic',
+    title:'The Sleeping Star',
+    text:'Help Pip and Mira wake the Dream Lantern between Home Valley and Magic Grove.',
+    done:false,reward:15,xp:50,progress:0,target:5,icon:'🌟'
+  });
+  return qs;
+};
+
+function v6EnsureProfile(){
+  if(!state.profile)return;
+  state.profile.avatarV6=state.profile.avatarV6||{hair:'classic',accessory:'none'};
+  state.profile.storyV6=state.profile.storyV6||{step:0,petals:[],restored:false,chapterComplete:false};
+  state.profile.storyV6.petals=state.profile.storyV6.petals||[];
+  state.profile.homeUpgrades=state.profile.homeUpgrades||[];
+  if(!state.profile.quests.some(q=>q.id==='home-magic')){
+    state.profile.quests.push({
+      id:'home-magic',
+      title:'The Sleeping Star',
+      text:'Help Pip and Mira wake the Dream Lantern between Home Valley and Magic Grove.',
+      done:false,reward:15,xp:50,progress:state.profile.storyV6.step||0,target:5,icon:'🌟'
+    });
+  }
+  const q=state.profile.quests.find(q=>q.id==='home-magic');
+  if(q&&!q.done)q.progress=Math.min(5,state.profile.storyV6.step||0);
+}
+
+function v6StoryStep(step,message){
+  v6EnsureProfile();
+  const story=state.profile.storyV6;
+  if(step<=story.step)return;
+  story.step=step;
+  const q=state.profile.quests.find(q=>q.id==='home-magic');
+  if(q&&!q.done)q.progress=Math.min(5,step);
+  saveProfile();updateQuestTracker();
+  if(message)toastQuest('The Sleeping Star 🌟',message);
+}
+
+function v6StoryTarget(){
+  if(!state.profile)return null;
+  v6EnsureProfile();
+  const story=state.profile.storyV6;
+  if(story.chapterComplete)return null;
+  if(story.step===0)return [775,485];
+  if(story.step===1){
+    const p=V6_DREAM_PETALS.find(x=>!story.petals.includes(x.id));
+    return p?[p.x,p.y]:[355,430];
+  }
+  if(story.step===2)return [355,430];
+  if(story.step===3)return [1510,530];
+  return [1710,390];
+}
+
+function v6UpdateStoryTarget(){
+  const target=v6StoryTarget();
+  if(target)QUEST_TARGETS['home-magic']=target;
+}
+
+const initWorldV6=initWorld;
+initWorld=function(){
+  v6EnsureProfile();
+  initWorldV6();
+  if(!state.interactables.some(x=>x.action==='tower')){
+    state.interactables.push({
+      id:'moonflower-door',
+      name:'Moonflower Tower',
+      face:'🚪',
+      x:1710,y:438,
+      text:'The Moonflower Tower hums with sleeping starlight.',
+      action:'tower'
+    });
+  }
+  state.storyPetals=V6_DREAM_PETALS.map(p=>({...p,taken:state.profile.storyV6.petals.includes(p.id)}));
+  v6UpdateStoryTarget();
+};
+
+function v6DrawDreamPetals(){
+  if(!state.profile||!state.storyPetals||state.profile.storyV6.step!==1)return;
+  const now=performance.now()/500;
+  for(const p of state.storyPetals){
+    if(p.taken)continue;
+    ctx.save();
+    ctx.translate(p.x,p.y+Math.sin(now+p.x*.01)*7);
+    ctx.shadowBlur=22;ctx.shadowColor='#ff8ddd';
+    v4Ellipse(0,0,29,29,'rgba(255,255,255,.72)');
+    ctx.font='36px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🌸',0,0);
+    ctx.strokeStyle='#fff7a8';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,37+Math.sin(now*1.7)*4,0,Math.PI*2);ctx.stroke();
+    ctx.restore();
+  }
+}
+
+function v6CheckDreamPetals(){
+  if(!state.profile||state.profile.storyV6.step!==1||!state.storyPetals)return;
+  const story=state.profile.storyV6;
+  for(const p of state.storyPetals){
+    if(p.taken)continue;
+    const p1=Math.hypot(state.player.x-p.x,state.player.y-p.y)<48;
+    const p2=state.coop?.enabled&&Math.hypot(state.coop.player.x-p.x,state.coop.player.y-p.y)<48;
+    if(!p1&&!p2)continue;
+    p.taken=true;
+    if(!story.petals.includes(p.id))story.petals.push(p.id);
+    Audio.collect();spawnBurst(p.x,p.y,'#ff8ddd');spawnBurst(p.x,p.y,'#fff6a8');
+    showCombo('DREAMPETAL! 🌸');
+    addXP(3,'DreamPetal');
+    saveProfile();
+    const left=3-story.petals.length;
+    if(left>0){
+      toastQuest('DreamPetal Found! 🌸',left+' more glowing petal'+(left===1?'':'s')+' to find.');
+      v6UpdateStoryTarget();
+    }else{
+      v6StoryStep(2,'All three DreamPetals are glowing. Take them home and find the Star Compass.');
+      confetti();speak('All three DreamPetals found! Visit your Dream Home.');
+    }
+  }
+}
+
+const drawCollectiblesV6=drawCollectibles;
+drawCollectibles=function(){drawCollectiblesV6();v6DrawDreamPetals()};
+
+const updateLivingWorldV6=updateLivingWorld;
+updateLivingWorld=function(dt){
+  updateLivingWorldV6(dt);
+  v6EnsureProfile();v6CheckDreamPetals();v6UpdateStoryTarget();
+};
+
+function v6DrawStoryWorld(){
+  if(!state.profile)return;
+  v6EnsureProfile();
+  if(state.profile.storyV6.restored){
+    ctx.save();
+    ctx.translate(570,455);
+    ctx.shadowBlur=28;ctx.shadowColor='#fff36b';
+    v4Ellipse(0,0,25,25,'rgba(255,245,130,.7)');
+    ctx.font='43px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🏮',0,0);
+    for(let i=0;i<5;i++){
+      const a=performance.now()/900+i*1.256;
+      v4Ellipse(Math.cos(a)*38,Math.sin(a)*22,3,3,'#fff7b0');
+    }
+    ctx.restore();
+  }
+}
+
+const drawWorldV6=drawWorld;
+drawWorld=function(){drawWorldV6();v6DrawStoryWorld()};
+
+function v6DrawAvatarStyle(c,x,y,s,profile){
+  if(!profile)return;
+  const av=profile.avatarV6||{hair:'classic',accessory:'none'};
+  c.save();c.translate(x,y);
+  if(av.hair==='spikes'){
+    c.fillStyle='#513347';c.beginPath();
+    for(let i=-2;i<=2;i++){const px=i*8*s;c.moveTo(px-5*s,-37*s);c.lineTo(px,-55*s-(Math.abs(i)%2)*4*s);c.lineTo(px+6*s,-37*s)}
+    c.fill();
+  }else if(av.hair==='puffs'){
+    c.fillStyle='#5b3b50';c.beginPath();c.arc(-19*s,-39*s,10*s,0,7);c.arc(19*s,-39*s,10*s,0,7);c.fill();
+  }else if(av.hair==='swoop'){
+    c.fillStyle='#52354a';c.beginPath();c.ellipse(-6*s,-41*s,24*s,9*s,-.18,0,7);c.fill();
+  }
+  if(av.accessory==='star-glasses'){
+    c.strokeStyle='#7358e6';c.lineWidth=3*s;c.beginPath();c.arc(-8*s,-24*s,6*s,0,7);c.arc(8*s,-24*s,6*s,0,7);c.moveTo(-2*s,-24*s);c.lineTo(2*s,-24*s);c.stroke();
+  }else if(av.accessory==='explorer-cap'){
+    c.font=(27*s)+'px serif';c.textAlign='center';c.fillText('🧢',0,-50*s);
+  }else if(av.accessory==='magic-bow'){
+    c.font=(24*s)+'px serif';c.textAlign='center';c.fillText('🎀',18*s,-43*s);
+  }else if(av.accessory==='dino-hood'){
+    c.font=(33*s)+'px serif';c.textAlign='center';c.fillText('🦖',0,-51*s);
+  }else if(av.accessory==='star-crown'){
+    c.font=(27*s)+'px serif';c.textAlign='center';c.fillText('👑',0,-51*s);
+  }
+  c.restore();
+}
+
+const drawPlayerV6=drawPlayer;
+drawPlayer=function(){
+  drawPlayerV6();
+  if(!state.profile)return;
+  v6DrawAvatarStyle(ctx,state.player.x,state.player.y-(state.vehicle?13:0),1,state.profile);
+  if(state.coop?.enabled&&state.coop.profile){
+    v6DrawAvatarStyle(ctx,state.coop.player.x,state.coop.player.y,1,state.coop.profile);
+  }
+};
+
+function openAvatarStudio(){
+  v6EnsureProfile();
+  const av=state.profile.avatarV6;
+  const hairs=[
+    ['classic','Classic'],['spikes','Star Spikes'],['puffs','Cloud Puffs'],['swoop','Adventure Swoop']
+  ];
+  const accessories=[
+    ['none','✨','None'],['star-glasses','🤓','Star Glasses'],['explorer-cap','🧢','Explorer Cap'],
+    ['magic-bow','🎀','Magic Bow'],['dino-hood','🦖','Dino Hood'],['star-crown','👑','Star Crown']
+  ];
+  openModal(
+    '<h2>🎨 DreamBound Avatar Studio</h2>'+
+    '<div class="avatar-studio-preview" style="--avatar-color:'+state.profile.color+'">'+
+      '<div class="avatar-preview-head"><span class="avatar-hair-label">'+escapeHTML(av.hair)+'</span><span class="avatar-accessory-preview">'+(accessories.find(x=>x[0]===av.accessory)?.[1]||'✨')+'</span></div>'+
+      '<strong>'+escapeHTML(state.profile.name)+'</strong><small>Changes appear instantly in the world.</small>'+
+    '</div>'+
+    '<h3 class="studio-label">Hair</h3><div class="studio-options">'+hairs.map(x=>'<button class="studio-choice '+(av.hair===x[0]?'active':'')+'" data-hair="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+    '<h3 class="studio-label">Accessories</h3><div class="studio-options">'+accessories.map(x=>'<button class="studio-choice '+(av.accessory===x[0]?'active':'')+'" data-accessory="'+x[0]+'">'+x[1]+' '+x[2]+'</button>').join('')+'</div>'+
+    '<button id="studioDone" class="big-btn primary">✨ SAVE MY LOOK</button>'
+  );
+  $('.studio-choice[data-hair]').forEach(b=>b.onclick=()=>{av.hair=b.dataset.hair;saveProfile();openAvatarStudio()});
+  $('.studio-choice[data-accessory]').forEach(b=>b.onclick=()=>{av.accessory=b.dataset.accessory;saveProfile();openAvatarStudio()});
+  $('#studioDone').onclick=()=>{saveProfile();closeModal();showCombo('NEW LOOK! ✨');Audio.success()};
+}
+
+function v6AddHomeExtras(){
+  if(!$('#modalCard')||!state.profile)return;
+  v6EnsureProfile();
+  const actions=$('#modalCard .room-actions');
+  if(actions&&!$('#avatarStudioBtn')){
+    actions.insertAdjacentHTML('beforeend','<button id="avatarStudioBtn">🎨 Avatar Studio</button>');
+    $('#avatarStudioBtn').onclick=openAvatarStudio;
+  }
+  const room=$('#homeRoomWrap');
+  if(room&&state.profile.storyV6.restored&&!$('#dreamLanternHome')){
+    room.insertAdjacentHTML('beforeend','<div id="dreamLanternHome" class="dream-lantern-home">🏮<span>Dream Lantern</span></div>');
+  }
+  if(state.profile.storyV6.step===2&&!$('#findCompassBtn')){
+    const anchor=room||$('#modalCard h2');
+    anchor.insertAdjacentHTML('afterend',
+      '<div class="story-card home-story-card"><span>🌸🧭</span><div><strong>The DreamPetals are humming!</strong><small>Search your room for the old Star Compass.</small></div><button id="findCompassBtn">FIND STAR COMPASS</button></div>'
+    );
+    $('#findCompassBtn').onclick=()=>{
+      v6StoryStep(3,'You found the Star Compass! Bring it to Mira in Magic Grove.');
+      Audio.success();confetti();closeModal();showCombo('STAR COMPASS! 🧭');speak('You found the Star Compass. Take it to Mira in Magic Grove.');
+    };
+  }
+}
+
+const openHomeBaseV6=openHomeBase;
+openHomeBase=function(){openHomeBaseV6();v6AddHomeExtras()};
+
+function openMoonflowerTower(){
+  v6EnsureProfile();
+  const story=state.profile.storyV6;
+  let mission='';
+  if(story.step<3)mission='<div class="tower-note">🔒 The highest chamber is sleeping. Pip may know what happened to the missing starlight.</div>';
+  else if(story.step===3)mission='<div class="tower-note">🧭 The Star Compass points upward. Talk to Mira outside before entering the Star Chamber.</div>';
+  else if(story.step===4)mission='<button id="openStarChamber" class="big-btn primary">🌟 ENTER THE STAR CHAMBER</button>';
+  else mission='<div class="tower-note restored">🌟 The Dream Lantern is awake. Magic Grove sparkles because of you!</div>';
+  openModal(
+    '<h2>🪄 Moonflower Tower</h2>'+
+    '<div class="tower-interior">'+
+      '<div class="tower-window">🌙</div><div class="tower-shelf">📚 🔮 🧪</div>'+
+      '<div class="tower-crystals"><span>💎</span><span>🔷</span><span>💜</span></div>'+
+      '<div class="tower-rug">✦</div><div class="tower-mira">🧚</div>'+
+    '</div>'+
+    '<p class="coop-intro">An enterable magical interior filled with crystals, books, moonlight and the sleeping Star Chamber.</p>'+
+    mission+
+    '<div class="room-actions"><button id="towerLesson">🪄 Magic Lesson</button><button id="towerLeave">🚪 Leave Tower</button></div>'
+  );
+  $('#towerLesson').onclick=()=>{closeModal();openMagicLesson()};
+  $('#towerLeave').onclick=closeModal;
+  if($('#openStarChamber'))$('#openStarChamber').onclick=v6OpenStarChamber;
+}
+
+function v6OpenStarChamber(){
+  const symbols=['🌙','⭐','💜','✨'];
+  const len=difficulty()===0?3:difficulty()===1?4:5;
+  const seq=Array.from({length:len},()=>symbols[Math.floor(Math.random()*symbols.length)]);
+  let pos=0;
+  openModal(
+    '<h2>🌟 The Sleeping Star Chamber</h2>'+
+    '<p class="coop-intro">Remember the starlight pattern to wake the Dream Lantern.</p>'+
+    '<div id="v6StarSeq" class="star-chamber-sequence">'+seq.join(' ')+'</div>'+
+    '<div id="v6StarChoices" class="spell-choice-row hidden">'+symbols.map(x=>'<button class="spell-choice">'+x+'</button>').join('')+'</div>'+
+    '<div class="star-lantern-sleeping">🏮<span>sleeping...</span></div>'
+  );
+  setTimeout(()=>{
+    if(!$('#v6StarSeq'))return;
+    $('#v6StarSeq').textContent='✦ '.repeat(len);
+    $('#v6StarChoices').classList.remove('hidden');
+  },1600);
+  $('#v6StarChoices .spell-choice').forEach(b=>b.onclick=()=>{
+    if(b.textContent===seq[pos]){
+      pos++;Audio.tone(520+pos*95,.08,'triangle');
+      $('#v6StarSeq').textContent='✅ '.repeat(pos)+'✦ '.repeat(len-pos);
+      if(pos===len)setTimeout(v6RestoreDreamLantern,320);
+    }else{
+      pos=0;Audio.tone(170,.13,'sawtooth');
+      $('#v6StarSeq').textContent='✦ '.repeat(len);
+      toastQuest('The star is still dreaming...','Good try! Start the starlight pattern again.');
+    }
+  });
+}
+
+function v6RestoreDreamLantern(){
+  v6EnsureProfile();
+  const story=state.profile.storyV6;
+  if(story.chapterComplete)return;
+  story.restored=true;story.chapterComplete=true;story.step=5;
+  if(!state.profile.homeUpgrades.includes('dream-lantern'))state.profile.homeUpgrades.push('dream-lantern');
+  const q=state.profile.quests.find(q=>q.id==='home-magic');
+  if(q&&!q.done){q.progress=5;completeQuest('home-magic')}
+  unlockSticker('Star Keeper');
+  state.profile.gems=(state.profile.gems||0)+8;
+  saveProfile();updateHUD();Audio.success();confetti();
+  openModal(
+    '<h2>🌟 THE DREAM LANTERN IS AWAKE!</h2>'+
+    '<div class="chapter-finale">🏡 ✨ 🏮 ✨ 🪄</div>'+
+    '<p style="text-align:center;font-size:21px;font-weight:1000">Home Valley and Magic Grove are DreamLinked again!</p>'+
+    '<div class="chapter-rewards"><span>⭐ 15 quest stars</span><span>💎 +8 gems</span><span>🎟️ Star Keeper</span><span>🏮 Dream Home Lantern</span></div>'+
+    '<button id="v6FinaleDone" class="big-btn primary">CONTINUE THE ADVENTURE</button>'
+  );
+  $('#v6FinaleDone').onclick=()=>{closeModal();showCombo('STAR KEEPER! 🌟');speak('The Dream Lantern is awake! Home Valley and Magic Grove are shining together.')};
+}
+
+const talkToV6=talkTo;
+talkTo=function(n){
+  talkToV6(n);
+  setTimeout(()=>{
+    if(!state.talking||!state.profile)return;
+    v6EnsureProfile();
+    const story=state.profile.storyV6;
+    if(n.action==='pip'){
+      if(story.step===0)addTalkAction('🌟 THE SLEEPING STAR',()=>{
+        closeTalk();v6StoryStep(1,'Pip says three DreamPetals fell across Home Valley. Find all three!');
+        state.storyPetals=V6_DREAM_PETALS.map(p=>({...p,taken:story.petals.includes(p.id)}));
+        v6UpdateStoryTarget();showCombo('STORY STARTED! 🌟');speak('Find three glowing DreamPetals around Home Valley.');
+      });
+      else if(story.step===1)addTalkAction('🌸 WHERE ARE THE PETALS?',()=>{closeTalk();toastQuest('Pip’s Hint','Look near the playground, the eastern hill, and the Wishing Well path.')});
+    }
+    if(n.action==='magic'&&story.step===3)addTalkAction('🧭 SHOW MIRA THE STAR COMPASS',()=>{
+      closeTalk();v6StoryStep(4,'Mira opened the Moonflower Tower. Enter the Star Chamber and wake the Dream Lantern.');
+      openMoonflowerTower();
+    });
+    if(n.action==='tower')addTalkAction('🚪 ENTER MOONFLOWER TOWER',()=>{closeTalk();openMoonflowerTower()});
+  },100);
+};
+
+function v6DrawCreatureAnimated(c,i){
+  const t=performance.now()/1000;
+  const bob=Math.sin(t*3+i)*6;
+  const sway=Math.sin(t*1.7+i*.8)*.08;
+  const near=Math.hypot(state.player.x-c.x,state.player.y-c.y)<155;
+  ctx.save();ctx.translate(c.x,c.y+bob);ctx.rotate(sway);
+  ctx.shadowBlur=near?20:10;ctx.shadowColor=near?'#ff9cdc':'#ffffff';
+  v4Ellipse(0,4,33,30,near?'rgba(255,244,252,.88)':'rgba(255,255,255,.66)');
+  ctx.font='42px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(c.icon,0,0);
+  ctx.font='16px serif';ctx.globalAlpha=.75+.25*Math.sin(t*2+i);ctx.fillText(i%2?'✨':'💖',24,-28);ctx.globalAlpha=1;
+  ctx.restore();
+  v4Shadow(c.x,c.y+29,22,7,.13);
+  if(near){
+    ctx.save();ctx.font='1000 13px sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.strokeStyle='#5c4c91';ctx.lineWidth=5;ctx.strokeText(c.name,c.x,c.y-52+bob);ctx.fillText(c.name,c.x,c.y-52+bob);ctx.restore();
+  }
+}
+
+drawCreatures=function(){state.creatures.forEach(v6DrawCreatureAnimated)};
+
+const openHowV6=openHow;
+openHow=function(){
+  openHowV6();
+  const grid=$('#modalCard .modal-grid');
+  if(grid)grid.insertAdjacentHTML('afterbegin',
+    '<div class="menu-tile featured"><strong>🌟 The Sleeping Star</strong><small>A real story chapter now connects Home Valley, your Dream Home and Moonflower Tower.</small></div>'+
+    '<div class="menu-tile featured"><strong>🎨 Avatar Studio</strong><small>Customize hair and playful accessories from your Dream Home.</small></div>'+
+    '<div class="menu-tile featured"><strong>🚪 Enterable Tower</strong><small>Step inside Moonflower Tower for lessons and the Star Chamber.</small></div>'
+  );
+};
+
 showScreen('titleScreen');
 })();
