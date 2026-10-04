@@ -533,7 +533,7 @@ function openCoopCenter(){
     '<p class="coop-intro">Pick another saved explorer. Both kids will play together in the same DreamBound world.</p>'+
     (cards||'<div class="empty-coop">🌟 Create another child profile first, then come back here to start co-op.</div>')+
     '<div class="coop-controls-card"><strong>Player 1</strong><span>WASD / Arrows + E/Space</span><strong>Player 2</strong><span>I/J/K/L + O</span></div>');
-  $('.coop-profile-card').forEach(b=>b.onclick=()=>joinCoop(+b.dataset.slot));
+  $$('.coop-profile-card').forEach(b=>b.onclick=()=>joinCoop(+b.dataset.slot));
 }
 
 function joinCoop(slot){
