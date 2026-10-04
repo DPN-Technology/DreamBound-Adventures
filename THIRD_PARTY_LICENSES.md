@@ -4,22 +4,24 @@ DreamBound Adventures is intentionally lightweight and local-first.
 
 ## Runtime dependency status
 
-**Current v0.4.1 runtime:** no third-party JavaScript framework, CDN script, analytics SDK, ad SDK, remote font, remote game service or packaged runtime library is required by the game source in this repository.
+**Current runtime:** no third-party JavaScript framework, CDN script, analytics SDK, ad SDK, remote font, remote game service or packaged runtime library is required by the game source in this repository.
 
 The game primarily uses standard browser APIs, HTML, CSS and JavaScript.
 
 ## Development / CI tooling
 
-The GitHub repository uses automation maintained by third parties or GitHub:
+The GitHub repository uses automation maintained by third parties or GitHub. Workflow references are pinned to immutable commit SHAs; human-readable versions are retained as comments in the workflow files.
 
-| Component | Purpose | Distribution |
-| --- | --- | --- |
-| actions/checkout | Repository checkout in CI | GitHub Action |
-| actions/setup-node | Node.js setup for validation | GitHub Action |
-| actions/upload-artifact | Release artifact retention | GitHub Action |
-| github/codeql-action | CodeQL security analysis / SARIF upload | GitHub Action |
-| actions/dependency-review-action | Pull request dependency review | GitHub Action |
-| ossf/scorecard-action | OpenSSF repository security posture analysis | GitHub Action |
+| Component | Version line | Purpose | Runtime-shipped? |
+| --- | --- | --- | --- |
+| actions/checkout | v7 | Repository checkout | No |
+| actions/setup-node | v7 | Node.js setup | No |
+| actions/upload-artifact | v7 | Release artifact retention | No |
+| actions/download-artifact | v8.0.1 | Release artifact retrieval | No |
+| actions/attest-build-provenance | v4.2.2 | Release provenance attestation | No |
+| github/codeql-action | v4 | CodeQL analysis / SARIF upload | No |
+| actions/dependency-review-action | v5.0.0 | Pull request dependency review | No |
+| ossf/scorecard-action | v2.4.4 | OpenSSF repository security posture | No |
 
 These tools run in GitHub Actions and are **not shipped as part of the DreamBound game runtime**.
 

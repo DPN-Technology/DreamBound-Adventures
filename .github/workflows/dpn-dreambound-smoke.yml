@@ -17,25 +17,27 @@ jobs:
     timeout-minutes: 8
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Start local game server
         shell: bash
         run: |
-          python3 -m http.server 4173 > /tmp/dreambound-http.log 2>&1 &
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/dreambound-http.log 2>&1 &
           echo $! > /tmp/dreambound-http.pid
       - name: Verify game shell
         shell: bash
         run: |
           for i in {1..15}; do
-            if curl -fsS http://127.0.0.1:4173/index.html -o /tmp/index.html; then break; fi
+            if curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/index.html -o /tmp/index.html; then break; fi
             sleep 1
           done
-          curl -fsS http://127.0.0.1:4173/game.js -o /tmp/game.js
-          curl -fsS http://127.0.0.1:4173/styles.css -o /tmp/styles.css
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/game.js -o /tmp/game.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/styles.css -o /tmp/styles.css
           grep -qi "DreamBound" /tmp/index.html
           test -s /tmp/game.js
           test -s /tmp/styles.css
-          echo "DreamBound local runtime shell: reachable"
+          echo "DreamBound local runtime shell: reachable on loopback only"
       - name: Stop local server
         if: always()
         shell: bash

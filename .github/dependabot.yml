@@ -12,3 +12,10 @@ updates:
       - "security"
     commit-message:
       prefix: "chore(actions)"
+    groups:
+      routine-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
