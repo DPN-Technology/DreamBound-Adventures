@@ -7,9 +7,16 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-RUNTIME = [ROOT / "index.html", ROOT / "styles.css", ROOT / "game.js", ROOT / "dom-collection-bridge.js", ROOT / "vnext.html", ROOT / "src/vnext/core.js", ROOT / "src/vnext/input.js", ROOT / "src/vnext/space-center.js", ROOT / "src/vnext/ui.js", ROOT / "src/vnext/lunar-guardian.js", ROOT / "src/vnext/engine/fx.js", ROOT / "src/vnext/engine/audio.js", ROOT / "src/vnext/engine/vehicle.js", ROOT / "src/vnext/engine/scenes.js", ROOT / "src/vnext/engine/quests.js", ROOT / "src/vnext/engine/companion.js", ROOT / "src/vnext/engine/world-polish.js", ROOT / "src/vnext/engine/settings.js", ROOT / "src/vnext/engine/world-events.js", ROOT / "src/vnext/engine/npcs.js", ROOT / "src/vnext/engine/base-builder.js", ROOT / "src/vnext/engine/codex.js", ROOT / "src/vnext/engine/cinematic.js", ROOT / "src/vnext/engine/adventure-director.js", ROOT / "src/vnext/engine/achievements.js", ROOT / "src/vnext/bootstrap.js"]
+RUNTIME = [
+    ROOT / "index.html",
+    ROOT / "vnext.html",
+    ROOT / "vnext.css",
+    ROOT / "safe-dom.js",
+    *sorted((ROOT / "src" / "vnext").rglob("*.js")),
+    *sorted((ROOT / "src" / "vnext").rglob("*.css")),
+]
 REQUIRED = [
-    "index.html", "styles.css", "game.js", "profile-sanitizer.js", "dom-collection-bridge.js", "serve_dreambound.py", "vnext.html", "vnext.css", "src/vnext/core.js", "src/vnext/input.js", "src/vnext/space-center.js", "src/vnext/ui.js", "src/vnext/lunar-guardian.js", "src/vnext/engine/fx.js", "src/vnext/engine/audio.js", "src/vnext/engine/vehicle.js", "src/vnext/engine/scenes.js", "src/vnext/engine/quests.js", "src/vnext/engine/companion.js", "src/vnext/engine/world-polish.js", "src/vnext/engine/settings.js", "src/vnext/engine/world-events.js", "src/vnext/engine/npcs.js", "src/vnext/engine/base-builder.js", "src/vnext/engine/codex.js", "src/vnext/engine/cinematic.js", "src/vnext/engine/adventure-director.js", "src/vnext/engine/achievements.js", "src/vnext/bootstrap.js",
+    "index.html", "safe-dom.js", "serve_dreambound.py", "vnext.html", "vnext.css", "src/vnext/core.js", "src/vnext/input.js", "src/vnext/space-center.js", "src/vnext/ui.js", "src/vnext/lunar-guardian.js", "src/vnext/engine/fx.js", "src/vnext/engine/audio.js", "src/vnext/engine/vehicle.js", "src/vnext/engine/scenes.js", "src/vnext/engine/quests.js", "src/vnext/engine/companion.js", "src/vnext/engine/world-polish.js", "src/vnext/engine/settings.js", "src/vnext/engine/world-events.js", "src/vnext/engine/npcs.js", "src/vnext/engine/base-builder.js", "src/vnext/engine/codex.js", "src/vnext/engine/cinematic.js", "src/vnext/engine/adventure-director.js", "src/vnext/engine/achievements.js", "src/vnext/bootstrap.js",
     "PLAY-DREAMBOUND.bat", "PLAY-DREAMBOUND.ps1",
     "README.md", "SECURITY.md", "CONTRIBUTING.md",
     "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md", "docs/VNEXT_ARCHITECTURE.md",
@@ -37,8 +44,7 @@ SECRET_PATTERNS = {
     r"(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*[\"'][^\"']{12,}[\"']": "embedded credential-like value",
 }
 EXPECTED_TEXT = {
-    "index.html": ["DreamBound", "profile-sanitizer.js", "dom-collection-bridge.js", "Content-Security-Policy"],
-    "game.js": ["DreamBound", "localStorage", "DreamBoundSanitizer.sanitizeProfile"],
+    "index.html": ["DreamBound", "src/vnext/core.js", "src/vnext/bootstrap.js", "Content-Security-Policy"],
     "README.md": ["DreamShield", "DPN Technology"],
 }
 
