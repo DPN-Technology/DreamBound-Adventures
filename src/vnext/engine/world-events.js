@@ -16,7 +16,7 @@ function available(){
   return definitions.filter(d=>d.id!=='luma-parade'||DBX.state.lumaRescued);
 }
 function begin(){
-  const pool=available();if(!pool.length){runtime.nextIn=15;return};
+  const pool=available();if(!pool.length){runtime.nextIn=15;return;}
   const def=pool[runtime.serial++%pool.length];
   runtime.active=def;runtime.time=def.duration;runtime.nodes=makeNodes(def.id);
   DBX.audio?.magic();DBX.fx?.flash(.28);DBX.fx?.burst(DBX.state.player.x,DBX.state.player.y,def.title.split(' ')[0]);
@@ -47,9 +47,9 @@ function finish(success){
     const r=def.reward;
     DBX.state.stars+=r.stars;DBX.state.gems+=r.gems;DBX.state.moonCrystals+=r.crystals;DBX.state.eventWins+=1;
     if(!DBX.state.completedWorldEvents.includes(def.id))DBX.state.completedWorldEvents.push(def.id);
-    if(def.id==='meteor-shower'){DBX.state.meteorSamples=Math.min(99,(DBX.state.meteorSamples||0)+1);addCodex('Meteor shard')};
+    if(def.id==='meteor-shower'){DBX.state.meteorSamples=Math.min(99,(DBX.state.meteorSamples||0)+1);addCodex('Meteor shard');}
     if(def.id==='crystal-bloom')addCodex('Moon crystal');
-    if(def.id==='aurora-wave'){DBX.state.auroraSeen=true;addCodex('Aurora ribbon')};
+    if(def.id==='aurora-wave'){DBX.state.auroraSeen=true;addCodex('Aurora ribbon');}
     DBX.storage.save();DBX.events.emit('hud:update');DBX.audio?.success();DBX.fx?.flash(.5);
     DBX.ui?.toast(def.title+' complete','+'+r.stars+' ⭐  +'+r.gems+' 💎  +'+r.crystals+' crystal');
   }else{
