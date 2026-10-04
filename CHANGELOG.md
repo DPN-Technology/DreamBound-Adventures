@@ -1,3 +1,25 @@
+## v1.0.0-dev — Advanced World Engine
+
+- Promoted the modular runtime from preview status to the **Advanced World** first-class launch path.
+- Added reusable particle, reward burst, camera shake, flash, transition and lighting FX engine.
+- Added local procedural WebAudio engine with no external audio assets.
+- Added rover acceleration, friction, velocity limiting, boost, energy drain/recharge, trail FX and optional controller rumble.
+- Added first-controller analog stick/D-pad movement, A-button interaction and trigger/Shift boost.
+- Added a real scene manager and walkable Lunar Space Station coordinate space.
+- Added interactive station Hydroponics, Observatory, Discovery Lab, Power Core and Airlock.
+- Added data-driven quest definitions, automatic milestone rewards and an Explorer Mission Journal.
+- Added Luma companion AI with follow physics, moods, emotes and persistent bond progression.
+- Added moving clouds, Moon shimmer, route markers, interaction glows, live minimap and compass.
+- Added rover energy, Luma Bond and current-zone telemetry.
+- Added audio, reduced motion, high contrast and large-UI settings.
+- Added persistent sanitized v1.0 discoveries, completed quests, bond, scene visits, badges and total-distance state.
+- Added a formal vNext architecture document and one-authoritative-owner-per-system rules.
+- Added recursive modular JavaScript syntax checking so nested engine modules cannot escape CI.
+- Added a dedicated v1.0 Advanced Engine contract.
+- Added **3,500-case randomized vNext state fuzzing** in addition to the existing legacy profile fuzz suite.
+- Added all engine modules to child-safety scanning and the loopback server allowlist.
+- Preserved CSP `connect-src 'none'`, no ads, no analytics, no public chat, no accounts and no remote child runtime dependencies.
+
 ## v0.9.0-dev — Lunar Guardian
 
 - Added a dedicated `lunar-guardian.js` extension module instead of expanding the original monolith.
