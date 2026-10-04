@@ -10,8 +10,10 @@ function drawAfterWorld(ctx,t){
   }
   // Soft moving clouds on Earth side.
   ctx.save();
-  for(const c of clouds){
-    const x=(c.x+(t/1000)*c.v)%1320-80;
+  const animate=DBX.accessibility?.shouldAnimate?.()??true;
+  const cloudBudget=DBX.accessibility?.particleBudget?.(clouds.length)||clouds.length;
+  for(const c of clouds.slice(0,cloudBudget)){
+    const x=animate?(c.x+(t/1000)*c.v)%1320-80:c.x;
     ctx.globalAlpha=.24;
     ctx.fillStyle='#fff';
     ctx.beginPath();
@@ -23,8 +25,9 @@ function drawAfterWorld(ctx,t){
   ctx.globalAlpha=1;
 
   // Moon star field shimmer.
-  for(const star of stars){
-    const a=.35+.5*(.5+.5*Math.sin(t/480+star.p));
+  const starBudget=DBX.accessibility?.particleBudget?.(stars.length)||stars.length;
+  for(const star of stars.slice(0,starBudget)){
+    const a=animate?.35+.5*(.5+.5*Math.sin(t/480+star.p)):.55;
     ctx.globalAlpha=a;ctx.fillStyle='#fff8c8';
     ctx.beginPath();ctx.arc(star.x,star.y,star.r,0,Math.PI*2);ctx.fill();
   }
@@ -52,7 +55,7 @@ function drawAfterWorld(ctx,t){
 function interactionGlow(ctx,t){
   const o=DBX.world.currentInteractable?.();
   if(!o||o.d>145)return;
-  const pulse=30+Math.sin(t/220)*5;
+  const pulse=(DBX.accessibility?.shouldAnimate?.()??true)?30+Math.sin(t/220)*5:34;
   ctx.save();ctx.strokeStyle='rgba(255,245,140,.76)';ctx.lineWidth=3;
   ctx.setLineDash([5,7]);ctx.beginPath();ctx.arc(o.x,o.y,pulse,0,Math.PI*2);ctx.stroke();
   ctx.setLineDash([]);ctx.restore();
