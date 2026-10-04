@@ -15,6 +15,7 @@ function resize(){
 }
 function update(dt,t){
   DBX.fx?.update(dt);
+  DBX.simulation?.step(dt);
   if(!document.querySelector('#vnextModal').classList.contains('hidden'))return;
   DBX.worldEvents?.update(dt);
   DBX.worldSystems?.update(dt,t);
