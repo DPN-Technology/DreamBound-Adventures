@@ -6,19 +6,19 @@
   <meta name="theme-color" content="#3b3f78">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>DreamBound v0.8 Space Center Preview</title>
+  <title>DreamBound v0.9 Lunar Guardian Preview</title>
   <link rel="stylesheet" href="vnext.css">
 </head>
 <body>
   <main id="vnextApp">
-    <canvas id="vnextCanvas" aria-label="DreamBound modular Space Center playground"></canvas>
+    <canvas id="vnextCanvas" aria-label="DreamBound modular Lunar Guardian playground"></canvas>
     <header class="vnext-hud">
       <a class="back-link" href="index.html">← DreamBound</a>
-      <div class="preview-chip">v0.8 MODULAR PREVIEW</div>
-      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
+      <div class="preview-chip">v0.9 LUNAR GUARDIAN</div>
+      <div id="vnextVehicle" class="vehicle-chip">🥾 ON FOOT</div>\n      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
     </header>
     <section class="mission-card">
-      <small>SPACE PATHFINDER <b id="vnextStage">1/5</b></small>
+      <small>LUNAR GUARDIAN <b id="vnextStage">1/10</b></small>
       <strong id="vnextObjective">Decode the star signal in Mission Control.</strong>
       <div class="progress-track"><i id="vnextProgress"></i></div>
     </section>
@@ -38,7 +38,7 @@
   <script src="src/vnext/core.js"></script>
   <script src="src/vnext/input.js"></script>
   <script src="src/vnext/space-center.js"></script>
-  <script src="src/vnext/ui.js"></script>
+  <script src="src/vnext/ui.js"></script>\n  <script src="src/vnext/lunar-guardian.js"></script>
   <script src="src/vnext/bootstrap.js"></script>
 </body>
 </html>
