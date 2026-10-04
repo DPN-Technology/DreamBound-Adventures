@@ -41,6 +41,9 @@ for marker in ["requestAnimationFrame(loop)","DBX.world.draw","DBX.input.vector"
 for marker in ["Mission Control","Solar Array","Rocket Workshop","Launch Pad","Moon Rover Console"]:
     if marker not in world: missing.append("world marker: "+marker)
 
+for marker in ["Lunar Space Station","Moon Rover Bay","Rescue Luma","Moon Garden","Lunar Guardian"]:
+    if marker not in lunar: missing.append("lunar marker: "+marker)
+
 if 'href="vnext.html"' not in main: missing.append("main-game preview link")
 
 allow=[
