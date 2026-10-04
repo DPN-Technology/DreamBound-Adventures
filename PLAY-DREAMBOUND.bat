@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title DreamBound Adventures v0.6.1-dev
+title DreamBound Adventures
 where py >nul 2>nul
 if %errorlevel%==0 (
   py serve_dreambound.py --port 8040
