@@ -10,7 +10,7 @@ bridge=(root/"dom-collection-bridge.js").read_text(encoding="utf-8",errors="repl
 html=(root/"index.html").read_text(encoding="utf-8",errors="replace")
 server=(root/"serve_dreambound.py").read_text(encoding="utf-8",errors="replace")
 
-legacy=re.findall(r"(?<!\$)\$\([^\n]*?\)\.(forEach|map|filter|some|every|reduce)\(",game)
+legacy=re.findall(r"(?<!\$)\$\([^\)\n]*\)\.(forEach|map|filter|some|every|reduce)\(",game)
 missing=[]
 if len(legacy)>9:
     missing.append(f"legacy selector debt grew from 9 to {len(legacy)} sites")
