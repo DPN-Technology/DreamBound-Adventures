@@ -1,0 +1,122 @@
+name: DPN DreamBound README Visual Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/capture_readme_screenshots.mjs"
+      - ".github/workflows/dpn-dreambound-readme-evidence.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Capture Real Gameplay
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: "22"
+
+      - name: Install screenshot tooling
+        shell: bash
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start secure DreamBound runtime
+        shell: bash
+        run: |
+          python3 serve_dreambound.py --port 8040 --no-open > /tmp/dreambound-readme-server.log 2>&1 &
+          echo $! > /tmp/dreambound-readme-server.pid
+          for i in {1..30}; do
+            if curl --fail --silent --show-error --max-time 2 http://127.0.0.1:8040/index.html -o /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/dreambound-readme-server.log
+          exit 1
+
+      - name: Capture verified gameplay frames
+        env:
+          DREAMBOUND_URL: http://127.0.0.1:8040/
+        run: node tools/capture_readme_screenshots.mjs
+
+      - name: Validate screenshot evidence
+        shell: bash
+        run: |
+          test -s .github/screenshots/storybook-world.png
+          test -s .github/screenshots/sibling-coop.png
+          test -s .github/screenshots/advanced-space-center.png
+          test -s .github/screenshots/moon-rover-luma.png
+          test -s .github/screenshots/lunar-station.png
+          file .github/screenshots/*.png
+          du -h .github/screenshots/*.png
+
+      - name: Upload screenshot evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: dreambound-readme-visual-evidence
+          path: .github/screenshots/*.png
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Stop local server
+        if: always()
+        shell: bash
+        run: |
+          if test -f /tmp/dreambound-readme-server.pid; then
+            kill "$(cat /tmp/dreambound-readme-server.pid)" 2>/dev/null || true
+          fi
+
+  publish:
+    name: Publish Verified Evidence
+    needs: capture
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Download verified screenshots
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: dreambound-readme-visual-evidence
+          path: .github/screenshots
+
+      - name: Publish screenshots to repository
+        env:
+          GH_TOKEN: \${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in .github/screenshots/*.png; do
+            path="$file"
+            content="$(base64 -w0 "$file")"
+            sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$path?ref=main" --jq '.sha' 2>/dev/null || true)"
+            args=(
+              -X PUT
+              -H "Accept: application/vnd.github+json"
+              -H "X-GitHub-Api-Version: 2022-11-28"
+              "repos/$GITHUB_REPOSITORY/contents/$path"
+              -f "message=docs: refresh verified DreamBound gameplay evidence"
+              -f "content=$content"
+              -f "branch=main"
+            )
+            if [[ -n "$sha" ]]; then
+              args+=( -f "sha=$sha" )
+            fi
+            gh api "\${args[@]}" >/dev/null
+            echo "Published $path"
+          done
