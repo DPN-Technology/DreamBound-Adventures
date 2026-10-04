@@ -11,7 +11,7 @@
 </head>
 <body>
   <main id="vnextApp">
-    <canvas id="vnextCanvas" aria-label="DreamBound Advanced World Engine"></canvas>
+    <canvas id="vnextCanvas" aria-label="DreamBound Living Moon Engine"></canvas>
 
     <header class="vnext-hud advanced-hud">
       <a class="back-link" href="index.html">← DREAMBOUND</a>
@@ -19,7 +19,8 @@
       <div id="vnextZone" class="zone-chip">SPACE CENTER</div>
       <div class="compass-chip">🧭 <b id="vnextCompass">N</b></div>
       <div id="vnextVehicle" class="vehicle-chip">🥾 ON FOOT</div>
-      <div class="resource-chip">💠 <b id="vnextCrystals">0</b></div>\n      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
+      <div class="resource-chip">💠 <b id="vnextCrystals">0</b></div>
+      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
     </header>
 
     <aside class="world-console">
@@ -29,7 +30,8 @@
       </div>
       <div class="telemetry-stack">
         <label>ROVER ENERGY <i><b id="vnextEnergyBar"></b></i></label>
-        <label>LUMA BOND <strong>💜 <b id="vnextBond">0/10</b></strong></label>\n        <label>WORLD EVENTS <strong>🌌 <b id="vnextEventWins">0</b></strong></label>
+        <label>LUMA BOND <strong>💜 <b id="vnextBond">0/10</b></strong></label>
+        <label>WORLD EVENTS <strong>🌌 <b id="vnextEventWins">0</b></strong></label>
       </div>
     </aside>
 
@@ -40,9 +42,14 @@
       <div class="mission-actions">
         <button id="vnextJournal">📖 JOURNAL</button>
         <button id="vnextSettings">⚙️ SETTINGS</button>
-        <button id="vnextBuddy">🐇 LUMA</button>\n        <button id="vnextCodex">📚 CODEX</button>\n        <button id="vnextBase">🏗️ BASE</button>
+        <button id="vnextBuddy">🐇 LUMA</button>
+        <button id="vnextCodex">📚 CODEX</button>
+        <button id="vnextBase">🏗️ BASE</button>
       </div>
     </section>
+
+    <section id="vnextWorldEvent" class="world-event-card"><strong>LIVING WORLD</strong><span>Preparing world events…</span></section>
+    <div id="vnextCinematic" class="cinematic-card"><small>NOW EXPLORING</small><strong>SPACE CENTER CAMPUS</strong></div>
 
     <section id="vnextPrompt" class="interact-prompt hidden">
       <strong>🛰️ Mission Control</strong><span>Press E / Space / ✨</span>
@@ -54,7 +61,7 @@
       <div><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div>
     </nav>
     <button id="vnextAction" class="mobile-action">✨</button>
-    <button id="vnextReset" class="reset-btn">Reset v1.0</button>
+    <button id="vnextReset" class="reset-btn">Reset v1.1</button>
 
     <div id="vnextToast" class="toast hidden"><strong></strong><span></span></div>
     <div id="vnextModal" class="modal-layer hidden" role="dialog" aria-modal="true">
@@ -75,6 +82,11 @@
   <script src="src/vnext/engine/companion.js"></script>
   <script src="src/vnext/engine/world-polish.js"></script>
   <script src="src/vnext/engine/settings.js"></script>
+  <script src="src/vnext/engine/world-events.js"></script>
+  <script src="src/vnext/engine/npcs.js"></script>
+  <script src="src/vnext/engine/base-builder.js"></script>
+  <script src="src/vnext/engine/codex.js"></script>
+  <script src="src/vnext/engine/cinematic.js"></script>
   <script src="src/vnext/bootstrap.js"></script>
 </body>
 </html>
