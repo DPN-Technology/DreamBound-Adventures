@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static DreamBound co-op wiring contract used by CI."""
+"""Preserve DreamBound's legacy co-op migration source without shipping a second runtime."""
 from pathlib import Path
 import re
 import sys
@@ -7,6 +7,7 @@ import sys
 root=Path(__file__).resolve().parents[1]
 game=(root/"game.js").read_text(encoding="utf-8",errors="replace")
 html=(root/"index.html").read_text(encoding="utf-8",errors="replace")
+server=(root/"serve_dreambound.py").read_text(encoding="utf-8",errors="replace")
 
 required={
     "co-op button hook":"$('#coopBtn').onclick=openCoopCenter",
@@ -21,22 +22,21 @@ required={
     "team magic":"function openCoopMagicLesson",
     "team repair":"function openTeamRepair",
     "Sibling Stars quest":"id:'teamplay'",
-    "co-op HUD":"id=\"coopStatus\"",
+    "co-op HUD integration":"#coopStatus",
 }
-missing=[]
-for name,needle in required.items():
-    haystack=html if name=="co-op HUD" else game
-    if needle not in haystack: missing.append(name)
+missing=[name for name,needle in required.items() if needle not in game]
 
-gate_ids=["home-link","builder-link","ocean-link"]
-for gate in gate_ids:
+for gate in ["home-link","builder-link","ocean-link"]:
     if gate not in game: missing.append("gate:"+gate)
 
-if re.search(r"(?<!\$)\$\('\.coop-profile-card'\)\.forEach", game):
+if re.search(r"(?<!\$)\$\('\.coop-profile-card'\)\.forEach",game):
     missing.append("selector regression: single-element $ used for co-op profile list")
+if 'src="game.js"' in html:
+    missing.append("legacy co-op runtime must not load in unified index")
+if '"/game.js"' in server:
+    missing.append("legacy co-op runtime must not be served")
 
 if missing:
-    print("::error::DreamBound co-op contract failed: "+", ".join(missing))
+    print("::error::DreamBound legacy co-op migration contract failed: "+", ".join(missing))
     sys.exit(1)
-
-print("DreamBound co-op contract: PASS")
+print("DreamBound legacy co-op migration contract: PASS")
