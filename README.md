@@ -24,6 +24,7 @@
   <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-codeql.yml"><img alt="CodeQL" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-codeql.yml/badge.svg"></a>
   <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-supply-chain.yml"><img alt="Supply Chain" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-supply-chain.yml/badge.svg"></a>
   <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-smoke.yml"><img alt="Game Smoke Test" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-smoke.yml/badge.svg"></a>
+  <a href="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-readme-evidence.yml"><img alt="Verified Gameplay Evidence" src="https://github.com/DPN-Technology/DreamBound-Adventures/actions/workflows/dpn-dreambound-readme-evidence.yml/badge.svg"></a>
 </p>
 
 <p align="center">
@@ -54,6 +55,37 @@ The goal is simple: **make discovery feel like an adventure instead of homework.
   <img src=".github/repo-showcase.svg" alt="DreamBound gameplay pillars: Explore, Create, Discover, Together, and DreamShield" width="100%">
 </p>
 
+## 📸 Real gameplay gallery
+
+> **Verified runtime evidence:** every image below is captured automatically from the real DreamBound build on `main` using the loopback-only local server and the repository's visual-evidence workflow. These are **not mockups**.
+
+| 📖 Storybook World | 👥 Sibling Co-op |
+| --- | --- |
+| ![DreamBound Storybook World gameplay in Home Valley](.github/screenshots/storybook-world.png) | ![DreamBound same-screen sibling co-op with two explorers](.github/screenshots/sibling-coop.png) |
+| **Home Valley exploration** — live HUD, objectives, DreamBuddy, collectibles, NPC interaction, and the current Storybook renderer. | **DreamLinked explorers** — two local child profiles sharing one world with co-op status, team progress, and separate characters. |
+
+| 🚀 Advanced World — Space Center | 🌙 Moon Rover + Luma |
+| --- | --- |
+| ![DreamBound Advanced World Space Center gameplay](.github/screenshots/advanced-space-center.png) | ![DreamBound Moon Rover and Luma gameplay](.github/screenshots/moon-rover-luma.png) |
+| **Space Center Campus** — the modular vNext runtime with Adventure Director, live world map, simulation systems, missions, and engineering locations. | **Living Moon systems** — Moon Rover, Luma bond, Moon Base progress, Codex resources, mastery, NPCs, and lunar exploration. |
+
+<p align="center">
+  <img src=".github/screenshots/lunar-station.png" alt="DreamBound walkable Lunar Space Station interior with Hydroponics, Observatory, Discovery Lab, and Power Core" width="100%">
+</p>
+<p align="center">
+  <strong>🏢 Walkable Lunar Space Station</strong><br>
+  <sub>Hydroponics • Observatory • Discovery Lab • Power Core • Airlock • live Advanced World telemetry</sub>
+</p>
+
+<details>
+<summary><strong>🔎 How these screenshots are verified</strong></summary>
+
+The repository runs `tools/capture_readme_screenshots.mjs` in GitHub Actions against `serve_dreambound.py`. The workflow creates known local-only test profiles/state, launches the actual Storybook and Advanced World runtimes, validates every PNG, uploads the evidence artifact, and publishes all five screenshots back to the repository.
+
+That means the gallery can be regenerated from source instead of relying on manually edited promotional images.
+
+</details>
+
 ## 🎮 Play DreamBound
 
 ### Windows — fastest path
@@ -73,7 +105,7 @@ If Python is unavailable, the Windows launcher falls back to opening <code>index
 | 🚀 **Advanced World** | The newest modular engine experience | Space Center, Moon exploration, Lunar Station, Moon Rover, Luma, quests, dynamic events, NPC friendships, Moon Base Architect, Codex, and Mastery |
 | 👥 **Sibling Co-op** | Two kids playing together on one screen | Two explorers, two DreamBuddies, team activities, shared rewards, DreamLink gates, and cooperative challenges |
 
-On the title screen, choose **🚀 PLAY ADVANCED WORLD** to enter the modular engine.
+On the title screen, choose the **Living World / Advanced World** launch option to enter the modular engine.
 
 ## 🌈 Choose your adventure
 
