@@ -113,7 +113,7 @@ function openStarwell(){
   document.querySelectorAll('[data-harmony]').forEach(btn=>btn.onclick=()=>{
     if(btn.dataset.harmony===expected){
       state.starwellSteps++;save();DBX.audio?.success?.();DBX.fx?.flash?.(.18);
-      if(state.starwellSteps>=3){state.stage=5;save();emitBeat('STORY BEAT','STARWELL AWAKENED');finale()}
+      if(state.starwellSteps>=3){state.stage=5;save();emitBeat('STORY BEAT','STARWELL AWAKENED');finale()};
       else openStarwell();
     }else{
       DBX.audio?.click?.();DBX.ui.toast('Almost!','The Starwell waits patiently. Try the glowing symbol.');
