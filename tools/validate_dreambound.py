@@ -71,8 +71,10 @@ FORBIDDEN_INDEX_ASSETS = [
     'src="dom-collection-bridge.js"',
 ]
 
-def fail(msg: str) -> None:
-    print(f"::error::{msg}")
+def fail(_msg: str) -> None:
+    # Do not echo validation payloads: secret-scanning failures may contain
+    # sensitive matched data. Emit only a static CI annotation.
+    print("::error::DreamBound validation failed.")
     raise SystemExit(1)
 
 def read_text(path: pathlib.Path) -> str:
