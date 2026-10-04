@@ -33,7 +33,7 @@ function noise(duration=.12,volume=.12){
 }
 DBX.audio={
   get enabled(){return enabled},
-  set enabled(v){enabled=!!v;if(master)master.gain.value=enabled?.14:0},
+  set enabled(v){enabled=!!v;if(master)master.gain.value=enabled ? .14 : 0},
   click(){tone(540,.045,'square',.18)},
   collect(){chord([660,880],.08,'sine',.17)},
   success(){chord([523,659,784,1047],.22,'triangle',.18)},
