@@ -17,12 +17,14 @@ function update(dt,t){
   DBX.fx?.update(dt);
   if(!document.querySelector('#vnextModal').classList.contains('hidden'))return;
   DBX.worldEvents?.update(dt);
+  DBX.worldSystems?.update(dt,t);
   DBX.cinematic?.update(dt);
   DBX.director?.update(dt);
   DBX.achievements?.tick();
   const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
   let handled=false;
-  if(DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
+  if(DBX.worldSystems?.movement)handled=DBX.worldSystems.movement(dt,v);
+  if(!handled&&DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
   if(!handled&&(v.x||v.y)){
     const speed=s.player.speed||250;
     s.player.x+=v.x*speed*dt;s.player.y+=v.y*speed*dt;
@@ -88,8 +90,10 @@ function draw(t){
   ctx.save();ctx.translate(-cam.x+shake.x,-cam.y+shake.y);
   DBX.world.draw(ctx,t);
   DBX.polish?.drawAfterWorld(ctx,t);
+  DBX.worldSystems?.draw(ctx,t);
   DBX.fx?.drawWorld(ctx,t);
-  if(DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
+  if(DBX.worldSystems?.state.skimmerActive)DBX.worldSystems.drawVehicle(ctx,t);
+  else if(DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
   else drawPlayer(t);
   DBX.companion?.draw(ctx,t);
   ctx.restore();
@@ -122,9 +126,10 @@ document.querySelector('#vnextCodex').onclick=()=>DBX.codex?.open();
 document.querySelector('#vnextBase').onclick=()=>DBX.baseBuilder?.open();
 document.querySelector('#vnextDirectorBtn').onclick=()=>DBX.director?.open();
 document.querySelector('#vnextMastery').onclick=()=>DBX.achievements?.open();
+document.querySelector('#vnextWorldSystems').onclick=()=>DBX.worldSystems?.open();
 document.querySelector('#vnextReset').onclick=()=>{
   DBX.storage.reset();DBX.vehicle?.reset();DBX.ui.closeModal();DBX.ui.updateHUD();
-  DBX.ui.toast('Adventure reset','v1.2 living-world progress cleared on this device.');
+  DBX.ui.toast('Adventure reset','v1.4 living-world progress cleared on this device.');
 };
 DBX.events.on('state:reset',()=>{cam={x:0,y:0}});
 DBX.events.on('scene:changed',({id})=>{
