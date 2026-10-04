@@ -1432,8 +1432,8 @@ function openAvatarStudio(){
     '<h3 class="studio-label">Accessories</h3><div class="studio-options">'+accessories.map(x=>'<button class="studio-choice '+(av.accessory===x[0]?'active':'')+'" data-accessory="'+x[0]+'">'+x[1]+' '+x[2]+'</button>').join('')+'</div>'+
     '<button id="studioDone" class="big-btn primary">✨ SAVE MY LOOK</button>'
   );
-  $('.studio-choice[data-hair]').forEach(b=>b.onclick=()=>{av.hair=b.dataset.hair;saveProfile();openAvatarStudio()});
-  $('.studio-choice[data-accessory]').forEach(b=>b.onclick=()=>{av.accessory=b.dataset.accessory;saveProfile();openAvatarStudio()});
+  $$('.studio-choice[data-hair]').forEach(b=>b.onclick=()=>{av.hair=b.dataset.hair;saveProfile();openAvatarStudio()});
+  $$('.studio-choice[data-accessory]').forEach(b=>b.onclick=()=>{av.accessory=b.dataset.accessory;saveProfile();openAvatarStudio()});
   $('#studioDone').onclick=()=>{saveProfile();closeModal();showCombo('NEW LOOK! ✨');Audio.success()};
 }
 
