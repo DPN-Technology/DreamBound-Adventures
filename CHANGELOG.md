@@ -1,3 +1,12 @@
+## v0.7.1-dev — Runtime Interaction Reliability
+
+- Added a DOM collection compatibility bridge for nine legacy multi-element selector sites in the monolithic game runtime.
+- Restored reliable controls for co-op magic, the Star Chamber, Fossil Scanner, Gear Builder, and Explorer Submarine sonar.
+- Added CI enforcement that caps legacy selector debt at nine sites and rejects new collection methods through the single-element `$()` helper.
+- Added the bridge to DreamShield child-safety scanning, runtime-security checks, smoke testing, the secure local-server allowlist, and release packaging.
+- Kept all existing CSP, loopback-only serving, profile sanitization, fuzzing, and no-network child-safety restrictions.
+- Planned next architecture step: split the oversized game runtime into smaller modules so the compatibility bridge can be removed.
+
 ## v0.7.0-dev — Three Worlds Expansion
 
 - Added the connected **The Lost Explorer Map** story chapter.

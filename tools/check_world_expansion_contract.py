@@ -24,7 +24,7 @@ required={
   "world structures":"function v7DrawStructures",
 }
 missing=[name for name,needle in required.items() if needle not in game]
-if "DreamBound Adventures v0.7.0-dev" not in html: missing.append("v0.7 page version")
+if "DreamBound Adventures v0.7." not in html: missing.append("v0.7 page version")
 for needle in [".v7-interior",".v7-sub-window",".v7-blueprint"]:
     if needle not in css: missing.append("style "+needle)
 for needle in ["storyV7:{","interiorVisits:","submarineUnlocked:"]:

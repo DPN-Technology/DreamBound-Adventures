@@ -51,6 +51,8 @@ jobs:
         run: node tools/fuzz_profile_sanitizer.js
       - name: World expansion contract
         run: python3 tools/check_world_expansion_contract.py
+      - name: DOM collection bridge contract
+        run: python3 tools/check_dom_collection_bridge.py
 
   child-safety:
     name: DreamShield Child Safety
