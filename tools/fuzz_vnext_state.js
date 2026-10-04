@@ -36,7 +36,7 @@ function randomValue(depth=0){
     'player','x','y','dir','speed','questStep','signalSolved','solarFixed','rocketFixed','launched',
     'moonRoute','moonRocks','stationVisited','stationGarden','roverUnlocked','roverActive','lumaRescued',
     'lunarBadge','stationDiscoveries','completedQuests','lumaBond','sceneVisits','badges','totalDistance',
-    'stars','gems','__proto__','constructor','prototype'
+    'moonCrystals','baseModules','codexEntries','completedWorldEvents','npcFriendship','meteorSamples','auroraSeen','eventWins','stars','gems','__proto__','constructor','prototype'
   ];
   for(let i=0;i<Math.floor(Math.random()*25);i++)out[keys[Math.floor(Math.random()*keys.length)]]=randomValue(depth+1);
   return out;
@@ -57,7 +57,7 @@ function validate(s){
   assert(s.completedQuests.every(x=>['launch-path','lunar-guardian','station-scientist','buddy-bond'].includes(x)));
   assert(Array.isArray(s.sceneVisits)&&s.sceneVisits.length<=2);
   assert(s.sceneVisits.every(x=>['surface','station'].includes(x)));
-  assert(Array.isArray(s.badges)&&s.badges.length<=8);
+  assert(Array.isArray(s.badges)&&s.badges.length<=8);\n  assert(Number.isInteger(s.moonCrystals)&&s.moonCrystals>=0&&s.moonCrystals<=999);\n  assert(Array.isArray(s.baseModules)&&s.baseModules.length<=4);\n  assert(s.baseModules.every(x=>['habitat','observatory','garage','greenhouse'].includes(x)));\n  assert(Array.isArray(s.codexEntries)&&s.codexEntries.length<=20);\n  assert(Array.isArray(s.completedWorldEvents)&&s.completedWorldEvents.length<=8);\n  assert(s.npcFriendship&&['nova','gear','moss'].every(k=>Number.isInteger(s.npcFriendship[k])&&s.npcFriendship[k]>=0&&s.npcFriendship[k]<=10));\n  assert(Number.isInteger(s.eventWins)&&s.eventWins>=0&&s.eventWins<=99);
 }
 validate(DBX.storage.sanitize({
   player:{x:Infinity,y:-1000,dir:{},speed:999999},
