@@ -68,6 +68,20 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 - **Co-op Sonar** — when sibling co-op is active, sonar steps alternate between Player 1 and Player 2.
 - **Interior Explorer + Pathfinder** — persistent sticker/achievement progression.
 
+## 🚀 v0.8 Modular Space Center Preview
+
+DreamBound now includes an **opt-in modular runtime preview** alongside the established v0.7 game.
+
+- Separate state/storage, input, world, UI, and bootstrap modules under `src/vnext/`.
+- Playable Space Center campus with Mission Control, Solar Array, Rocket Workshop, and Launch Pad.
+- Launch unlocks a Moon training sector with rover-route navigation and collectible Moon rocks.
+- Local preview progress is sanitized before use and stored only in the browser.
+- No remote assets, accounts, analytics, ads, chat, fetch/XHR/WebSocket, or external child links.
+- The secure local server explicitly allowlists every preview asset.
+- DreamShield validates the preview files, JavaScript syntax, network isolation, packaging, and smoke-test reachability.
+
+Use **🚀 SPACE CENTER PREVIEW** on the DreamBound title screen.
+
 ### v0.7.1 reliability hardening
 
 - Added a narrow DOM collection compatibility bridge for nine legacy selector sites in the current monolithic runtime.
