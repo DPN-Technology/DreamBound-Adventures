@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   green-gate:
-    uses: DPN-Technology/.github/.github/workflows/dpn-green-gate.yml@main
+    uses: DPN-Technology/.github/.github/workflows/dpn-green-gate.yml@3441e08741c0f1cb10b3463708afaaa42e63a78c
     with:
       lifecycle: development
       enterprise_mode: audit
