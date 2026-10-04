@@ -12,7 +12,7 @@ REQUIRED = [
     "index.html", "styles.css", "game.js", "profile-sanitizer.js", "dom-collection-bridge.js", "serve_dreambound.py", "vnext.html", "vnext.css", "src/vnext/core.js", "src/vnext/input.js", "src/vnext/space-center.js", "src/vnext/ui.js", "src/vnext/lunar-guardian.js", "src/vnext/engine/fx.js", "src/vnext/engine/audio.js", "src/vnext/engine/vehicle.js", "src/vnext/engine/scenes.js", "src/vnext/engine/quests.js", "src/vnext/engine/companion.js", "src/vnext/engine/world-polish.js", "src/vnext/engine/settings.js", "src/vnext/bootstrap.js",
     "PLAY-DREAMBOUND.bat", "PLAY-DREAMBOUND.ps1",
     "README.md", "SECURITY.md", "CONTRIBUTING.md",
-    "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md",
+    "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md", "docs/VNEXT_ARCHITECTURE.md",
     ".github/CODEOWNERS", ".github/dependabot.yml",
     "THIRD_PARTY_LICENSES.md", "docs/RELEASE_PROCESS.md",
 ]
