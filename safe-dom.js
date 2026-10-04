@@ -54,6 +54,15 @@ function appendHTML(target,markup){
   target.appendChild(fragment(markup));
   return target;
 }
+function insertHTML(target,position,markup){
+  if(!target)return target;
+  const f=fragment(markup);
+  if(position==='afterbegin')target.prepend(f);
+  else if(position==='beforebegin')target.parentNode?.insertBefore(f,target);
+  else if(position==='afterend')target.parentNode?.insertBefore(f,target.nextSibling);
+  else target.appendChild(f);
+  return target;
+}
 function clear(target){if(target)target.replaceChildren();return target}
-window.DreamBoundDOM=Object.freeze({setHTML,appendHTML,clear});
+window.DreamBoundDOM=Object.freeze({setHTML,appendHTML,insertHTML,clear});
 })();
