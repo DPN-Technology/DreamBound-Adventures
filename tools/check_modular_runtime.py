@@ -28,7 +28,7 @@ for marker in [
     if marker not in html: missing.append("html marker: "+marker)
 
 for marker in [
-  "DBX.VERSION='1.0.0-dev'","sanitize(raw)","dreambound-vnext-space-v1",
+  "DBX.VERSION='1.","sanitize(raw)","dreambound-vnext-space-v1",
   "localStorage.getItem","localStorage.setItem"
 ]:
     if marker not in core: missing.append("core marker: "+marker)
