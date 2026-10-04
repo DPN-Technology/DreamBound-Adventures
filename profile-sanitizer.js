@@ -132,7 +132,18 @@
         petals:stringList(raw.storyV6&&raw.storyV6.petals,['petal-home-1','petal-home-2','petal-home-3'],3),
         restored:bool(raw.storyV6&&raw.storyV6.restored,false),
         chapterComplete:bool(raw.storyV6&&raw.storyV6.chapterComplete,false)
-      }
+      },
+      storyV7:{
+        step:int(raw.storyV7&&raw.storyV7.step,0,6,0),
+        fossilFragment:bool(raw.storyV7&&raw.storyV7.fossilFragment,false),
+        compassGear:bool(raw.storyV7&&raw.storyV7.compassGear,false),
+        pearlLens:bool(raw.storyV7&&raw.storyV7.pearlLens,false),
+        mapRestored:bool(raw.storyV7&&raw.storyV7.mapRestored,false),
+        chapterComplete:bool(raw.storyV7&&raw.storyV7.chapterComplete,false),
+        sonarWins:int(raw.storyV7&&raw.storyV7.sonarWins,0,99999,0)
+      },
+      interiorVisits:stringList(raw.interiorVisits,['fossil','maker','ocean'],3),
+      submarineUnlocked:bool(raw.submarineUnlocked,false)
     };
     if(!p.homeThemes.includes('sky'))p.homeThemes.unshift('sky');
     if(!p.discoveredZones.length&&zones.includes('Home Valley'))p.discoveredZones=['Home Valley'];
