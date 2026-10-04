@@ -23,7 +23,7 @@ jobs:
       - name: Start local game server
         shell: bash
         run: |
-          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/dreambound-http.log 2>&1 &
+          python3 serve_dreambound.py --port 4173 --no-open > /tmp/dreambound-http.log 2>&1 &
           echo $! > /tmp/dreambound-http.pid
       - name: Verify game shell
         shell: bash
@@ -34,10 +34,20 @@ jobs:
           done
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/game.js -o /tmp/game.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/styles.css -o /tmp/styles.css
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/profile-sanitizer.js -o /tmp/profile-sanitizer.js
           grep -qi "DreamBound" /tmp/index.html
           test -s /tmp/game.js
           test -s /tmp/styles.css
+          test -s /tmp/profile-sanitizer.js
           echo "DreamBound local runtime shell: reachable on loopback only"
+      - name: Verify security headers
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --head http://127.0.0.1:4173/index.html > /tmp/headers.txt
+          grep -qi "^Content-Security-Policy:.*connect-src 'none'" /tmp/headers.txt
+          grep -qi "^X-Content-Type-Options: nosniff" /tmp/headers.txt
+          grep -qi "^X-Frame-Options: DENY" /tmp/headers.txt
+          grep -qi "^Referrer-Policy: no-referrer" /tmp/headers.txt
       - name: Stop local server
         if: always()
         shell: bash

@@ -45,6 +45,10 @@ jobs:
         run: python3 tools/check_workflow_security.py
       - name: Story chapter contract
         run: python3 tools/check_story_contract.py
+      - name: Runtime security contract
+        run: python3 tools/check_runtime_security.py
+      - name: Profile sanitizer fuzz
+        run: node tools/fuzz_profile_sanitizer.js
 
   child-safety:
     name: DreamShield Child Safety

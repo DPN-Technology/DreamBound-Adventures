@@ -1,3 +1,17 @@
+## v0.6.1-dev — Runtime & Save Security Hardening
+
+- Added strict sanitization for all locally loaded child profiles.
+- Added malformed/oversized save recovery and local quarantine instead of unhandled JSON crashes.
+- Added protection against localStorage-based HTML/style injection through profile fields.
+- Added a dedicated loopback-only DreamBound HTTP server with an explicit runtime-file allowlist.
+- Added CSP, anti-framing, MIME-sniffing, referrer, cross-origin and browser-permission security headers.
+- Added an in-page CSP for the direct-file fallback path.
+- Added a 4,000-case randomized profile-sanitizer fuzz test.
+- Added a runtime-security CI contract.
+- Upgraded the smoke test to validate security headers and the sanitizer runtime.
+- Fixed the v0.6 Avatar Studio multi-option selector bug.
+- No remote services, accounts, analytics, ads or new network capability added.
+
 ## v0.6.0-dev — Home & Magic Story Chapter
 
 - Added DreamBound's first connected story chapter: **The Sleeping Star**.
