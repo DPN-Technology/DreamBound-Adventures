@@ -1432,8 +1432,8 @@ function openAvatarStudio(){
     '<h3 class="studio-label">Accessories</h3><div class="studio-options">'+accessories.map(x=>'<button class="studio-choice '+(av.accessory===x[0]?'active':'')+'" data-accessory="'+x[0]+'">'+x[1]+' '+x[2]+'</button>').join('')+'</div>'+
     '<button id="studioDone" class="big-btn primary">✨ SAVE MY LOOK</button>'
   );
-  $('.studio-choice[data-hair]').forEach(b=>b.onclick=()=>{av.hair=b.dataset.hair;saveProfile();openAvatarStudio()});
-  $('.studio-choice[data-accessory]').forEach(b=>b.onclick=()=>{av.accessory=b.dataset.accessory;saveProfile();openAvatarStudio()});
+  $$('.studio-choice[data-hair]').forEach(b=>b.onclick=()=>{av.hair=b.dataset.hair;saveProfile();openAvatarStudio()});
+  $$('.studio-choice[data-accessory]').forEach(b=>b.onclick=()=>{av.accessory=b.dataset.accessory;saveProfile();openAvatarStudio()});
   $('#studioDone').onclick=()=>{saveProfile();closeModal();showCombo('NEW LOOK! ✨');Audio.success()};
 }
 
@@ -1588,6 +1588,365 @@ openHow=function(){
     '<div class="menu-tile featured"><strong>🌟 The Sleeping Star</strong><small>A real story chapter now connects Home Valley, your Dream Home and Moonflower Tower.</small></div>'+
     '<div class="menu-tile featured"><strong>🎨 Avatar Studio</strong><small>Customize hair and playful accessories from your Dream Home.</small></div>'+
     '<div class="menu-tile featured"><strong>🚪 Enterable Tower</strong><small>Step inside Moonflower Tower for lessons and the Star Chamber.</small></div>'
+  );
+};
+
+
+// ===== DreamBound v0.7.0-dev — THREE WORLDS EXPANSION =====
+STICKERS.push(['🚪','Interior Explorer'],['🧭','Pathfinder']);
+QUEST_TARGETS['deep-worlds']=[650,1530];
+
+const defaultQuestsV7=defaultQuests;
+defaultQuests=function(){
+  const qs=defaultQuestsV7();
+  if(!qs.some(q=>q.id==='deep-worlds'))qs.push({
+    id:'deep-worlds',
+    title:'The Lost Explorer Map',
+    text:'Follow a mystery from Dino Valley to Builder Bay and beneath Ocean Cove.',
+    done:false,reward:18,xp:60,progress:0,target:6,icon:'🧭'
+  });
+  return qs;
+};
+
+function v7EnsureProfile(){
+  if(!state.profile)return;
+  state.profile.storyV7=state.profile.storyV7||{
+    step:0,fossilFragment:false,compassGear:false,pearlLens:false,mapRestored:false,chapterComplete:false,sonarWins:0
+  };
+  state.profile.interiorVisits=state.profile.interiorVisits||[];
+  state.profile.submarineUnlocked=!!state.profile.submarineUnlocked;
+  if(!state.profile.quests.some(q=>q.id==='deep-worlds')){
+    state.profile.quests.push({
+      id:'deep-worlds',title:'The Lost Explorer Map',
+      text:'Follow a mystery from Dino Valley to Builder Bay and beneath Ocean Cove.',
+      done:false,reward:18,xp:60,progress:state.profile.storyV7.step||0,target:6,icon:'🧭'
+    });
+  }
+  const q=state.profile.quests.find(q=>q.id==='deep-worlds');
+  if(q&&!q.done)q.progress=Math.min(6,state.profile.storyV7.step||0);
+}
+
+function v7VisitInterior(id){
+  v7EnsureProfile();
+  if(!state.profile.interiorVisits.includes(id)){
+    state.profile.interiorVisits.push(id);
+    addXP(3,'New interior');
+    if(state.profile.interiorVisits.length>=3){
+      unlockSticker('Interior Explorer');
+      achievement('Interior Explorer');
+      toastQuest('Interior Explorer! 🚪','You visited Fossil Hall, Maker Workshop, and the Ocean Discovery Center.');
+    }
+    saveProfile();
+  }
+}
+
+function v7StoryStep(step,message){
+  v7EnsureProfile();
+  const story=state.profile.storyV7;
+  if(step<=story.step)return;
+  story.step=step;
+  const q=state.profile.quests.find(q=>q.id==='deep-worlds');
+  if(q&&!q.done)q.progress=Math.min(6,step);
+  const open=(state.profile.quests||[]).filter(x=>!x.done);
+  const idx=open.findIndex(x=>x.id==='deep-worlds');
+  if(idx>=0)state.questCursor=idx;
+  saveProfile();updateQuestTracker();v7UpdateStoryTarget();
+  if(message)toastQuest('The Lost Explorer Map 🧭',message);
+}
+
+function v7StoryTarget(){
+  if(!state.profile)return null;
+  v7EnsureProfile();
+  const s=state.profile.storyV7;
+  if(s.chapterComplete)return null;
+  if(s.step===0)return [650,1530];
+  if(s.step===1)return [560,1630];
+  if(s.step===2)return [1575,1460];
+  if(s.step===3)return [1545,1670];
+  if(s.step===4)return [2670,1590];
+  return [2450,1740];
+}
+function v7UpdateStoryTarget(){const t=v7StoryTarget();if(t)QUEST_TARGETS['deep-worlds']=t}
+
+const initWorldV7=initWorld;
+initWorld=function(){
+  v7EnsureProfile();
+  initWorldV7();
+  const extra=[
+    {id:'fossil-hall-door',name:'Fossil Hall',face:'🏛️',x:560,y:1630,text:'A real museum built around the valley’s oldest discoveries.',action:'v7fossilhall'},
+    {id:'maker-workshop-door',name:'Maker Workshop',face:'🏭',x:1545,y:1670,text:'Gears, blueprints and imagination power this workshop.',action:'v7maker'},
+    {id:'ocean-center-door',name:'Ocean Discovery Center',face:'🐠',x:2450,y:1740,text:'Aquariums upstairs. A tiny explorer submarine waits below.',action:'v7ocean'}
+  ];
+  for(const e of extra)if(!state.interactables.some(x=>x.id===e.id))state.interactables.push(e);
+  v7UpdateStoryTarget();
+};
+
+function v7DrawStructures(){
+  // Fossil Hall
+  ctx.save();
+  v4Shadow(560,1668,86,22,.16);
+  v4Panel(485,1548,150,108,'#e9d8ad','#fff7df',18);
+  ctx.fillStyle='#8d7353';ctx.fillRect(505,1583,110,12);
+  ctx.font='35px serif';ctx.textAlign='center';ctx.fillText('🦴',560,1592);
+  ctx.font='900 12px sans-serif';ctx.fillStyle='#5c4d42';ctx.fillText('FOSSIL HALL',560,1634);
+  // Maker Workshop
+  v4Shadow(1545,1710,92,23,.16);
+  v4Panel(1465,1582,160,118,'#735fe0','#fff',20);
+  ctx.fillStyle='#ffcf5c';ctx.fillRect(1490,1610,110,14);
+  ctx.font='36px serif';ctx.fillText('⚙️',1545,1645);
+  ctx.font='900 12px sans-serif';ctx.fillStyle='#fff';ctx.fillText('MAKER WORKSHOP',1545,1682);
+  // Ocean center
+  v4Shadow(2450,1785,96,24,.14);
+  ctx.fillStyle='rgba(220,251,255,.92)';ctx.strokeStyle='#fff';ctx.lineWidth=5;
+  ctx.beginPath();ctx.arc(2450,1712,74,Math.PI,0);ctx.lineTo(2524,1770);ctx.lineTo(2376,1770);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.font='37px serif';ctx.fillText('🐠',2450,1728);
+  ctx.font='900 11px sans-serif';ctx.fillStyle='#35617c';ctx.fillText('OCEAN DISCOVERY',2450,1760);
+  ctx.restore();
+}
+
+const drawWorldV7=drawWorld;
+drawWorld=function(){drawWorldV7();v7DrawStructures()};
+
+const updateLivingWorldV7=updateLivingWorld;
+updateLivingWorld=function(dt){updateLivingWorldV7(dt);v7EnsureProfile();v7UpdateStoryTarget()};
+
+function openFossilHall(){
+  v7EnsureProfile();v7VisitInterior('fossil');
+  const s=state.profile.storyV7;
+  let story='';
+  if(s.step===1)story='<button id="v7ScanTablet" class="big-btn primary">🔎 SCAN THE MYSTERY FOSSIL TABLET</button>';
+  else if(s.step===0)story='<div class="v7-story-note">🧭 Dottie keeps glancing at a strange stone tablet. Ask her about it.</div>';
+  else story='<button id="v7MuseumScan" class="big-btn secondary">🦴 PRACTICE FOSSIL SCANNER</button>';
+  openModal(
+    '<h2>🦴 Fossil Hall</h2>'+
+    '<div class="v7-interior fossil-hall">'+
+      '<div class="museum-skeleton">🦖</div><div class="museum-cases"><span>🦴</span><span>🥚</span><span>🐾</span></div>'+
+      '<div class="museum-desk">🔬 📜</div><div class="museum-banner">DINO VALLEY DISCOVERY LAB</div>'+
+    '</div>'+
+    '<p class="coop-intro">Walk through a real museum interior, inspect discoveries, and use the fossil scanner.</p>'+story+
+    '<div class="room-actions"><button id="v7FossilDig">⛏️ Fossil Dig</button><button id="v7HallLeave">🚪 Leave Hall</button></div>'
+  );
+  if($('#v7ScanTablet'))$('#v7ScanTablet').onclick=()=>v7OpenFossilScanner(true);
+  if($('#v7MuseumScan'))$('#v7MuseumScan').onclick=()=>v7OpenFossilScanner(false);
+  $('#v7FossilDig').onclick=()=>{closeModal();openFossilGame()};
+  $('#v7HallLeave').onclick=closeModal;
+}
+
+function v7OpenFossilScanner(storyRun){
+  const symbols=['🦴','🐾','🥚','🌿'];
+  const len=difficulty()===0?3:difficulty()===1?4:5;
+  const seq=Array.from({length:len},()=>symbols[Math.floor(Math.random()*symbols.length)]);
+  let pos=0,showing=true;
+  openModal(
+    '<h2>🔎 Fossil Scanner</h2>'+
+    '<p class="coop-intro">Remember the fossil signal, then copy it into the scanner.</p>'+
+    '<div id="v7FossilSeq" class="v7-sequence">'+seq.join(' ')+'</div>'+
+    '<div id="v7FossilChoices" class="spell-choice-row hidden">'+symbols.map(x=>'<button class="spell-choice">'+x+'</button>').join('')+'</div>'+
+    '<div class="v7-scanner-beam">▱ ▱ ▱ <span>SCANNING</span> ▱ ▱ ▱</div>'
+  );
+  setTimeout(()=>{
+    if(!$('#v7FossilSeq'))return;
+    showing=false;$('#v7FossilSeq').textContent='❔ '.repeat(len);$('#v7FossilChoices').classList.remove('hidden');
+  },1500);
+  $('#v7FossilChoices .spell-choice').forEach(b=>b.onclick=()=>{
+    if(showing)return;
+    if(b.textContent===seq[pos]){
+      pos++;Audio.tone(480+pos*95,.07,'triangle');
+      $('#v7FossilSeq').textContent='✅ '.repeat(pos)+'❔ '.repeat(len-pos);
+      if(pos===len)setTimeout(()=>{
+        if(storyRun&&state.profile.storyV7.step===1){
+          state.profile.storyV7.fossilFragment=true;
+          state.profile.fossils=(state.profile.fossils||0)+1;
+          state.profile.gems+=3;addXP(10,'Mystery fossil tablet');
+          v7StoryStep(2,'The tablet is part of an ancient Explorer Map. Take the fragment to Brix in Builder Bay.');
+          saveProfile();updateHUD();Audio.success();confetti();
+          openModal('<h2>🦴 MAP FRAGMENT FOUND!</h2><div class="v7-big-relic">📜🦴🧭</div><p class="coop-intro">The fossil lines are actually an ancient map! Brix may know how to rebuild its compass.</p><button id="v7FragmentDone" class="big-btn primary">TO BUILDER BAY!</button>');
+          $('#v7FragmentDone').onclick=closeModal;
+        }else{
+          addXP(4,'Fossil scanner');state.profile.gems+=1;saveProfile();updateHUD();Audio.success();confetti();
+          openModal('<h2>🔎 SCAN COMPLETE!</h2><div class="v7-big-relic">🦴✨</div><p class="coop-intro">Great scanning! You earned 1 💎.</p><button id="v7ScanDone" class="big-btn primary">DONE</button>');
+          $('#v7ScanDone').onclick=closeModal;
+        }
+      },260);
+    }else{
+      pos=0;Audio.tone(170,.12,'sawtooth');$('#v7FossilSeq').textContent='❔ '.repeat(len);
+    }
+  });
+}
+
+function openMakerWorkshopV7(){
+  v7EnsureProfile();v7VisitInterior('maker');
+  const s=state.profile.storyV7;
+  let story='';
+  if(s.step===3)story='<button id="v7BuildCompass" class="big-btn primary">⚙️ BUILD THE DIVE COMPASS</button>';
+  else if(s.step<3)story='<div class="v7-story-note">📐 Brix has a special project planned when the mystery map reaches Builder Bay.</div>';
+  else story='<button id="v7GearPractice" class="big-btn secondary">⚙️ PRACTICE GEAR BUILDER</button>';
+  openModal(
+    '<h2>⚙️ Maker Workshop</h2>'+
+    '<div class="v7-interior maker-lab">'+
+      '<div class="maker-wall">📐 🗺️ 🔧</div><div class="maker-bench">⚙️ 🔩 🧭 ✨</div>'+
+      '<div class="maker-crane">🪝</div><div class="maker-screen">DREAMLINK // BUILD READY</div>'+
+    '</div>'+
+    '<p class="coop-intro">Build gadgets on the workbench, study blueprints, and turn discoveries into useful explorer gear.</p>'+story+
+    '<div class="room-actions"><button id="v7MakerBuild">🧱 Builder Mode</button><button id="v7MakerLeave">🚪 Leave Workshop</button></div>'
+  );
+  if($('#v7BuildCompass'))$('#v7BuildCompass').onclick=()=>v7OpenGearBuilder(true);
+  if($('#v7GearPractice'))$('#v7GearPractice').onclick=()=>v7OpenGearBuilder(false);
+  $('#v7MakerBuild').onclick=()=>{closeModal();toggleBuild(true)};
+  $('#v7MakerLeave').onclick=closeModal;
+}
+
+function v7OpenGearBuilder(storyRun){
+  const parts=['⚙️','🔩','🧭','✨'],labels=['GEAR','BOLT','COMPASS','STAR CORE'];
+  let pos=0;
+  openModal(
+    '<h2>🛠️ Gear Builder</h2><p class="coop-intro">Build from the inside out. Choose each part in blueprint order.</p>'+
+    '<div id="v7Blueprint" class="v7-blueprint">'+parts.map((x,i)=>'<span>'+x+'<small>'+labels[i]+'</small></span>').join('<b>→</b>')+'</div>'+
+    '<div id="v7GearProgress" class="v7-gear-progress">○ ○ ○ ○</div>'+
+    '<div class="spell-choice-row">'+parts.map(x=>'<button class="spell-choice v7-part">'+x+'</button>').join('')+'</div>'
+  );
+  $('.v7-part').forEach(b=>b.onclick=()=>{
+    if(b.textContent===parts[pos]){
+      pos++;Audio.tone(500+pos*100,.07,'square');
+      $('#v7GearProgress').textContent='● '.repeat(pos)+'○ '.repeat(parts.length-pos);
+      if(pos===parts.length)setTimeout(()=>{
+        if(storyRun&&state.profile.storyV7.step===3){
+          state.profile.storyV7.compassGear=true;state.profile.gems+=4;addXP(12,'Dive Compass');
+          v7StoryStep(4,'The Dive Compass works! Take it to Bubbles at Ocean Cove.');
+          saveProfile();updateHUD();Audio.success();confetti();
+          openModal('<h2>⚙️ DIVE COMPASS BUILT!</h2><div class="v7-big-relic">⚙️🧭🌊</div><p class="coop-intro">Its needle points beneath Ocean Cove. Bubbles knows those waters best.</p><button id="v7GearDone" class="big-btn primary">TO OCEAN COVE!</button>');
+          $('#v7GearDone').onclick=closeModal;
+        }else{
+          addXP(4,'Gear builder');state.profile.gems+=1;saveProfile();updateHUD();Audio.success();
+          openModal('<h2>🛠️ GADGET COMPLETE!</h2><div class="v7-big-relic">⚙️✨</div><p class="coop-intro">Nice build! You earned 1 💎.</p><button id="v7PracticeDone" class="big-btn primary">DONE</button>');
+          $('#v7PracticeDone').onclick=closeModal;
+        }
+      },220);
+    }else{
+      pos=0;Audio.tone(160,.11,'sawtooth');$('#v7GearProgress').textContent='○ ○ ○ ○';toastQuest('Blueprint Reset','Start with the gear and build outward.');
+    }
+  });
+}
+
+function openOceanDiscoveryCenter(){
+  v7EnsureProfile();v7VisitInterior('ocean');
+  const s=state.profile.storyV7;
+  let story='';
+  if(s.step===5)story='<button id="v7LaunchSub" class="big-btn primary">🚤 LAUNCH THE EXPLORER SUBMARINE</button>';
+  else if(s.step<5)story='<div class="v7-story-note">🌊 The submarine dock is ready, but its navigation slot is empty.</div>';
+  else story='<button id="v7RepeatSub" class="big-btn secondary">🌊 NEW SONAR EXPEDITION</button>';
+  openModal(
+    '<h2>🐠 Ocean Discovery Center</h2>'+
+    '<div class="v7-interior ocean-center">'+
+      '<div class="ocean-tank"><span>🐠</span><span>🐢</span><span>🪼</span></div>'+
+      '<div class="ocean-console">SONAR<br><b>◉ ◌ ◉</b></div><div class="sub-dock">🚤</div><div class="ocean-porthole">🌊</div>'+
+    '</div>'+
+    '<p class="coop-intro">Explore the aquarium lab upstairs, then launch from the protected submarine dock below.</p>'+story+
+    '<div class="room-actions"><button id="v7ShellGame">🐚 Shell Code</button><button id="v7OceanLeave">🚪 Leave Center</button></div>'
+  );
+  if($('#v7LaunchSub'))$('#v7LaunchSub').onclick=()=>v7OpenSubmarineExpedition(true);
+  if($('#v7RepeatSub'))$('#v7RepeatSub').onclick=()=>v7OpenSubmarineExpedition(false);
+  $('#v7ShellGame').onclick=()=>{closeModal();openShellGame()};
+  $('#v7OceanLeave').onclick=closeModal;
+}
+
+function v7OpenSubmarineExpedition(storyRun){
+  const dirs=['⬅️','⬆️','➡️','⬇️'];
+  const len=difficulty()===0?3:difficulty()===1?4:5;
+  const seq=Array.from({length:len},()=>dirs[Math.floor(Math.random()*dirs.length)]);
+  let pos=0,showing=true;
+  const coop=!!state.coop?.enabled;
+  const controls=coop?
+    '<div class="team-role-grid">'+
+      '<div class="team-role p1"><strong>Player 1 Sonar</strong><div class="spell-choice-row">'+dirs.map(x=>'<button class="spell-choice v7-sonar" data-player="1">'+x+'</button>').join('')+'</div></div>'+
+      '<div class="team-role p2"><strong>Player 2 Sonar</strong><div class="spell-choice-row">'+dirs.map(x=>'<button class="spell-choice v7-sonar" data-player="2">'+x+'</button>').join('')+'</div></div>'+
+    '</div>':
+    '<div class="spell-choice-row">'+dirs.map(x=>'<button class="spell-choice v7-sonar" data-player="1">'+x+'</button>').join('')+'</div>';
+  openModal(
+    '<h2>🌊 Explorer Submarine</h2>'+
+    '<div class="v7-sub-window"><div class="v7-submarine">🚤</div><span>🐠</span><span>🫧</span><span>🪸</span><div class="v7-sonar-ring"></div></div>'+
+    '<p class="coop-intro">'+(coop?'Take turns following the sonar trail together.':'Memorize the sonar trail and guide the submarine.')+'</p>'+
+    '<div id="v7SonarSeq" class="v7-sequence">'+seq.join(' ')+'</div>'+controls
+  );
+  $('.v7-sonar').forEach(b=>b.disabled=true);
+  setTimeout(()=>{
+    if(!$('#v7SonarSeq'))return;
+    showing=false;$('#v7SonarSeq').textContent='◌ '.repeat(len);$('.v7-sonar').forEach(b=>b.disabled=false);
+  },1700);
+  $('.v7-sonar').forEach(b=>b.onclick=()=>{
+    if(showing)return;
+    const player=+b.dataset.player;
+    const expectedPlayer=coop?(pos%2)+1:1;
+    if(player!==expectedPlayer){Audio.tone(175,.09,'sawtooth');toastQuest('Sonar Turn','Player '+expectedPlayer+' follows the next ping.');return}
+    if(b.textContent===seq[pos]){
+      pos++;Audio.tone(540+pos*85,.07,'sine');
+      $('#v7SonarSeq').textContent='✅ '.repeat(pos)+'◌ '.repeat(len-pos);
+      if(pos===len)setTimeout(()=>v7FinishSubmarineExpedition(storyRun),280);
+    }else{
+      pos=0;Audio.tone(150,.12,'sawtooth');$('#v7SonarSeq').textContent='◌ '.repeat(len);
+      toastQuest('Sonar Trail Lost','No crash—just try the safe sonar trail again.');
+    }
+  });
+}
+
+function v7FinishSubmarineExpedition(storyRun){
+  v7EnsureProfile();
+  const s=state.profile.storyV7;
+  if(storyRun&&s.step===5&&!s.chapterComplete){
+    s.pearlLens=true;s.mapRestored=true;s.chapterComplete=true;s.step=6;s.sonarWins=(s.sonarWins||0)+1;
+    state.profile.submarineUnlocked=true;
+    state.profile.gems+=10;
+    const q=state.profile.quests.find(q=>q.id==='deep-worlds');
+    if(q&&!q.done){q.progress=6;completeQuest('deep-worlds')}
+    unlockSticker('Pathfinder');achievement('Pathfinder');
+    addXP(20,'Deep Sea Pathfinder');
+    saveProfile();updateHUD();Audio.success();confetti();
+    openModal(
+      '<h2>🧭 THE LOST EXPLORER MAP IS RESTORED!</h2>'+
+      '<div class="v7-finale">🦴 ➜ ⚙️ ➜ 🚤 ➜ 🧭✨</div>'+
+      '<p class="coop-intro">The fossil fragment, Dive Compass, and Pearl Lens fit together. A whole new explorer route now glows across DreamBound.</p>'+
+      '<div class="chapter-rewards"><span>⭐ 18 quest stars</span><span>💎 +10 gems</span><span>🎟️ Pathfinder</span><span>🚤 Submarine unlocked</span></div>'+
+      '<button id="v7FinalDone" class="big-btn primary">KEEP EXPLORING!</button>'
+    );
+    $('#v7FinalDone').onclick=()=>{closeModal();showCombo('PATHFINDER! 🧭');speak('The Lost Explorer Map is restored. Your submarine is ready for future expeditions.')};
+  }else{
+    s.sonarWins=(s.sonarWins||0)+1;state.profile.gems+=2;addXP(6,'Sonar expedition');
+    if(state.coop?.enabled&&state.coop.profile){state.coop.profile.gems+=2;v5AddXPToProfile(state.coop.profile,6);saveGuestProfile()}
+    saveProfile();updateHUD();Audio.success();confetti();
+    openModal('<h2>🌊 SONAR EXPEDITION COMPLETE!</h2><div class="v7-big-relic">🚤🐚✨</div><p class="coop-intro">You mapped another safe underwater route and earned 2 💎.</p><button id="v7SubDone" class="big-btn primary">SURFACE!</button>');
+    $('#v7SubDone').onclick=closeModal;
+  }
+}
+
+const talkToV7=talkTo;
+talkTo=function(n){
+  talkToV7(n);
+  setTimeout(()=>{
+    if(!state.talking||!state.profile)return;
+    v7EnsureProfile();
+    const s=state.profile.storyV7;
+    const v6done=!!state.profile.storyV6?.chapterComplete;
+    if(n.action==='dino'){
+      if(!v6done)addTalkAction('🌟 FINISH THE SLEEPING STAR',()=>{closeTalk();toastQuest('Another mystery is waiting...','Wake the Dream Lantern first, then come back to Dottie.')});
+      else if(s.step===0)addTalkAction('🧭 THE MYSTERY FOSSIL MAP',()=>{closeTalk();v7StoryStep(1,'Dottie found a fossil tablet covered in map lines. Scan it inside Fossil Hall.');showCombo('NEW CHAPTER! 🧭');speak('A new mystery begins in Fossil Hall.')});
+      else if(s.step===1)addTalkAction('🦴 WHERE IS THE TABLET?',()=>{closeTalk();toastQuest('Dottie’s Hint','The Fossil Hall scanner can reveal lines hidden inside the stone.')});
+    }
+    if(n.action==='builder'&&s.step===2)addTalkAction('📜 SHOW BRIX THE MAP FRAGMENT',()=>{closeTalk();v7StoryStep(3,'Brix drew a blueprint for a Dive Compass. Build it inside the Maker Workshop.');openMakerWorkshopV7()});
+    if(n.action==='ocean'&&s.step===4)addTalkAction('🧭 SHOW BUBBLES THE DIVE COMPASS',()=>{closeTalk();v7StoryStep(5,'The Dive Compass points under Ocean Cove. Launch the Explorer Submarine from the Discovery Center.');openOceanDiscoveryCenter()});
+    if(n.action==='v7fossilhall')addTalkAction('🚪 ENTER FOSSIL HALL',()=>{closeTalk();openFossilHall()});
+    if(n.action==='v7maker')addTalkAction('🚪 ENTER MAKER WORKSHOP',()=>{closeTalk();openMakerWorkshopV7()});
+    if(n.action==='v7ocean')addTalkAction('🚪 ENTER DISCOVERY CENTER',()=>{closeTalk();openOceanDiscoveryCenter()});
+  },120);
+};
+
+const openHowV7=openHow;
+openHow=function(){
+  openHowV7();
+  const grid=$('#modalCard .modal-grid');
+  if(grid)grid.insertAdjacentHTML('afterbegin',
+    '<div class="menu-tile featured"><strong>🧭 The Lost Explorer Map</strong><small>A connected chapter crosses Dino Valley, Builder Bay, and Ocean Cove.</small></div>'+
+    '<div class="menu-tile featured"><strong>🚪 Three New Interiors</strong><small>Explore Fossil Hall, Maker Workshop, and the Ocean Discovery Center.</small></div>'+
+    '<div class="menu-tile featured"><strong>🚤 Submarine Expeditions</strong><small>Unlock a repeatable safe sonar adventure beneath Ocean Cove.</small></div>'
   );
 };
 

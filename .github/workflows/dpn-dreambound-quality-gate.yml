@@ -49,6 +49,8 @@ jobs:
         run: python3 tools/check_runtime_security.py
       - name: Profile sanitizer fuzz
         run: node tools/fuzz_profile_sanitizer.js
+      - name: World expansion contract
+        run: python3 tools/check_world_expansion_contract.py
 
   child-safety:
     name: DreamShield Child Safety

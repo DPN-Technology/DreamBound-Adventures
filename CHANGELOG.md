@@ -1,3 +1,20 @@
+## v0.7.0-dev — Three Worlds Expansion
+
+- Added the connected **The Lost Explorer Map** story chapter.
+- Added enterable **Fossil Hall** in Dino Valley.
+- Added age-adaptive Fossil Scanner and mystery fossil-map sequence.
+- Added enterable **Maker Workshop** in Builder Bay.
+- Added blueprint-driven Gear Builder and persistent Dive Compass story item.
+- Added enterable **Ocean Discovery Center** with aquarium lab and submarine dock.
+- Added unlockable **Explorer Submarine** and repeatable sonar expeditions.
+- Added alternating Player 1 / Player 2 sonar turns when local co-op is active.
+- Added Interior Explorer and Pathfinder sticker/achievement progression.
+- Added three new world structures to the Storybook renderer.
+- Added strict sanitizer support for all v0.7 story/interior/submarine state.
+- Fixed the Avatar Studio option selector regression on the expanded branch.
+- Added a v0.7 world-expansion CI contract.
+- No new external network access, analytics, accounts, remote assets, or third-party runtime dependency.
+
 ## v0.6.1-dev — Runtime & Save Security Hardening
 
 - Added strict sanitization for all locally loaded child profiles.

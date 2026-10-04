@@ -40,7 +40,7 @@ function randomScalar(){
 function randomValue(depth=0){
   if(depth>3||Math.random()<.45)return randomScalar();
   if(Math.random()<.5)return Array.from({length:Math.floor(Math.random()*30)},()=>randomValue(depth+1));
-  const o={},keys=['name','age','color','buddy','stars','gems','settings','quests','buildings','position','avatarV6','storyV6','__proto__','constructor'];
+  const o={},keys=['name','age','color','buddy','stars','gems','settings','quests','buildings','position','avatarV6','storyV6','storyV7','interiorVisits','submarineUnlocked','__proto__','constructor'];
   for(let i=0;i<Math.floor(Math.random()*20);i++)o[keys[Math.floor(Math.random()*keys.length)]]=randomValue(depth+1);
   return o;
 }
@@ -58,5 +58,7 @@ for(let i=0;i<4000;i++){
   assert(result.achievements.length<=100);
   assert(result.coopGates.length<=3);
   assert(result.coopActivities.length<=4);
+  assert(result.interiorVisits.length<=3);
+  assert(result.storyV7.step>=0&&result.storyV7.step<=6);
 }
 console.log('DreamBound profile sanitizer fuzz: PASS (4000 randomized inputs)');

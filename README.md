@@ -37,15 +37,15 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 
 > **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
 
-## 🌈 Security-Hardened Story Build — v0.6.1-dev
+## 🌈 Three Worlds Expansion — v0.7.0-dev
 
 | System | Current capability |
 | --- | --- |
 | 🌎 **World** | Six connected regions with Storybook World procedural rendering |
-| 🌟 **Story** | The Sleeping Star chapter connecting Home Valley, Dream Home and Magic Grove |
+| 🌟 **Story** | Two connected chapters: The Sleeping Star + The Lost Explorer Map across five lands |
 | 🎨 **Avatar Studio** | Persistent hair and accessory customization |
-| 🚪 **Interiors** | Expanded Dream Home + enterable Moonflower Tower and Star Chamber |
-| 🧭 **Adventures** | 14 guided main adventures with objective tracking |
+| 🚪 **Interiors** | Dream Home, Moonflower Tower, Star Chamber, Fossil Hall, Maker Workshop and Ocean Discovery Center |
+| 🧭 **Adventures** | 18 guided main adventures with objective tracking |
 | 🐾 **DreamCreatures** | Six rescueable creatures and a sanctuary |
 | 💖 **DreamBuddy** | Companion friendship and interaction system |
 | 🏎️ **Racing** | Rainbow Speedway / Ridge Raceway |
@@ -57,6 +57,16 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 | 🧠 **Adaptive play** | Age-scaled Brain Sparks and challenge difficulty |
 | 💾 **Profiles** | Three local child profiles with automatic saving |
 | 👥 **Sibling Co-op** | Two explorers, two DreamBuddies, shared rewards, DreamLink tether, 3 cooperative gates and 4 team activities |
+
+### v0.7 Three Worlds systems
+
+- **Fossil Hall** — enterable Dino Valley museum and age-adaptive fossil scanner.
+- **Maker Workshop** — enterable Builder Bay engineering lab and blueprint-driven Gear Builder.
+- **Ocean Discovery Center** — enterable aquarium lab with protected submarine dock.
+- **The Lost Explorer Map** — one chapter linking all three interiors in sequence.
+- **Explorer Submarine** — unlockable, repeatable sonar expeditions with safe no-fail retries.
+- **Co-op Sonar** — when sibling co-op is active, sonar steps alternate between Player 1 and Player 2.
+- **Interior Explorer + Pathfinder** — persistent sticker/achievement progression.
 
 ### Runtime hardening
 

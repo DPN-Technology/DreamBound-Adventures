@@ -22,7 +22,7 @@ required_game={
     "animated creature":"function v6DrawCreatureAnimated",
 }
 required_html={
-    "v0.6 page version":"DreamBound Adventures v0.6.",
+    "DreamBound page":"DreamBound Adventures v0.",
 }
 required_css={
     "story card":".story-card",
