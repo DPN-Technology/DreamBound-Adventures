@@ -23,7 +23,7 @@ FORBIDDEN_RUNTIME = {
     r"\bEventSource\b": "EventSource network API",
     r"\bsendBeacon\b": "telemetry/network beacon API",
     r"<iframe\b": "iframe/embed",
-    r"<script[^>]+src\\s*=\\s*[\\"\']https?://": "remote script source",
+    r"""<script[^>]+src\s*=\s*["']https?://""": "remote script source",
 }
 DANGEROUS = {
     r"\beval\s*\(": "eval",
