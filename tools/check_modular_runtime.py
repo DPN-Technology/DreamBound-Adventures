@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contract for DreamBound v1.5 modular cinematic Odyssey runtime."""
+"""Capability contract for DreamBound unified modular runtime."""
 from pathlib import Path
 import re
 import sys
@@ -21,14 +21,14 @@ required_files=[
 missing=[p for p in required_files if not (root/p).is_file()]
 
 for marker in [
-  "DreamBound v1.5 · Startrail Mystery",
+  "UNIFIED LIVING WORLD",
   "connect-src 'none'",
   'src/vnext/core.js','src/vnext/input.js','src/vnext/space-center.js','src/vnext/ui.js','src/vnext/lunar-guardian.js','src/vnext/bootstrap.js'
 ]:
     if marker not in html: missing.append("html marker: "+marker)
 
 for marker in [
-  "DBX.VERSION='1.5.0-dev'","sanitize(raw)","dreambound-vnext-space-v1",
+  "DBX.VERSION=","sanitize(raw)","dreambound-vnext-space-v1",
   "localStorage.getItem","localStorage.setItem"
 ]:
     if marker not in core: missing.append("core marker: "+marker)
@@ -45,7 +45,7 @@ for marker in ["Mission Control","Solar Array","Rocket Workshop","Launch Pad","M
 for marker in ["Lunar Space Station","Moon Rover Bay","Rescue Luma","Moon Garden","Lunar Guardian"]:
     if marker not in lunar: missing.append("lunar marker: "+marker)
 
-if 'href="index.html"' not in main: missing.append("main-game preview link")
+if 'src="game.js"' in main: missing.append("legacy runtime loaded by canonical index")
 
 allow=[
   '"/index.html"','"/vnext.css"','"/src/vnext/core.js"','"/src/vnext/input.js"',
@@ -59,6 +59,6 @@ if re.search(r"https?://",runtime_text,re.I): missing.append("external URL in mo
 if re.search(r"\b(fetch|XMLHttpRequest|WebSocket|EventSource)\b",runtime_text): missing.append("network-capable API in modular runtime")
 
 if missing:
-    print("::error::DreamBound v1.5 modular runtime contract failed: "+", ".join(missing))
+    print("::error::DreamBound unified modular runtime contract failed: "+", ".join(missing))
     sys.exit(1)
-print("DreamBound v1.5 modular runtime contract: PASS")
+print("DreamBound unified modular runtime contract: PASS")
