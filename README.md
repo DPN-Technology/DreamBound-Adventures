@@ -300,6 +300,18 @@ The validator checks project structure, child-safety invariants, dangerous brows
 | [Release Process](docs/RELEASE_PROCESS.md) | Validated packaging and release rules |
 | [Third-Party Licenses](THIRD_PARTY_LICENSES.md) | Runtime and CI dependency/license ledger |
 
+## 🌌 v1.1 Living Moon
+
+The Advanced World now behaves more like a living game world instead of a chain of static activities.
+
+- **Dynamic world events** — Meteor Shower, Crystal Bloom, Aurora Wave, and Luma Star Parade rotate through the lunar world.
+- **Event objectives** appear physically in the world and reward Moon crystals, stars, gems, discoveries, and persistent event history.
+- **Explorer NPCs** — Nova, Gear, and Moss follow simple world schedules, have changing dialogue, and build persistent friendship.
+- **Moon Base Architect** — spend Moon crystals + gems on a Habitat, Observatory, Rover Garage, and Moon Greenhouse; finished modules render permanently in the world.
+- **Discovery Codex** tracks science finds, rare events, Luma, engineering discoveries, world-event wins, base progress, and NPC friendship.
+- **Cinematic zone cards** identify Space Center Campus, Tranquility Basin, Crystal Ridge, Luma Hollow, Moon Base Plateau, and the Lunar Space Station.
+- The v1.1 state surface is sanitized, fuzzed, child-safety scanned, and remains completely local/offline.
+
 ## 🚀 Roadmap direction
 
 The next major development phase is expected to focus on richer animated assets, deeper avatars, enterable interiors, creature habitats, additional vehicles, Space Center / Moon exploration, underwater submarine gameplay, cinematic story chapters and local sibling co-op.
