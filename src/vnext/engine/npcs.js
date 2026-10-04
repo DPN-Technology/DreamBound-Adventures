@@ -21,11 +21,13 @@ function pos(npc,t){
   return {x:a[0]+(b[0]-a[0])*f,y:a[1]+(b[1]-a[1])*f};
 }
 function nearest(){
+  if(DBX.livingNpcs)return null;
   if(DBX.scene?.id==='station')return null;
   const p=DBX.state.player,t=performance.now();
   return definitions.map(n=>{const q=pos(n,t);return {...n,...q,d:Math.hypot(p.x-q.x,p.y-q.y),action:'npc-talk',hint:n.role+' · Say hello'}}).sort((a,b)=>a.d-b.d)[0]||null;
 }
 function draw(ctx,t){
+  if(DBX.livingNpcs)return;
   if(DBX.scene?.id==='station')return;
   ctx.save();
   for(const n of definitions){
