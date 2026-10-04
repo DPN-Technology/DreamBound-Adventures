@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Static DreamBound co-op wiring contract used by CI."""
 from pathlib import Path
+import re
 import sys
 
 root=Path(__file__).resolve().parents[1]
@@ -31,7 +32,7 @@ gate_ids=["home-link","builder-link","ocean-link"]
 for gate in gate_ids:
     if gate not in game: missing.append("gate:"+gate)
 
-if "$('.coop-profile-card').forEach" in game:
+if re.search(r"(?<!\$)\$\('\.coop-profile-card'\)\.forEach", game):
     missing.append("selector regression: single-element $ used for co-op profile list")
 
 if missing:
