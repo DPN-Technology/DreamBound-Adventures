@@ -18,6 +18,7 @@ The GitHub repository uses automation maintained by third parties or GitHub. Wor
 | actions/setup-node | v7 | Node.js setup | No |
 | actions/upload-artifact | v7 | Release artifact retention | No |
 | actions/download-artifact | v8.0.1 | Release artifact retrieval | No |
+| Microsoft Playwright | 1.55.0 | CI-only browser automation for verified README gameplay screenshots | No |
 | actions/attest-build-provenance | v4.2.2 | Release provenance attestation | No |
 | github/codeql-action | v4 | CodeQL analysis / SARIF upload | No |
 | actions/dependency-review-action | v5.0.0 | Pull request dependency review | No |
