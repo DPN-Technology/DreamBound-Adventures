@@ -73,7 +73,7 @@ function drawStars(ctx,t){
   const animate=DBX.accessibility?.shouldAnimate?.()??true;
   for(let i=0;i<58;i++){
     const x=30+(i*157)%1740,y=25+(i*83)%630;
-    const a=animate?.35+.35*(.5+.5*Math.sin(t/580+i)):.52;
+    const a=animate ? .35+.35*(.5+.5*Math.sin(t/580+i)) : .52;
     ctx.fillStyle='rgba(220,241,255,'+a+')';
     ctx.beginPath();ctx.arc(x,y,1+(i%3)*.38,0,Math.PI*2);ctx.fill();
   }
