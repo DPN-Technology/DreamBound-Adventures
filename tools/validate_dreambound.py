@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DreamBound Adventures repository and child-safety validator."""
+"""DreamBound Adventures unified-runtime and child-safety validator."""
 from __future__ import annotations
 import argparse
 import pathlib
@@ -7,15 +7,37 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-RUNTIME = [ROOT / "index.html", ROOT / "styles.css", ROOT / "game.js", ROOT / "dom-collection-bridge.js", ROOT / "vnext.html", ROOT / "src/vnext/core.js", ROOT / "src/vnext/input.js", ROOT / "src/vnext/space-center.js", ROOT / "src/vnext/ui.js", ROOT / "src/vnext/lunar-guardian.js", ROOT / "src/vnext/engine/fx.js", ROOT / "src/vnext/engine/audio.js", ROOT / "src/vnext/engine/vehicle.js", ROOT / "src/vnext/engine/scenes.js", ROOT / "src/vnext/engine/quests.js", ROOT / "src/vnext/engine/companion.js", ROOT / "src/vnext/engine/world-polish.js", ROOT / "src/vnext/engine/settings.js", ROOT / "src/vnext/engine/world-events.js", ROOT / "src/vnext/engine/npcs.js", ROOT / "src/vnext/engine/base-builder.js", ROOT / "src/vnext/engine/codex.js", ROOT / "src/vnext/engine/cinematic.js", ROOT / "src/vnext/engine/adventure-director.js", ROOT / "src/vnext/engine/achievements.js", ROOT / "src/vnext/bootstrap.js"]
+
+RUNTIME = [
+    ROOT / "index.html",
+    ROOT / "vnext.html",
+    ROOT / "vnext.css",
+    ROOT / "safe-dom.js",
+    *sorted((ROOT / "src" / "vnext").rglob("*.js")),
+    *sorted((ROOT / "src" / "vnext").rglob("*.css")),
+]
+
+LEGACY_MIGRATION_SOURCE = [
+    "styles.css",
+    "game.js",
+    "profile-sanitizer.js",
+    "dom-collection-bridge.js",
+]
+
 REQUIRED = [
-    "index.html", "styles.css", "game.js", "profile-sanitizer.js", "dom-collection-bridge.js", "serve_dreambound.py", "vnext.html", "vnext.css", "src/vnext/core.js", "src/vnext/input.js", "src/vnext/space-center.js", "src/vnext/ui.js", "src/vnext/lunar-guardian.js", "src/vnext/engine/fx.js", "src/vnext/engine/audio.js", "src/vnext/engine/vehicle.js", "src/vnext/engine/scenes.js", "src/vnext/engine/quests.js", "src/vnext/engine/companion.js", "src/vnext/engine/world-polish.js", "src/vnext/engine/settings.js", "src/vnext/engine/world-events.js", "src/vnext/engine/npcs.js", "src/vnext/engine/base-builder.js", "src/vnext/engine/codex.js", "src/vnext/engine/cinematic.js", "src/vnext/engine/adventure-director.js", "src/vnext/engine/achievements.js", "src/vnext/bootstrap.js",
+    "index.html", "safe-dom.js", "serve_dreambound.py", "vnext.html", "vnext.css",
+    "src/vnext/core.js", "src/vnext/input.js", "src/vnext/space-center.js",
+    "src/vnext/ui.js", "src/vnext/lunar-guardian.js", "src/vnext/bootstrap.js",
+    "src/vnext/engine/scenes.js", "src/vnext/engine/unified-realms.js",
+    "src/vnext/engine/unified-world.css",
+    *LEGACY_MIGRATION_SOURCE,
     "PLAY-DREAMBOUND.bat", "PLAY-DREAMBOUND.ps1",
     "README.md", "SECURITY.md", "CONTRIBUTING.md",
     "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md", "docs/VNEXT_ARCHITECTURE.md",
     ".github/CODEOWNERS", ".github/dependabot.yml",
     "THIRD_PARTY_LICENSES.md", "docs/RELEASE_PROCESS.md",
 ]
+
 FORBIDDEN_RUNTIME = {
     r"https?://": "external URL in child runtime",
     r"\bfetch\s*\(": "fetch/network request",
@@ -37,10 +59,17 @@ SECRET_PATTERNS = {
     r"(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*[\"'][^\"']{12,}[\"']": "embedded credential-like value",
 }
 EXPECTED_TEXT = {
-    "index.html": ["DreamBound", "profile-sanitizer.js", "dom-collection-bridge.js", "Content-Security-Policy"],
-    "game.js": ["DreamBound", "localStorage", "DreamBoundSanitizer.sanitizeProfile"],
+    "index.html": [
+        "DreamBound", "UNIFIED LIVING WORLD", "safe-dom.js",
+        "src/vnext/core.js", "src/vnext/engine/unified-realms.js",
+        "src/vnext/bootstrap.js", "Content-Security-Policy",
+    ],
     "README.md": ["DreamShield", "DPN Technology"],
 }
+FORBIDDEN_INDEX_ASSETS = [
+    'src="game.js"', 'href="styles.css"', 'src="profile-sanitizer.js"',
+    'src="dom-collection-bridge.js"',
+]
 
 def fail(msg: str) -> None:
     print(f"::error::{msg}")
@@ -58,6 +87,10 @@ def check_integrity() -> None:
         for needle in needles:
             if needle not in data:
                 fail(f"{rel}: expected marker not found: {needle}")
+    index = read_text(ROOT / "index.html")
+    for asset in FORBIDDEN_INDEX_ASSETS:
+        if asset in index:
+            fail(f"index.html: legacy migration asset is player-facing: {asset}")
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts:
             continue
@@ -66,25 +99,25 @@ def check_integrity() -> None:
         data = read_text(path)
         if re.search(r"^(<<<<<<<|=======|>>>>>>>)", data, re.M):
             fail(f"{path.relative_to(ROOT)}: merge conflict marker detected")
-    print("DreamBound integrity: PASS")
+    print("DreamBound unified integrity: PASS")
 
 def check_child_safety() -> None:
     for path in RUNTIME:
         data = read_text(path)
         for pattern, reason in FORBIDDEN_RUNTIME.items():
             if re.search(pattern, data, re.I):
-                fail(f"{path.name}: prohibited child-runtime capability detected ({reason})")
+                fail(f"{path.relative_to(ROOT)}: prohibited child-runtime capability detected ({reason})")
     html = read_text(ROOT / "index.html")
     if re.search(r"<a\b[^>]+href\s*=\s*[\"']https?://", html, re.I):
         fail("index.html: external child-facing link detected")
-    print("DreamShield child safety: PASS")
+    print("DreamShield unified child safety: PASS")
 
 def check_security() -> None:
     for path in RUNTIME:
         data = read_text(path)
         for pattern, reason in DANGEROUS.items():
             if re.search(pattern, data, re.I):
-                fail(f"{path.name}: dangerous runtime pattern detected ({reason})")
+                fail(f"{path.relative_to(ROOT)}: dangerous runtime pattern detected ({reason})")
     scan_ext = {".js",".html",".css",".md",".yml",".yaml",".py",".ps1",".bat"}
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts or path.suffix.lower() not in scan_ext:
@@ -93,7 +126,7 @@ def check_security() -> None:
         for pattern, reason in SECRET_PATTERNS.items():
             if re.search(pattern, data):
                 fail(f"{path.relative_to(ROOT)}: {reason}")
-    print("DreamBound security baseline: PASS")
+    print("DreamBound unified security baseline: PASS")
 
 def main() -> int:
     parser = argparse.ArgumentParser()
