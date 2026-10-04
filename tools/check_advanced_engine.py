@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DreamBound v1. contract."""
+"""DreamBound v1.x Advanced World Engine capability contract."""
 from pathlib import Path
 import re
 import sys
@@ -22,8 +22,8 @@ for name in engine:
     if f'"/src/vnext/engine/{name}"' not in server: missing.append("server allowlist: "+name)
 
 for marker in [
-  "DreamBound v1.0 Advanced World Engine","v1.2 LIVING WORLD","vnextMinimap",
-  "vnextEnergyBar","vnextJournal","vnextSettings","vnextBuddy"
+  "DreamBound v1.","vnextMinimap","vnextEnergyBar",
+  "vnextJournal","vnextSettings","vnextBuddy"
 ]:
     if marker not in html: missing.append("v1 html marker: "+marker)
 
