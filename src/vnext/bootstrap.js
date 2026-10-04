@@ -17,6 +17,7 @@ function update(dt,t){
   DBX.fx?.update(dt);
   DBX.simulation?.step(dt);
   DBX.autonomousWorld?.tick(dt);
+  DBX.emergentEcology?.tick(dt);
   if(!document.querySelector('#vnextModal').classList.contains('hidden'))return;
   DBX.worldEvents?.update(dt);
   DBX.worldSystems?.update(dt,t);
