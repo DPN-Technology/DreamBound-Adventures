@@ -18,7 +18,7 @@ const catalog=[
 ];
 const defaults=()=>({serial:0,completed:0,active:[],history:[]});
 function sanitize(raw){
-  const r=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{},d=defaults();
+  const r=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};
   const active=Array.isArray(r.active)?r.active.filter(x=>x&&safeIds.includes(x.id)).slice(0,3).map(x=>({
     id:x.id,start:DBX.util.int(x.start,0,999999999,0),done:DBX.util.bool(x.done,false)
   })):[];
