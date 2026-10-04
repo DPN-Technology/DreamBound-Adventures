@@ -37,7 +37,11 @@ Please report issues involving:
 
 Do **not** publish weaponized exploit details or private information in a public issue.
 
-Use GitHub's private security reporting/security area when available, or another official private DPN Technology channel.
+Use [GitHub private vulnerability reporting](https://github.com/DPN-Technology/DreamBound-Adventures/security/advisories/new) for sensitive reports. If private reporting is unavailable, use an official private DPN Technology contact channel rather than a public issue.
+
+## Response expectations
+
+DPN Technology will triage credible security reports as quickly as practical, prioritize child-safety and repository-compromise risks first, and avoid publishing sensitive exploit details until a fix or mitigation is available.
 
 ## Sensitive information
 
@@ -45,13 +49,13 @@ Never commit or report real passwords, API keys, access tokens, private keys, we
 
 ## DreamShield merge standard
 
-Security-sensitive changes should pass the DPN DreamBound Quality Gate, DreamShield Child Safety validation, Security Baseline validation, CodeQL, Dependency Review when dependencies change, supply-chain posture checks and local runtime smoke testing.
+Security-sensitive changes should pass the DPN DreamBound Quality Gate, DreamShield Child Safety validation, Security Baseline validation, workflow-security contract, CodeQL, Dependency Review when dependencies change, supply-chain posture checks and local runtime smoke testing.
 
 See [Security Gates](docs/SECURITY_GATES.md).
 
 ## Supported version
 
-The actively developed version on main and the most recent GitHub release are the supported security targets unless a release note states otherwise.
+The actively developed version on `main` and the most recent GitHub release are the supported security targets unless a release note states otherwise.
 
 ## Disclosure credit
 

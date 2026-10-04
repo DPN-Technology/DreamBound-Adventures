@@ -7,14 +7,14 @@ DreamShield is the security and quality control layer for DreamBound Adventures.
 | Gate | Purpose | Expected merge status |
 | --- | --- | --- |
 | DreamShield Green Gate | Aggregates source, policy, child-safety and security checks | Required |
+| Workflow Security Contract | Enforces immutable Action pins and least-privilege workflow patterns | Required |
 | CodeQL JavaScript Analysis | Static application security analysis | Required |
 | Dependency Review | Detect risky dependency changes in pull requests | Required when available |
 | Local Runtime Smoke | Ensures core static game files serve correctly | Required |
 | OpenSSF Scorecard | Repository/supply-chain posture signal | Scheduled / monitored |
+| Release Provenance | Attests tagged release packages before publication | Required for tagged releases |
 
 ## Quality Gate internals
-
-The main quality workflow evaluates four independent jobs.
 
 ### Source Integrity
 
@@ -22,6 +22,8 @@ The main quality workflow evaluates four independent jobs.
 - Required runtime files exist.
 - Merge conflict markers are absent.
 - Required game identifiers are present.
+- Co-op wiring contract is intact.
+- GitHub Actions pass the workflow-security contract.
 
 ### DreamShield Child Safety
 
@@ -39,19 +41,19 @@ The main quality workflow evaluates four independent jobs.
 - No dangerous document injection APIs.
 - No unexpected network expansion without review.
 
-### Policy Files
+### Workflow Security Contract
 
-- Security policy
-- Threat model
-- Contributor rules
-- CODEOWNERS
-- Dependabot
-
-The final **DreamShield Green Gate** fails if any required internal gate does not succeed.
+- Every third-party/GitHub Action is pinned to an immutable 40-character commit SHA.
+- Checkout credentials are not persisted.
+- Top-level write permissions are forbidden.
+- Write access is scoped to the minimum job that needs it.
+- `pull_request_target` is forbidden without an explicit security exception.
+- Dangerous download-and-execute shell patterns are rejected.
+- Untrusted issue/PR text cannot be directly interpolated into executable workflow source.
 
 ## Branch protection target
 
-Recommended main policy:
+Recommended `main` policy:
 
 - Require pull request before merge.
 - Require at least one approving review for non-trivial changes.
@@ -60,11 +62,15 @@ Recommended main policy:
 - Require DreamShield Green Gate, CodeQL and Local Runtime Smoke.
 - Require Dependency Review when present.
 - Block force pushes.
-- Block deletion of main.
+- Block deletion of `main`.
 - Require CODEOWNERS review for security-sensitive files.
 - Keep workflow permissions least-privilege.
 
-The connected GitHub interface currently exposes workflow/file writes but not repository ruleset mutation, so the CI controls are installed in-repo and the ruleset target is documented here for repository/organization enforcement.
+Repository code can enforce CI but cannot replace an organization/repository ruleset. The active GitHub integration does not expose administrative ruleset mutation, so ruleset enforcement remains an administrator-level repository setting.
+
+## Release hardening
+
+Tagged releases are built by CI from repository source, receive a SHA-256 checksum, and receive GitHub build-provenance attestation before publication. The release-publishing job is separated from the build job so `contents: write` is not available while untrusted source validation/build steps run.
 
 ## Security exception process
 
