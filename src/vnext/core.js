@@ -1,7 +1,7 @@
 (() => {
 'use strict';
 const DBX=window.DreamBoundVNext=window.DreamBoundVNext||{};
-DBX.VERSION='1.0.0-dev';
+DBX.VERSION='1.1.0-dev';
 DBX.WORLD={w:1800,h:1200};
 function finitePrimitive(v,fallback=0){
   if(typeof v==='number')return Number.isFinite(v)?v:fallback;
@@ -57,6 +57,14 @@ const defaults=()=>({
   sceneVisits:['surface'],
   badges:[],
   totalDistance:0,
+  moonCrystals:0,
+  baseModules:[],
+  codexEntries:[],
+  completedWorldEvents:[],
+  npcFriendship:{nova:0,gear:0,moss:0},
+  meteorSamples:0,
+  auroraSeen:false,
+  eventWins:0,
   stars:0,
   gems:0,
   sessionStarted:Date.now()
@@ -93,6 +101,18 @@ DBX.storage={
       sceneVisits:DBX.util.list(r.sceneVisits,['surface','station'],2),
       badges:DBX.util.list(r.badges,['Space Pathfinder','Lunar Guardian','Station Scientist','Best Moon Friends'],8),
       totalDistance:DBX.util.num(r.totalDistance,0,999999999,0),
+      moonCrystals:DBX.util.int(r.moonCrystals,0,999,0),
+      baseModules:DBX.util.list(r.baseModules,['habitat','observatory','garage','greenhouse'],4),
+      codexEntries:DBX.util.list(r.codexEntries,['Earthrise','Moon crystal','Meteor shard','Aurora ribbon','Luma','Lunar moss','Rover blueprint','Dream signal'],20),
+      completedWorldEvents:DBX.util.list(r.completedWorldEvents,['meteor-shower','crystal-bloom','aurora-wave','luma-parade'],8),
+      npcFriendship:{
+        nova:DBX.util.int(r.npcFriendship?.nova,0,10,0),
+        gear:DBX.util.int(r.npcFriendship?.gear,0,10,0),
+        moss:DBX.util.int(r.npcFriendship?.moss,0,10,0)
+      },
+      meteorSamples:DBX.util.int(r.meteorSamples,0,99,0),
+      auroraSeen:DBX.util.bool(r.auroraSeen,false),
+      eventWins:DBX.util.int(r.eventWins,0,99,0),
       stars:DBX.util.int(r.stars,0,9999,0),
       gems:DBX.util.int(r.gems,0,9999,0)
     };
@@ -117,6 +137,9 @@ DBX.storage={
         roverActive:s.roverActive,lumaRescued:s.lumaRescued,lunarBadge:s.lunarBadge,
         stationDiscoveries:s.stationDiscoveries,completedQuests:s.completedQuests,lumaBond:s.lumaBond,
         sceneVisits:s.sceneVisits,badges:s.badges,totalDistance:s.totalDistance,
+        moonCrystals:s.moonCrystals,baseModules:s.baseModules,codexEntries:s.codexEntries,
+        completedWorldEvents:s.completedWorldEvents,npcFriendship:s.npcFriendship,
+        meteorSamples:s.meteorSamples,auroraSeen:s.auroraSeen,eventWins:s.eventWins,
         stars:s.stars,gems:s.gems
       }));
     }catch{}
