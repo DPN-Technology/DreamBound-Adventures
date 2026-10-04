@@ -23,7 +23,7 @@ for name in modules:
         missing.append("server allowlist: "+name)
 
 for marker in [
-    "DreamBound v1.2 Living World Director Engine","v1.2 LIVING WORLD","vnextWorldEvent",
+    "DreamBound v1.2 Living World Director","v1.2 LIVING WORLD","vnextWorldEvent",
     "vnextCinematic","vnextCodex","vnextBase","vnextCrystals","vnextEventWins"
 ]:
     if marker not in html:
