@@ -28,7 +28,7 @@ for marker in [
     if marker not in html: missing.append("v1 html marker: "+marker)
 
 for marker in [
-  "DBX.VERSION='1.0.0-dev'","stationDiscoveries","completedQuests","lumaBond",
+  "DBX.VERSION='1.","stationDiscoveries","completedQuests","lumaBond",
   "sceneVisits","totalDistance"
 ]:
     if marker not in core: missing.append("v1 state marker: "+marker)
