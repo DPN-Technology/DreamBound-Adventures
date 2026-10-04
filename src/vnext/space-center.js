@@ -31,7 +31,7 @@ DBX.world={
     ctx.fillStyle='#d8d3c8';ctx.fillRect(90,545,1110,155);
     ctx.fillStyle='#f7f5e8';ctx.fillRect(120,570,1050,12);
     ctx.fillRect(120,655,1050,10);
-    for(let x=160;x<1160;x+=90){ctx.fillStyle='#fff7a6';ctx.fillRect(x,615,48,8)}
+    for(let x=160;x<1160;x+=90){ctx.fillStyle='#fff7a6';ctx.fillRect(x,615,48,8)};
 
     // Mission control.
     panel(ctx,250,245,220,170,'#5d55b8','#f8f5ff');
@@ -74,7 +74,7 @@ DBX.world={
 
     // Decorative stars in dark sector.
     ctx.fillStyle='#fff6b0';
-    for(let i=0;i<35;i++){const x=1270+(i*137)%500,y=40+(i*83)%620;ctx.fillRect(x,y,3+(i%2),3+(i%2))}
+    for(let i=0;i<35;i++){const x=1270+(i*137)%500,y=40+(i*83)%620;ctx.fillRect(x,y,3+(i%2),3+(i%2))};
     ctx.restore();
   }
 };
