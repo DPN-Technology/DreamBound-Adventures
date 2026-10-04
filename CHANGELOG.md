@@ -1,3 +1,19 @@
+## v1.2.0-dev — Living World Director
+
+- Ported the Living Moon systems cleanly onto current main without carrying the stale PR conflict.
+- Added rotating dynamic lunar world events with physical targets, timers, rewards and persistent completion history.
+- Added Moon Crystal resource economy.
+- Added Nova, Gear and Moss NPCs with schedules, dialogue and persistent friendship.
+- Added Moon Base Architect with four permanent buildable modules.
+- Added Discovery Codex and cinematic region title cards.
+- Added Dynamic Adventure Director with four progression tiers, adaptive event pacing, challenge-length guidance and next-adventure recommendations.
+- Added Explorer Mastery with 12 long-term achievements and a calculated mastery score.
+- Expanded persistent sanitized state for resources, base modules, Codex entries, event history, NPC friendship and mastery achievements.
+- Expanded hostile-state fuzzing for the full v1.2 state surface.
+- Added Living World and Director/Mastery CI contracts.
+- Added smoke, release, child-safety and loopback-server coverage for every new module.
+- Preserved CSP `connect-src 'none'`, no ads, no analytics, no public chat, no accounts and no remote child runtime dependencies.
+
 ## v1.0.0-dev — Advanced World Engine
 
 - Promoted the modular runtime from preview status to the **Advanced World** first-class launch path.

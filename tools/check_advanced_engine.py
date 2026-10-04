@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DreamBound v1.0 Advanced World Engine contract."""
+"""DreamBound v1.x Advanced World Engine capability contract."""
 from pathlib import Path
 import re
 import sys
@@ -22,13 +22,13 @@ for name in engine:
     if f'"/src/vnext/engine/{name}"' not in server: missing.append("server allowlist: "+name)
 
 for marker in [
-  "DreamBound v1.0 Advanced World Engine","v1.0 ADVANCED WORLD","vnextMinimap",
-  "vnextEnergyBar","vnextJournal","vnextSettings","vnextBuddy"
+  "DreamBound v1.","vnextMinimap","vnextEnergyBar",
+  "vnextJournal","vnextSettings","vnextBuddy"
 ]:
     if marker not in html: missing.append("v1 html marker: "+marker)
 
 for marker in [
-  "DBX.VERSION='1.0.0-dev'","stationDiscoveries","completedQuests","lumaBond",
+  "DBX.VERSION='1.","stationDiscoveries","completedQuests","lumaBond",
   "sceneVisits","totalDistance"
 ]:
     if marker not in core: missing.append("v1 state marker: "+marker)
@@ -56,6 +56,6 @@ except ValueError:
     pass
 
 if missing:
-    print("::error::DreamBound v1.0 advanced engine contract failed: "+", ".join(missing))
+    print("::error::DreamBound v1.x advanced engine contract failed: "+", ".join(missing))
     sys.exit(1)
-print("DreamBound v1.0 advanced engine contract: PASS")
+print("DreamBound v1.x advanced engine contract: PASS")

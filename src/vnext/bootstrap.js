@@ -16,6 +16,10 @@ function resize(){
 function update(dt,t){
   DBX.fx?.update(dt);
   if(!document.querySelector('#vnextModal').classList.contains('hidden'))return;
+  DBX.worldEvents?.update(dt);
+  DBX.cinematic?.update(dt);
+  DBX.director?.update(dt);
+  DBX.achievements?.tick();
   const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
   let handled=false;
   if(DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
@@ -73,7 +77,10 @@ function updateTelemetry(){
   }
   const bond=document.querySelector('#vnextBond');if(bond)bond.textContent=Math.floor(s.lumaBond||0)+'/10';
   const compass=document.querySelector('#vnextCompass');if(compass)compass.textContent=DBX.polish?.compassText()||'N';
-  const zone=document.querySelector('#vnextZone');if(zone)zone.textContent=DBX.scene?.id==='station'?'LUNAR STATION':(s.player.x>1250?'MOON SURFACE':'SPACE CENTER');
+  const zone=document.querySelector('#vnextZone');if(zone)zone.textContent=DBX.cinematic?.zoneName?.()||(DBX.scene?.id==='station'?'LUNAR STATION':(s.player.x>1250?'MOON SURFACE':'SPACE CENTER'));
+  const crystals=document.querySelector('#vnextCrystals');if(crystals)crystals.textContent=s.moonCrystals||0;
+  const eventWins=document.querySelector('#vnextEventWins');if(eventWins)eventWins.textContent=s.eventWins||0;
+  const mastery=document.querySelector('#vnextMasteryValue');if(mastery)mastery.textContent=(DBX.achievements?.mastery?.()||0)+'%';
 }
 function draw(t){
   ctx.clearRect(0,0,innerWidth,innerHeight);
@@ -111,9 +118,13 @@ document.querySelector('#vnextInteract').onclick=()=>DBX.input.requestAction();
 document.querySelector('#vnextJournal').onclick=()=>DBX.quests?.renderJournal();
 document.querySelector('#vnextSettings').onclick=()=>DBX.settings?.open();
 document.querySelector('#vnextBuddy').onclick=()=>DBX.companion?.interact();
+document.querySelector('#vnextCodex').onclick=()=>DBX.codex?.open();
+document.querySelector('#vnextBase').onclick=()=>DBX.baseBuilder?.open();
+document.querySelector('#vnextDirectorBtn').onclick=()=>DBX.director?.open();
+document.querySelector('#vnextMastery').onclick=()=>DBX.achievements?.open();
 document.querySelector('#vnextReset').onclick=()=>{
   DBX.storage.reset();DBX.vehicle?.reset();DBX.ui.closeModal();DBX.ui.updateHUD();
-  DBX.ui.toast('Adventure reset','v1.0 modular progress cleared on this device.');
+  DBX.ui.toast('Adventure reset','v1.2 living-world progress cleared on this device.');
 };
 DBX.events.on('state:reset',()=>{cam={x:0,y:0}});
 DBX.events.on('scene:changed',({id})=>{
