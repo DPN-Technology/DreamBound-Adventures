@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#3b3f78">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>DreamBound v0.8 Space Center Preview</title>
+  <link rel="stylesheet" href="vnext.css">
+</head>
+<body>
+  <main id="vnextApp">
+    <canvas id="vnextCanvas" aria-label="DreamBound modular Space Center playground"></canvas>
+    <header class="vnext-hud">
+      <a class="back-link" href="index.html">← DreamBound</a>
+      <div class="preview-chip">v0.8 MODULAR PREVIEW</div>
+      <div class="currency">⭐ <b id="vnextStars">0</b> · 💎 <b id="vnextGems">0</b></div>
+    </header>
+    <section class="mission-card">
+      <small>SPACE PATHFINDER <b id="vnextStage">1/5</b></small>
+      <strong id="vnextObjective">Decode the star signal in Mission Control.</strong>
+      <div class="progress-track"><i id="vnextProgress"></i></div>
+    </section>
+    <section id="vnextPrompt" class="interact-prompt hidden">
+      <strong>🛰️ Mission Control</strong><span>Interact</span>
+    </section>
+    <button id="vnextInteract" class="interact-btn">✨ DO</button>
+    <nav class="mobile-pad" aria-label="Movement controls">
+      <button data-move="up">▲</button>
+      <div><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div>
+    </nav>
+    <button id="vnextAction" class="mobile-action">✨</button>
+    <button id="vnextReset" class="reset-btn">Reset Preview</button>
+    <div id="vnextToast" class="toast hidden"><strong></strong><span></span></div>
+    <div id="vnextModal" class="modal-layer hidden" role="dialog" aria-modal="true"><div id="vnextModalCard" class="modal-card"></div></div>
+  </main>
+  <script src="src/vnext/core.js"></script>
+  <script src="src/vnext/input.js"></script>
+  <script src="src/vnext/space-center.js"></script>
+  <script src="src/vnext/ui.js"></script>
+  <script src="src/vnext/bootstrap.js"></script>
+</body>
+</html>

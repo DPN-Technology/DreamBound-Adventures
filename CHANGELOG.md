@@ -1,3 +1,21 @@
+## v0.8.0-dev — Modular Space Center Preview
+
+- Added DreamBound's first modular vNext runtime under `src/vnext/`.
+- Split new development into core state/storage, input, world, UI, and bootstrap modules.
+- Added an opt-in Space Center preview from the main DreamBound title screen.
+- Added Mission Control star-signal decoding.
+- Added Solar Array engineering puzzle.
+- Added Rocket Workshop assembly puzzle.
+- Added launch progression into a Moon training sector.
+- Added Moon rover-route memory challenge.
+- Added three collectible Moon rocks and Space Pathfinder completion loop.
+- Added keyboard, touch, camera, companion, HUD, local persistence, and malformed-save recovery.
+- Added strict no-network CSP and no remote child runtime dependencies.
+- Added child-safety validation for every new modular runtime script.
+- Added a dedicated modular-runtime CI contract and JavaScript syntax sweep.
+- Added secure-server allowlisting, smoke-test coverage, and release packaging for vNext assets.
+- Existing v0.7.1 game remains the default; v0.8 is an opt-in preview while modular migration continues.
+
 ## v0.7.1-dev — Runtime Interaction Reliability
 
 - Added a DOM collection compatibility bridge for nine legacy multi-element selector sites in the monolithic game runtime.
