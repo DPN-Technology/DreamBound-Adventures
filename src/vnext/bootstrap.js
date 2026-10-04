@@ -33,7 +33,7 @@ function update(dt,t){
   if(!handled&&(v.x||v.y)){
     const speed=s.player.speed||250;
     s.player.x+=v.x*speed*dt;s.player.y+=v.y*speed*dt;
-    if(DBX.scene?.id!=='station'&&!s.launched&&s.player.x>1230)s.player.x=1230;
+    if(DBX.scene?.id==='surface'&&!s.launched&&s.player.x>1230)s.player.x=1230;
     s.player.dir=Math.atan2(v.y,v.x);
   }
   if(DBX.scene?.clamp)DBX.scene.clamp(s.player);
@@ -63,7 +63,7 @@ function update(dt,t){
     else if(s.lumaRescued)DBX.companion?.interact();
   }
 
-  if(DBX.scene?.id!=='station'&&s.launched){
+  if(DBX.scene?.id==='surface'&&s.launched){
     for(const rock of DBX.world.rocks||[]){
       if(s.moonRocks.includes(rock.id))continue;
       if(Math.hypot(s.player.x-rock.x,s.player.y-rock.y)<52)DBX.ui.moonRock(rock.id);
@@ -138,7 +138,7 @@ document.querySelector('#vnextMastery').onclick=()=>DBX.achievements?.open();
 document.querySelector('#vnextWorldSystems').onclick=()=>DBX.worldSystems?.open();
 document.querySelector('#vnextReset').onclick=()=>{
   DBX.storage.reset();DBX.vehicle?.reset();DBX.ui.closeModal();DBX.ui.updateHUD();
-  DBX.ui.toast('Adventure reset','v1.4 living-world progress cleared on this device.');
+  DBX.ui.toast('Adventure reset','Local DreamBound progress cleared on this device.');
 };
 DBX.events.on('state:reset',()=>{cam={x:0,y:0}});
 DBX.events.on('scene:changed',({id})=>{
