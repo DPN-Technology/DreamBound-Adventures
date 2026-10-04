@@ -300,6 +300,21 @@ The validator checks project structure, child-safety invariants, dangerous brows
 | [Release Process](docs/RELEASE_PROCESS.md) | Validated packaging and release rules |
 | [Third-Party Licenses](THIRD_PARTY_LICENSES.md) | Runtime and CI dependency/license ledger |
 
+## 🌌 v1.2 Living World Director
+
+DreamBound's modular engine now behaves like a persistent **living adventure world**, not a sequence of isolated activities.
+
+- **Dynamic world events** rotate across the Moon: Meteor Shower, Crystal Bloom, Aurora Wave and Luma Star Parade.
+- **Physical event targets** appear in the world and award stars, gems, Moon crystals, science finds and persistent event history.
+- **Explorer NPCs** Nova, Gear and Moss follow schedules, move around the world, have changing dialogue and build persistent friendship.
+- **Moon Base Architect** lets players spend Moon crystals + gems on a permanent Habitat, Observatory, Rover Garage and Moon Greenhouse.
+- **Discovery Codex** tracks discoveries, rare events, Luma, engineering finds, base progress and NPC friendship.
+- **Cinematic region cards** identify Space Center Campus, Tranquility Basin, Crystal Ridge, Luma Hollow, Moon Base Plateau and Lunar Space Station.
+- **Dynamic Adventure Director** evaluates progress and changes event pacing, challenge length and recommendations across four tiers: Guided, Curious, Brave and Master.
+- **Explorer Mastery** adds long-term achievements across launch, Luma, world events, base building, science, friendships, travel distance and quests.
+- The HUD now surfaces Moon crystals, world-event wins, mastery %, Director tier, Codex, Base and Mastery controls.
+- All new state remains local-only, sanitized, fuzzed and covered by DreamShield.
+
 ## 🚀 Roadmap direction
 
 The next major development phase is expected to focus on richer animated assets, deeper avatars, enterable interiors, creature habitats, additional vehicles, Space Center / Moon exploration, underwater submarine gameplay, cinematic story chapters and local sibling co-op.
