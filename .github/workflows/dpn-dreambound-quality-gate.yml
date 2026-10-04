@@ -79,6 +79,8 @@ jobs:
         run: python3 tools/check_procedural_adventures.py
       - name: Accessibility performance contract
         run: python3 tools/check_accessibility_performance.py
+      - name: v2 simulation kernel contract
+        run: python3 tools/check_simulation_kernel.py
       - name: vNext state fuzz
         run: node tools/fuzz_vnext_state.js
 
