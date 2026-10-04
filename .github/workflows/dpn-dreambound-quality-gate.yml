@@ -67,6 +67,8 @@ jobs:
         run: python3 tools/check_living_ecology.py
       - name: World systems contract
         run: python3 tools/check_world_systems.py
+      - name: Cinematic story arc contract
+        run: python3 tools/check_story_arcs.py
       - name: Director and Mastery contract
         run: python3 tools/check_v12_director.py
       - name: Odyssey Network contract

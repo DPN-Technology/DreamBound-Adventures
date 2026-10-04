@@ -1,7 +1,7 @@
 (() => {
 'use strict';
 const DBX=window.DreamBoundVNext=window.DreamBoundVNext||{};
-DBX.VERSION='1.3.0-dev';
+DBX.VERSION='1.5.0-dev';
 DBX.WORLD={w:1800,h:1200};
 function finitePrimitive(v,fallback=0){
   if(typeof v==='number')return Number.isFinite(v)?v:fallback;
@@ -104,7 +104,7 @@ DBX.storage={
       totalDistance:DBX.util.num(r.totalDistance,0,999999999,0),
       moonCrystals:DBX.util.int(r.moonCrystals,0,999,0),
       baseModules:DBX.util.list(r.baseModules,['habitat','observatory','garage','greenhouse'],4),
-      codexEntries:DBX.util.list(r.codexEntries,['Earthrise','Moon crystal','Meteor shard','Aurora ribbon','Luma','Lunar moss','Rover blueprint','Dream signal'],20),
+      codexEntries:DBX.util.list(r.codexEntries,['Earthrise','Moon crystal','Meteor shard','Aurora ribbon','Luma','Lunar moss','Rover blueprint','Dream signal','Cloud Fox','Moon Rockhopper','Lunar Moth','Star Sprite','Starwell Song'],24),
       completedWorldEvents:DBX.util.list(r.completedWorldEvents,['meteor-shower','crystal-bloom','aurora-wave','luma-parade'],8),
       npcFriendship:{
         nova:DBX.util.int(r.npcFriendship?.nova,0,10,0),

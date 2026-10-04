@@ -5,7 +5,9 @@ if(!DBX)return;
 const allEntries=[
   ['Earthrise','🌍','Sky Discovery'],['Moon crystal','💠','Lunar Resource'],['Meteor shard','☄️','Space Science'],
   ['Aurora ribbon','🌌','Rare Event'],['Luma','🐇','DreamCreature'],['Lunar moss','🌿','Moon Biology'],
-  ['Rover blueprint','🛻','Engineering'],['Dream signal','🛰️','Navigation']
+  ['Rover blueprint','🛻','Engineering'],['Dream signal','🛰️','Navigation'],
+  ['Cloud Fox','🦊','DreamCreature'],['Moon Rockhopper','🐾','DreamCreature'],['Lunar Moth','🦋','DreamCreature'],
+  ['Star Sprite','✨','DreamCreature'],['Starwell Song','🎵','Story Discovery']
 ];
 function open(){
   const unlocked=new Set(DBX.state.codexEntries||[]);
