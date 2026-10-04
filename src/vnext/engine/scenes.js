@@ -56,7 +56,7 @@ function drawStation(ctx,t){
   ctx.fillStyle='#080c28';ctx.beginPath();ctx.roundRect(205,45,540,175,34);ctx.fill();
   ctx.strokeStyle='#879ee1';ctx.lineWidth=10;ctx.stroke();
   ctx.fillStyle='#fff6b4';
-  for(let i=0;i<45;i++){const x=220+(i*101)%510,y=58+(i*59)%145;ctx.fillRect(x,y,2+(i%2),2+(i%2))};
+  for(let i=0;i<45;i++){const x=220+(i*101)%510,y=58+(i*59)%145;ctx.fillRect(x,y,2+(i%2),2+(i%2));}
   ctx.fillStyle='#bcc5e7';ctx.beginPath();ctx.arc(650,133,60,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#777fa6';ctx.beginPath();ctx.arc(630,120,14,0,Math.PI*2);ctx.fill();
   ctx.beginPath();ctx.arc(672,150,11,0,Math.PI*2);ctx.fill();
@@ -64,7 +64,7 @@ function drawStation(ctx,t){
   // Floor lanes.
   ctx.fillStyle='#68759e';ctx.beginPath();ctx.roundRect(65,260,820,385,42);ctx.fill();
   ctx.strokeStyle='#92a4d2';ctx.lineWidth=4;
-  for(let x=180;x<860;x+=170){ctx.beginPath();ctx.moveTo(x,280);ctx.lineTo(x,625);ctx.stroke()};
+  for(let x=180;x<860;x+=170){ctx.beginPath();ctx.moveTo(x,280);ctx.lineTo(x,625);ctx.stroke();}
 
   // Hydroponics.
   stationPanel(ctx,315,315,230,145,'#335c5a','#9ef3b7');
