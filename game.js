@@ -297,4 +297,78 @@ function openLighthouseGame(){const colors=[['🔴','red'],['🟡','yellow'],['�
 // ===== DreamBound v0.4.1 STORYBOOK WORLD ENGINE =====
 const LANDMARKS_V4=[
   {id:'homebase',name:'Dream Home',zone:'Home Valley',x:355,y:430,icon:'🏡'},
-  {id:'moontower',name:'Moonflower Tower',zone:'Magic Grove',x:1
+  {id:'moontower',name:'Moonflower Tower',zone:'Magic Grove',x:1710,y:390,icon:'🪄'},
+  {id:'speedway',name:'Rainbow Speedway',zone:'Racing Ridge',x:2680,y:420,icon:'🏁'},
+  {id:'museum',name:'Fossil Hall',zone:'Dino Valley',x:560,y:1630,icon:'🦴'},
+  {id:'workshop',name:'Maker Workshop',zone:'Builder Bay',x:1545,y:1670,icon:'🧱'},
+  {id:'lighttower',name:'Rainbow Lighthouse',zone:'Ocean Cove',x:2910,y:1340,icon:'🗼'}
+];
+const V4_SCENERY=(()=>{const out=[];let seed=8173;const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280};for(const z of ZONES){const count=z.name==='Ocean Cove'?28:42;for(let i=0;i<count;i++){const x=z.x+55+rnd()*(z.w-110),y=z.y+80+rnd()*(z.h-140);let kind='tree';if(z.name==='Magic Grove')kind=i%4===0?'crystal':i%3===0?'mushroom':'tree';else if(z.name==='Racing Ridge')kind=i%3===0?'rock':'shrub';else if(z.name==='Dino Valley')kind=i%4===0?'fern':i%5===0?'rock':'tree';else if(z.name==='Builder Bay')kind=i%4===0?'crate':i%3===0?'shrub':'tree';else if(z.name==='Ocean Cove')kind=i%3===0?'coral':i%4===0?'shell':'wave';else kind=i%4===0?'flowerPatch':'tree';out.push({zone:z.name,x,y,kind,s:.7+rnd()*.65,p:rnd()*6.28})}}return out})();
+
+function defaultQuests(){ return [
+  {id:'hello',title:'Meet Pip',text:'Find Pip the robot near the rainbow path.',done:false,reward:2,xp:8,icon:'🤖'},
+  {id:'stars',title:'Star Collector',text:'Collect 5 Dream Stars.',done:false,reward:3,xp:10,progress:0,target:5,icon:'⭐'},
+  {id:'rescue',title:'Tiny Rescue',text:'Find Button the fox in Magic Grove.',done:false,reward:4,xp:12,icon:'🦊'},
+  {id:'creatures',title:'Creature Helper',text:'Rescue 3 tiny DreamCreatures.',done:false,reward:5,xp:16,progress:0,target:3,icon:'🐾'},
+  {id:'build',title:'Build Something!',text:'Place your first creation in Builder Bay.',done:false,reward:3,xp:10,icon:'🧱'},
+  {id:'brain',title:'Brain Power',text:'Complete one learning challenge.',done:false,reward:4,xp:12,icon:'🧠'},
+  {id:'race',title:'Racing Rookie',text:'Finish a race at Racing Ridge.',done:false,reward:5,xp:18,icon:'🏎️'},
+  {id:'fossil',title:'Fossil Finder',text:'Uncover a complete fossil in Dino Valley.',done:false,reward:5,xp:18,icon:'🦴'},
+  {id:'magic',title:'Magic Maker',text:'Learn your first spell in Magic Grove.',done:false,reward:6,xp:20,icon:'🪄'},
+  {id:'buddy',title:'Best Buddies',text:'Play with your DreamBuddy 3 times.',done:false,reward:4,xp:14,progress:0,target:3,icon:'💖'},
+  {id:'photos',title:'Photo Safari',text:'Take photos in 3 different lands.',done:false,reward:5,xp:16,progress:0,target:3,icon:'📸'},
+  {id:'discover',title:'World Explorer',text:'Discover all 6 DreamBound lands.',done:false,reward:8,xp:24,progress:1,target:6,icon:'🗺️'},
+  {id:'landmarks',title:'Landmark Legend',text:'Discover the special landmark in every land.',done:false,reward:8,xp:24,progress:0,target:6,icon:'🏛️'},
+  {id:'wish',title:'Make a Wish',text:'Visit the Wishing Well in Home Valley.',done:false,reward:3,xp:10,icon:'🌠'}
+]; }
+
+function unlockStickerForQuest(id){const map={hello:'Robot Friend',rescue:'Rainbow Finder',creatures:'Creature Helper',build:'Master Builder',race:'Racing Rookie',fossil:'Fossil Finder',magic:'Magic Maker',brain:'Dino Detective',buddy:'Best Buddies',photos:'Photo Safari',discover:'World Explorer',landmarks:'Landmark Legend',wish:'Wish Maker'};if(map[id])unlockSticker(map[id])}
+
+function v4EnsureProfile(){
+  if(!state.profile)return;
+  state.profile.landmarks=state.profile.landmarks||[];
+  state.profile.homeStyle=state.profile.homeStyle||'sky';
+  state.profile.homeThemes=state.profile.homeThemes||['sky'];
+  state.profile.visualBadges=state.profile.visualBadges||[];
+}
+
+function v4Color(hex,amount){let c=hex.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');let n=parseInt(c,16),r=(n>>16)+amount,g=((n>>8)&255)+amount,b=(n&255)+amount;return '#'+[r,g,b].map(v=>clamp(v,0,255).toString(16).padStart(2,'0')).join('')}
+function v4Ellipse(x,y,rx,ry,fill,alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=fill;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();ctx.restore()}
+function v4Shadow(x,y,rx,ry,a=.16){v4Ellipse(x,y,rx,ry,'#25344a',a)}
+function v4Line(points,color,width=4,dash=[]){ctx.save();ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=width;ctx.strokeStyle=color;ctx.setLineDash(dash);ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.restore()}
+function v4Panel(x,y,w,h,fill,stroke='#fff',radius=18){ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=4;ctx.beginPath();ctx.roundRect(x,y,w,h,radius);ctx.fill();ctx.stroke()}
+function v4Tree(x,y,s=1,magic=false){v4Shadow(x,y+29*s,28*s,10*s,.13);ctx.fillStyle=magic?'#6e4d8f':'#7e553d';ctx.fillRect(x-7*s,y-4*s,14*s,38*s);const col=magic?['#6fd7c0','#7d7bea','#b272df']:['#41a95f','#55bd69','#79d57e'];[[0,-28,30],[ -20,-11,22],[20,-10,23],[0,-4,27]].forEach((a,i)=>{v4Ellipse(x+a[0]*s,y+a[1]*s,a[2]*s,a[2]*.82*s,col[i%col.length])});if(magic){ctx.fillStyle='#fff7a8';for(let i=0;i<4;i++)v4Ellipse(x+Math.cos(i*1.7)*24*s,y-17*s+Math.sin(i*2)*19*s,2.5*s,2.5*s,'#fff7a8',.9)}}
+function v4Rock(x,y,s=1){v4Shadow(x,y+10*s,22*s,8*s,.12);ctx.fillStyle='#8d8c9e';ctx.strokeStyle='#fff5';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-22*s,y+12*s);ctx.lineTo(x-15*s,y-10*s);ctx.lineTo(x+1*s,y-18*s);ctx.lineTo(x+20*s,y-3*s);ctx.lineTo(x+18*s,y+13*s);ctx.closePath();ctx.fill();ctx.stroke()}
+function v4Shrub(x,y,s=1){v4Shadow(x,y+10*s,19*s,7*s,.1);['#54b76a','#6acb79','#43a55b'].forEach((c,i)=>v4Ellipse(x+(i-1)*12*s,y-(i%2)*7*s,16*s,13*s,c))}
+function v4Mushroom(x,y,s=1){ctx.fillStyle='#f7e6cf';ctx.fillRect(x-4*s,y,8*s,16*s);v4Ellipse(x,y,20*s,12*s,'#e967ac');for(let i=-1;i<=1;i++)v4Ellipse(x+i*8*s,y-2*s,2*s,2*s,'#fff')}
+function v4Crystal(x,y,s=1){ctx.save();ctx.translate(x,y);ctx.fillStyle='#8df4ff';ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-28*s);ctx.lineTo(13*s,-2*s);ctx.lineTo(7*s,19*s);ctx.lineTo(-8*s,19*s);ctx.lineTo(-14*s,-1*s);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()}
+function v4Fern(x,y,s=1){ctx.strokeStyle='#3e9f58';ctx.lineWidth=3*s;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(x,y+12*s);ctx.quadraticCurveTo(x+i*9*s,y-1*s,x+i*13*s,y-23*s);ctx.stroke()}}
+function v4FlowerPatch(x,y,s=1){for(let i=0;i<5;i++){const a=i*1.256;v4Ellipse(x+Math.cos(a)*10*s,y+Math.sin(a)*7*s,4*s,4*s,['#ff7db8','#ffd85f','#fff'][i%3]);}v4Ellipse(x,y,4*s,4*s,'#ffae2f')}
+function v4Wave(x,y,s=1){ctx.save();ctx.strokeStyle='#dffaffaa';ctx.lineWidth=3*s;ctx.beginPath();ctx.arc(x,y,18*s,0.2,2.8);ctx.stroke();ctx.restore()}
+function v4Coral(x,y,s=1){ctx.strokeStyle='#ff7f9f';ctx.lineCap='round';ctx.lineWidth=5*s;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(x,y+12*s);ctx.quadraticCurveTo(x+i*7*s,y-3*s,x+i*11*s,y-19*s);ctx.stroke()}}
+function v4Crate(x,y,s=1){v4Shadow(x,y+13*s,20*s,7*s,.12);ctx.fillStyle='#c38a4b';ctx.strokeStyle='#7a5431';ctx.lineWidth=3;ctx.fillRect(x-18*s,y-15*s,36*s,30*s);ctx.strokeRect(x-18*s,y-15*s,36*s,30*s);v4Line([[x-16*s,y-13*s],[x+16*s,y+13*s]],'#8c6137',3);v4Line([[x+16*s,y-13*s],[x-16*s,y+13*s]],'#8c6137',3)}
+
+function v4DrawZoneGround(z){const g=ctx.createLinearGradient(z.x,z.y,z.x+z.w,z.y+z.h);const ocean=z.name==='Ocean Cove';if(ocean){g.addColorStop(0,'#74d8ee');g.addColorStop(.55,'#49bfe0');g.addColorStop(1,'#2ba8d6')}else{g.addColorStop(0,v4Color(z.color,22));g.addColorStop(.6,z.color);g.addColorStop(1,v4Color(z.color,-15))}ctx.fillStyle=g;ctx.fillRect(z.x,z.y,z.w,z.h);ctx.save();ctx.globalAlpha=ocean?.11:.08;ctx.fillStyle='#fff';const step=ocean?85:70;for(let yy=z.y+35;yy<z.y+z.h;yy+=step){for(let xx=z.x+35;xx<z.x+z.w;xx+=step){const jitter=((xx+yy)%97)-48;ctx.beginPath();ctx.arc(xx+jitter*.15,yy,2+(xx%3),0,7);ctx.fill()}}ctx.restore()}
+function v4DrawPaths(){
+  ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.strokeStyle='#b28d58';ctx.lineWidth=106;ctx.beginPath();ctx.moveTo(330,500);ctx.bezierCurveTo(650,460,875,560,1130,690);ctx.bezierCurveTo(1370,815,1550,930,1870,860);ctx.stroke();
+  ctx.strokeStyle='#f7dda0';ctx.lineWidth=90;ctx.stroke();ctx.strokeStyle='#fff4c2';ctx.lineWidth=5;ctx.setLineDash([18,24]);ctx.stroke();ctx.setLineDash([]);
+  // dino stepping-stone trail
+  ctx.strokeStyle='#6d9d59';ctx.lineWidth=60;ctx.beginPath();ctx.moveTo(360,1270);ctx.quadraticCurveTo(600,1500,900,1810);ctx.stroke();ctx.strokeStyle='#a9d77f';ctx.lineWidth=43;ctx.stroke();
+  // Builder boardwalk
+  ctx.strokeStyle='#9a6a43';ctx.lineWidth=82;ctx.beginPath();ctx.moveTo(1210,1320);ctx.lineTo(1900,1790);ctx.stroke();ctx.strokeStyle='#d8a865';ctx.lineWidth=66;ctx.stroke();
+  for(let i=0;i<9;i++){const x=1250+i*75,y=1348+i*51;v4Line([[x-23,y+13],[x+22,y-13]],'#8d653e',4)}
+  ctx.restore();
+}
+function v4DrawRaceway(){ctx.save();ctx.lineCap='round';ctx.lineWidth=118;ctx.strokeStyle='#45485b';ctx.beginPath();ctx.moveTo(2380,300);ctx.bezierCurveTo(3010,180,3090,650,2710,820);ctx.bezierCurveTo(2360,970,2240,520,2380,300);ctx.stroke();ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.setLineDash([24,20]);ctx.stroke();ctx.setLineDash([]);ctx.restore();for(let i=0;i<8;i++){const a=i/8*Math.PI*2,x=2700+Math.cos(a)*300,y=535+Math.sin(a)*255;v4Panel(x-8,y-8,16,16,i%2?'#fff':'#ff5e70','#fff',3)}}
+function v4DrawOcean(){const t=performance.now()/800;ctx.save();ctx.strokeStyle='#dffbff99';ctx.lineWidth=4;for(let y=1080;y<2150;y+=85){ctx.beginPath();for(let x=2240;x<3180;x+=30){const yy=y+Math.sin(x*.025+t+y*.001)*8;ctx.lineTo(x,yy)}ctx.stroke()}ctx.restore();ctx.fillStyle='#efd79a';ctx.beginPath();ctx.ellipse(2420,1540,135,72,-.25,0,7);ctx.fill();ctx.fillStyle='#7cd27d';ctx.beginPath();ctx.ellipse(2415,1512,105,38,-.25,0,7);ctx.fill()}
+function v4House(x,y,s=1){v4Shadow(x,y+45*s,58*s,15*s,.18);ctx.fillStyle='#fff2cf';ctx.strokeStyle='#70475f';ctx.lineWidth=5*s;ctx.beginPath();ctx.roundRect(x-47*s,y-20*s,94*s,72*s,10*s);ctx.fill();ctx.stroke();ctx.fillStyle='#ff6d8d';ctx.beginPath();ctx.moveTo(x-59*s,y-18*s);ctx.lineTo(x,y-72*s);ctx.lineTo(x+59*s,y-18*s);ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle='#75529f';ctx.beginPath();ctx.roundRect(x-12*s,y+12*s,24*s,40*s,8*s);ctx.fill();['#72d8ff','#72d8ff'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(x+(-34+i*54)*s,y-6*s,19*s,21*s)});v4FlowerPatch(x-52*s,y+43*s,.8*s);v4FlowerPatch(x+52*s,y+43*s,.8*s)}
+function v4MagicTower(x,y,s=1){v4Shadow(x,y+52*s,52*s,14*s,.18);ctx.fillStyle='#7a64d9';ctx.strokeStyle='#503a9c';ctx.lineWidth=5*s;ctx.beginPath();ctx.roundRect(x-34*s,y-48*s,68*s,100*s,16*s);ctx.fill();ctx.stroke();ctx.fillStyle='#ff73bd';ctx.beginPath();ctx.moveTo(x-48*s,y-45*s);ctx.lineTo(x,y-105*s);ctx.lineTo(x+48*s,y-45*s);ctx.closePath();ctx.fill();ctx.stroke();v4Ellipse(x,y-5*s,12*s,16*s,'#9ef5ff');ctx.fillStyle='#fff5a8';ctx.font=`${28*s}px serif`;ctx.textAlign='center';ctx.fillText('★',x,y-65*s);ctx.textAlign='start'}
+function v4Garage(x,y,s=1){v4Shadow(x,y+44*s,74*s,17*s,.18);ctx.fillStyle='#f8d973';ctx.strokeStyle='#6d5b49';ctx.lineWidth=5*s;ctx.beginPath();ctx.roundRect(x-72*s,y-28*s,144*s,75*s,12*s);ctx.fill();ctx.stroke();ctx.fillStyle='#45495d';ctx.fillRect(x-47*s,y+2*s,94*s,45*s);for(let i=0;i<6;i++){ctx.fillStyle=i%2?'#fff':'#202332';ctx.fillRect(x-72*s+i*24*s,y-43*s,24*s,15*s)}ctx.fillStyle='#fff';ctx.font=`900 ${14*s}px sans-serif`;ctx.textAlign='center';ctx.fillText('RIDE LAB',x,y-5*s);ctx.textAlign='start'}
+function v4Museum(x,y,s=1){v4Shadow(x,y+45*s,78*s,16*s,.18);ctx.fillStyle='#e7d19c';ctx.strokeStyle='#6e6652';ctx.lineWidth=5*s;ctx.fillRect(x-70*s,y-28*s,140*s,78*s);ctx.strokeRect(x-70*s,y-28*s,140*s,78*s);ctx.fillStyle='#8d7456';for(let i=-2;i<=2;i++)ctx.fillRect(x+i*25*s-5*s,y-25*s,10*s,75*s);ctx.beginPath();ctx.moveTo(x-82*s,y-28*s);ctx.lineTo(x,y-75*s);ctx.lineTo(x+82*s,y-28*s);ctx.closePath();ctx.fill();ctx.font=`${34*s}px serif`;ctx.textAlign='center';ctx.fillText('🦴',x,y+8*s);ctx.textAlign='start'}
+function v4Workshop(x,y,s=1){v4Shadow(x,y+46*s,78*s,16*s,.18);ctx.fillStyle='#f08f5d';ctx.strokeStyle='#724957';ctx.lineWidth=5*s;ctx.beginPath();ctx.roundRect(x-72*s,y-30*s,144*s,82*s,12*s);ctx.fill();ctx.stroke();ctx.fillStyle='#7a5d9b';ctx.beginPath();ctx.moveTo(x-82*s,y-30*s);ctx.lineTo(x-25*s,y-75*s);ctx.lineTo(x+82*s,y-30*s);ctx.closePath();ctx.fill();ctx.fillStyle='#5c446f';ctx.fillRect(x+28*s,y+4*s,30*s,48*s);ctx.fillStyle='#b7edff';ctx.fillRect(x-49*s,y-4*s,35*s,30*s);ctx.font=`${30*s}px serif`;ctx.fillText('⚙️',x-8*s,y-34*s)}
+function v4Lighthouse(x,y,s=1){v4Shadow(x,y+52*s,42*s,13*s,.18);ctx.fillStyle='#fff9e6';ctx.strokeStyle='#6b5c69';ctx.lineWidth=5*s;ctx.beginPath();ctx.moveTo(x-28*s,y+52*s);ctx.lineTo(x-18*s,y-58*s);ctx.lineTo(x+18*s,y-58*s);ctx.lineTo(x+28*s,y+52*s);ctx.closePath();ctx.fill();ctx.stroke();for(let yy=-36;yy<35;yy+=34){ctx.fillStyle='#ff647f';ctx.fillRect(x-22*s,y+yy*s,44*s,15*s)}ctx.fillStyle='#ffdf5f';ctx.beginPath();ctx.arc(x,y-71*s,20*s,0,7);ctx.fill();ctx.stroke();ctx.save();ctx.globalAlpha=.16;ctx.fillStyle='#fff9a7';ctx.beginPath();ctx.moveTo(x,y-71*s);ctx.lineTo(x-180*s,y-125*s);ctx.lineTo(x-180*s,y-20*s);ctx.closePath();ctx.fill();ctx.restore()}
+function v4Sanctuary(x,y,s=1){v4Shadow(x,y+25*s,70*s,14*s,.14);ctx.fillStyle='#f7efd0';ctx.strokeStyle='#766f58';ctx.lineWidth=4*s;ctx.beginPath();ctx.roundRect(x-62*s,y-15*s,124*s,53*s,18*s);ctx.fill();ctx.stroke();v4Tree(x-62*s,y-18*s,.6*s);v4Tree(x+62*s,y-18*s,.6*s);ctx.font=`${26*s}px serif`;ctx.textAlign='center';ctx.fillText('🐾  💖  🐾',x,y+10*s);ctx.textAlign='start'}
+function v4DrawLandmarks(){v4House(355,365,1);v4MagicTower(1710,350,1);v4Garage(2680,350,1);v4Museum(560,1590,1);v4Workshop(1545,1630,1);v4Lighthouse(2910,1300,1);v4Sanctuary(1760,300,.9);}
+function v4DrawZoneLabels(){ctx.save();ctx.font='1000 28px ui-rounded, Trebuchet MS, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';for(const z of ZONES){v4Panel(z.x+z.w/2-124,z.y+32,248,48,'rgba(255,255,255,.78)','rgba(255,255,255,.94)',18);ctx.fillStyle='#3e466b';ctx.fillText(z.name,z.x+z.w/2,z.y+57)}ctx.restore()}
+function drawWorld(){ZONES.forEach(v4DrawZoneGround);v4DrawPaths();v4DrawRaceway();v4DrawOcean();for(const 
