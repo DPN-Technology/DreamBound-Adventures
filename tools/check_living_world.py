@@ -5,7 +5,7 @@ import re
 import sys
 
 root=Path(__file__).resolve().parents[1]
-html=(root/"vnext.html").read_text(encoding="utf-8",errors="replace")
+html=(root/"index.html").read_text(encoding="utf-8",errors="replace")
 core=(root/"src/vnext/core.js").read_text(encoding="utf-8",errors="replace")
 boot=(root/"src/vnext/bootstrap.js").read_text(encoding="utf-8",errors="replace")
 server=(root/"serve_dreambound.py").read_text(encoding="utf-8",errors="replace")
