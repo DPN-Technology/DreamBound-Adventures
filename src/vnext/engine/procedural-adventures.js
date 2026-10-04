@@ -96,7 +96,7 @@ function open(){
 function renderChip(){
   const btn=document.querySelector('#vnextProceduralBtn');if(!btn)return;
   const p=progress();
-  btn.innerHTML='🧭 LIVING QUEST <b>'+p.pct+'%</b>';
+  btn.textContent='🧭 LIVING QUEST '+p.pct+'%';
   btn.classList.toggle('ready',p.complete);
 }
 const hud=document.querySelector('.advanced-hud');
