@@ -68,15 +68,52 @@ function defaultQuests(){ return [
 
 function profileKey(slot){return `dreambound-profile-${slot}`}
 function legacyProfileKey(slot){return `wonderworld-profile-${slot}`}
+function profileSecurityContext(){
+  return {
+    colors:COLORS,buddies:BUDDIES,zoneNames:ZONES.map(z=>z.name),creatureIds:CREATURES.map(c=>c.id),
+    stickerNames:STICKERS.map(s=>s[1]),
+    landmarkIds:(typeof LANDMARKS_V4!=='undefined'?LANDMARKS_V4.map(x=>x.id):['homebase','moontower','speedway','museum','workshop','lighttower']),
+    buildItemIds:BUILD_ITEMS.map(x=>x.id),world:WORLD,questTemplates:defaultQuests()
+  };
+}
+function sanitizeStoredProfile(raw){
+  if(!window.DreamBoundSanitizer)throw new Error('DreamBound profile sanitizer failed to load');
+  return window.DreamBoundSanitizer.sanitizeProfile(raw,profileSecurityContext());
+}
+function quarantineCorruptProfile(slot,raw,reason){
+  try{
+    const key=`dreambound-recovery-${slot}`;
+    const snapshot=String(raw||'').slice(0,250000);
+    localStorage.setItem(key,JSON.stringify({capturedAt:Date.now(),reason:String(reason||'invalid save').slice(0,120),snapshot}));
+  }catch{}
+  try{localStorage.removeItem(profileKey(slot))}catch{}
+}
+function parseStoredProfile(slot,raw){
+  if(!raw)return null;
+  if(raw.length>1000000){quarantineCorruptProfile(slot,raw,'save exceeded 1 MB safety limit');return null}
+  try{
+    const parsed=JSON.parse(raw),clean=sanitizeStoredProfile(parsed);
+    if(!clean){quarantineCorruptProfile(slot,raw,'save was not a profile object');return null}
+    return clean;
+  }catch(err){
+    quarantineCorruptProfile(slot,raw,err?.message||'malformed JSON');
+    return null;
+  }
+}
 function readStoredProfile(slot){
   const current=localStorage.getItem(profileKey(slot));
-  if(current) return JSON.parse(current);
+  if(current){
+    const clean=parseStoredProfile(slot,current);
+    if(clean){try{localStorage.setItem(profileKey(slot),JSON.stringify(clean))}catch{}}
+    return clean;
+  }
   const legacy=localStorage.getItem(legacyProfileKey(slot));
-  if(!legacy) return null;
-  const migrated=JSON.parse(legacy);
+  if(!legacy)return null;
+  const migrated=parseStoredProfile(slot,legacy);
+  if(!migrated)return null;
   migrated.brandMigratedFrom='WonderWorld Adventures';
   migrated.brandMigratedAt=Date.now();
-  localStorage.setItem(profileKey(slot),JSON.stringify(migrated));
+  try{localStorage.setItem(profileKey(slot),JSON.stringify(migrated))}catch{}
   return migrated;
 }
 function loadProfiles(){
@@ -89,7 +126,7 @@ function loadProfiles(){
     card.onclick=()=>selectSlot(i,p); wrap.appendChild(card);
   }
 }
-function escapeHTML(s=''){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function escapeHTML(s=''){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function selectSlot(slot,p){ Audio.click(); state.currentSlot=slot; if(p){ state.profile=p; startGame(); } else { setupCreator(); showScreen('creatorScreen'); } }
 function setupCreator(){
   $('#nameInput').value=''; $('#ageSelect').value='6';
