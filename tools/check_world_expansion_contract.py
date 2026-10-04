@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """DreamBound v0.7 Three Worlds expansion contract."""
 from pathlib import Path
+import re
 import sys
 
 root=Path(__file__).resolve().parents[1]
@@ -28,7 +29,7 @@ for needle in [".v7-interior",".v7-sub-window",".v7-blueprint"]:
     if needle not in css: missing.append("style "+needle)
 for needle in ["storyV7:{","interiorVisits:","submarineUnlocked:"]:
     if needle not in san: missing.append("sanitizer "+needle)
-if "$('.studio-choice[data-hair]').forEach" in game or "$('.studio-choice[data-accessory]').forEach" in game:
+if re.search(r"(?<!\$)\$\('\.studio-choice\[data-(?:hair|accessory)\]'\)\.forEach",game):
     missing.append("Avatar Studio single-selector regression")
 if missing:
     print("::error::DreamBound v0.7 expansion contract failed: "+", ".join(missing))
