@@ -7,7 +7,8 @@ const allEntries=[
   ['Aurora ribbon','🌌','Rare Event'],['Luma','🐇','DreamCreature'],['Lunar moss','🌿','Moon Biology'],
   ['Rover blueprint','🛻','Engineering'],['Dream signal','🛰️','Navigation'],
   ['Cloud Fox','🦊','DreamCreature'],['Moon Rockhopper','🐾','DreamCreature'],['Lunar Moth','🦋','DreamCreature'],
-  ['Star Sprite','✨','DreamCreature'],['Starwell Song','🎵','Story Discovery']
+  ['Star Sprite','✨','DreamCreature'],['Starwell Song','🎵','Story Discovery'],
+  ['Lunar Resonance','🔷','Systems Science'],['Stardust Pattern','✨','Sky Science'],['Crystal Spectrum','💠','Light Science'],['Moon Garden Cycle','🌿','Life Science']
 ];
 function open(){
   const unlocked=new Set(DBX.state.codexEntries||[]);

@@ -87,6 +87,8 @@ jobs:
         run: python3 tools/check_systemic_chains.py
       - name: v2 traversal progression contract
         run: python3 tools/check_traversal_progression.py
+      - name: v2 environmental network contract
+        run: python3 tools/check_environment_network.py
       - name: vNext state fuzz
         run: node tools/fuzz_vnext_state.js
 
