@@ -1,3 +1,20 @@
+## v0.6.0-dev — Home & Magic Story Chapter
+
+- Added DreamBound's first connected story chapter: **The Sleeping Star**.
+- Added three collectible DreamPetals in Home Valley.
+- Added dynamic story compass targeting based on chapter step.
+- Added Star Compass discovery inside the Dream Home.
+- Added an enterable Moonflower Tower interior.
+- Added the Star Chamber age-adaptive memory sequence.
+- Added permanent Dream Lantern world/home reward.
+- Added Star Keeper sticker and story quest rewards.
+- Added persistent Avatar Studio customization.
+- Added four hairstyle modes and five playful accessory options.
+- Added more expressive animated DreamCreature presentation and proximity reactions.
+- Added v0.6 save migration fields without invalidating existing profiles.
+- Added a CI story-contract check to protect the new chapter wiring.
+- No new network access or third-party runtime dependency.
+
 ## v0.5.1-dev — Co-op Gameplay
 
 - Fixed the co-op profile-picker selector regression discovered during runtime review.

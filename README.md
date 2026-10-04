@@ -37,11 +37,14 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 
 > **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
 
-## 🌈 Teamplay Development Build — v0.5.1-dev
+## 🌈 Home & Magic Story Build — v0.6.0-dev
 
 | System | Current capability |
 | --- | --- |
 | 🌎 **World** | Six connected regions with Storybook World procedural rendering |
+| 🌟 **Story** | The Sleeping Star chapter connecting Home Valley, Dream Home and Magic Grove |
+| 🎨 **Avatar Studio** | Persistent hair and accessory customization |
+| 🚪 **Interiors** | Expanded Dream Home + enterable Moonflower Tower and Star Chamber |
 | 🧭 **Adventures** | 14 guided main adventures with objective tracking |
 | 🐾 **DreamCreatures** | Six rescueable creatures and a sanctuary |
 | 💖 **DreamBuddy** | Companion friendship and interaction system |
@@ -116,6 +119,33 @@ If Python is unavailable, the launcher falls back to opening **index.html** dire
 | Builder Mode | 🧱 |
 | Map / Fast Travel | 🗺️ |
 | Settings | ⚙️ / Esc |
+
+## 🌟 Story Chapter: The Sleeping Star
+
+v0.6 begins DreamBound's first connected story chapter instead of treating every activity as a separate mini-game.
+
+**The Sleeping Star** sends the explorer through Home Valley and Magic Grove:
+
+1. Meet Pip and learn why the Dream Lantern went dark.
+2. Find three glowing **DreamPetals** hidden around Home Valley.
+3. Return to the Dream Home and uncover the **Star Compass**.
+4. Bring the compass to Mira in Magic Grove.
+5. Enter **Moonflower Tower** and solve the Star Chamber memory sequence.
+6. Restore the Dream Lantern and permanently reconnect the two lands with starlight.
+
+Finishing the chapter awards the **Star Keeper** sticker, a permanent Dream Lantern decoration, quest rewards, gems and a visible restored lantern in the world.
+
+### 🎨 Avatar Studio
+
+The Dream Home now contains an Avatar Studio with persistent hairstyle and accessory customization. Current options include Star Spikes, Cloud Puffs, Adventure Swoop, Star Glasses, Explorer Cap, Magic Bow, Dino Hood and Star Crown.
+
+### 🚪 Enterable spaces
+
+Moonflower Tower now has a dedicated interior with a moon window, crystals, books, Mira, Magic Lessons and the story-specific Star Chamber. The existing Dream Home interior is expanded with story interactions, Avatar Studio and the permanent Dream Lantern reward.
+
+### 🐾 More expressive DreamCreatures
+
+Unrescued DreamCreatures now sway, bob, sparkle, react visually when the explorer approaches, and show their names nearby.
 
 ## 👥 Local sibling co-op
 
