@@ -1,0 +1,99 @@
+name: DPN DreamBound Quality Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dreambound-quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-integrity:
+    name: Source Integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: JavaScript syntax
+        run: node --check game.js
+      - name: Conflict marker guard
+        shell: bash
+        run: |
+          if grep -RInE '^(<<<<<<<|=======|>>>>>>>)' --exclude-dir=.git .; then
+            echo "::error::Merge conflict markers detected."
+            exit 1
+          fi
+      - name: DreamBound repository validator
+        run: python3 tools/validate_dreambound.py --mode integrity
+
+  child-safety:
+    name: DreamShield Child Safety
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Child-safety runtime policy
+        run: python3 tools/validate_dreambound.py --mode child-safety
+
+  security-baseline:
+    name: Security Baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Dangerous API and secret-pattern guard
+        run: python3 tools/validate_dreambound.py --mode security
+
+  policy:
+    name: Policy Files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify policy surface
+        shell: bash
+        run: |
+          test -s SECURITY.md
+          test -s CONTRIBUTING.md
+          test -s docs/THREAT_MODEL.md
+          test -s docs/SECURITY_GATES.md
+          test -s .github/CODEOWNERS
+          test -s .github/dependabot.yml
+
+  green-gate:
+    name: DreamShield Green Gate
+    if: always()
+    needs: [source-integrity, child-safety, security-baseline, policy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate gates
+        env:
+          SOURCE: ${{ needs.source-integrity.result }}
+          CHILD: ${{ needs.child-safety.result }}
+          SECURITY: ${{ needs.security-baseline.result }}
+          POLICY: ${{ needs.policy.result }}
+        run: |
+          echo "Source Integrity: $SOURCE"
+          echo "Child Safety: $CHILD"
+          echo "Security Baseline: $SECURITY"
+          echo "Policy Files: $POLICY"
+          test "$SOURCE" = "success"
+          test "$CHILD" = "success"
+          test "$SECURITY" = "success"
+          test "$POLICY" = "success"
+          echo "DPN DREAMSHIELD: GREEN"

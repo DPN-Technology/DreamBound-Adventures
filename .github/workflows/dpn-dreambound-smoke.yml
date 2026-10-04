@@ -1,0 +1,45 @@
+name: DPN DreamBound Game Smoke Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local-runtime:
+    name: Local Runtime Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Start local game server
+        shell: bash
+        run: |
+          python3 -m http.server 4173 > /tmp/dreambound-http.log 2>&1 &
+          echo $! > /tmp/dreambound-http.pid
+      - name: Verify game shell
+        shell: bash
+        run: |
+          for i in {1..15}; do
+            if curl -fsS http://127.0.0.1:4173/index.html -o /tmp/index.html; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4173/game.js -o /tmp/game.js
+          curl -fsS http://127.0.0.1:4173/styles.css -o /tmp/styles.css
+          grep -qi "DreamBound" /tmp/index.html
+          test -s /tmp/game.js
+          test -s /tmp/styles.css
+          echo "DreamBound local runtime shell: reachable"
+      - name: Stop local server
+        if: always()
+        shell: bash
+        run: |
+          if test -f /tmp/dreambound-http.pid; then
+            kill "$(cat /tmp/dreambound-http.pid)" 2>/dev/null || true
+          fi

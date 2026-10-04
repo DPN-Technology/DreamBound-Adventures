@@ -1,0 +1,49 @@
+name: DPN DreamBound Release Integrity
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Validate, Package and Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate release source
+        shell: bash
+        run: |
+          node --check game.js
+          python3 tools/validate_dreambound.py --mode all
+      - name: Build source package
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME:-manual-${GITHUB_RUN_NUMBER}}"
+          NAME="DreamBound-Adventures-${VERSION}"
+          mkdir -p "dist/${NAME}"
+          cp index.html styles.css game.js PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md "dist/${NAME}/"
+          cp -R docs "dist/${NAME}/docs"
+          (cd dist && zip -qr "${NAME}.zip" "${NAME}")
+          (cd dist && sha256sum "${NAME}.zip" > "${NAME}.zip.sha256")
+      - name: Upload validated package
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreambound-release
+          path: |
+            dist/*.zip
+            dist/*.sha256
+          if-no-files-found: error
+      - name: Publish GitHub release for tag
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip dist/*.sha256 --repo "$GITHUB_REPOSITORY" --title "DreamBound Adventures $GITHUB_REF_NAME" --generate-notes
