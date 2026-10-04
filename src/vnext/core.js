@@ -3,12 +3,19 @@
 const DBX=window.DreamBoundVNext=window.DreamBoundVNext||{};
 DBX.VERSION='1.0.0-dev';
 DBX.WORLD={w:1800,h:1200};
+function finitePrimitive(v,fallback=0){
+  if(typeof v==='number')return Number.isFinite(v)?v:fallback;
+  if(typeof v==='string'&&v.trim()!==''){
+    const n=Number(v);return Number.isFinite(n)?n:fallback;
+  }
+  return fallback;
+}
 DBX.util={
   clamp:(v,min,max)=>Math.max(min,Math.min(max,v)),
   dist:(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),
-  int:(v,min,max,fallback)=>{const n=Number(v);return Number.isFinite(n)?Math.max(min,Math.min(max,Math.trunc(n))):fallback},
+  int:(v,min,max,fallback)=>Math.max(min,Math.min(max,Math.trunc(finitePrimitive(v,fallback)))),
   bool:(v,fallback=false)=>typeof v==='boolean'?v:fallback,
-  num:(v,min,max,fallback)=>{const n=Number(v);return Number.isFinite(n)?Math.max(min,Math.min(max,n)):fallback},
+  num:(v,min,max,fallback)=>Math.max(min,Math.min(max,finitePrimitive(v,fallback))),
   list:(v,allowed,max=50)=>{
     if(!Array.isArray(v))return [];
     const set=allowed?new Set(allowed):null,out=[];
@@ -64,7 +71,7 @@ DBX.storage={
       player:{
         x:DBX.util.int(r.player?.x,40,DBX.WORLD.w-40,d.player.x),
         y:DBX.util.int(r.player?.y,60,DBX.WORLD.h-40,d.player.y),
-        dir:Number.isFinite(Number(r.player?.dir))?Number(r.player.dir):0,
+        dir:finitePrimitive(r.player?.dir,0),
         speed:250
       },
       questStep:DBX.util.int(r.questStep,0,5,0),
