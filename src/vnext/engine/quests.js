@@ -82,7 +82,7 @@ function tick(){
     DBX.ui?.toast('Quest Complete: '+q.title,'+'+q.reward.stars+' ⭐  +'+q.reward.gems+' 💎');
     DBX.events.emit('quest:complete',{id:q.id});
   }
-  if(changed){DBX.storage.save();DBX.events.emit('hud:update')}
+  if(changed){DBX.storage.save();DBX.events.emit('hud:update')};
 }
 function renderJournal(){
   ensure();
