@@ -89,6 +89,8 @@ jobs:
         run: python3 tools/check_traversal_progression.py
       - name: v2 environmental network contract
         run: python3 tools/check_environment_network.py
+      - name: v2 emergent ecology contract
+        run: python3 tools/check_emergent_ecology.py
       - name: vNext state fuzz
         run: node tools/fuzz_vnext_state.js
 
