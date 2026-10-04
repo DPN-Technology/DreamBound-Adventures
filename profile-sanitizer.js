@@ -10,7 +10,10 @@
   const int=(value,min,max,fallback)=>Math.max(min,Math.min(max,Math.trunc(finite(value,fallback))));
   const bool=(value,fallback=false)=>typeof value==='boolean'?value:fallback;
   const cleanText=(value,max=64)=>{
-    const text=typeof value==='string'?value:String(value??'');
+    let text='';
+    if(typeof value==='string')text=value;
+    else if(typeof value==='number'||typeof value==='boolean'||typeof value==='bigint')text=String(value);
+    else return '';
     return text.replace(/[\u0000-\u001f\u007f<>]/g,'').trim().slice(0,max);
   };
   const enumValue=(value,allowed,fallback)=>(Array.isArray(allowed)?allowed:[]).includes(value)?value:fallback;
