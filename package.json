@@ -1,0 +1,9 @@
+{
+  "name": "dreambound-adventures-ci-tooling",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Integrity-locked CI tooling for DreamBound Adventures.",
+  "devDependencies": {
+    "playwright": "1.55.1"
+  }
+}
