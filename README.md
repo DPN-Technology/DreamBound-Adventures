@@ -57,32 +57,22 @@ The goal is simple: **make discovery feel like an adventure instead of homework.
 
 ## 📸 Real gameplay gallery
 
-> **Verified runtime evidence:** every image below is captured automatically from the real DreamBound build on `main` using the loopback-only local server and the repository's visual-evidence workflow. These are **not mockups**.
+> **Verified runtime evidence:** every image below is captured automatically from the single DreamBound runtime on `main` using the loopback-only local server. These are **not mockups**.
 
-| 📖 Storybook World | 👥 Sibling Co-op |
+| 🚀 Unified World — Space Center | 🌙 Unified World — Moon |
 | --- | --- |
-| ![DreamBound Storybook World gameplay in Home Valley](.github/screenshots/storybook-world.png) | ![DreamBound same-screen sibling co-op with two explorers](.github/screenshots/sibling-coop.png) |
-| **Home Valley exploration** — live HUD, objectives, DreamBuddy, collectibles, NPC interaction, and the current Storybook renderer. | **DreamLinked explorers** — two local child profiles sharing one world with co-op status, team progress, and separate characters. |
+| ![DreamBound unified Space Center gameplay](.github/screenshots/unified-space-center.png) | ![DreamBound unified Moon gameplay](.github/screenshots/unified-moon.png) |
+| **Space Center Campus** — Adventure Director, world simulation, missions, navigation, progression, and engineering locations. | **Living Moon** — traversal classes, Luma, Moon Base, ecology, world events, Codex, relationships, and progression. |
 
-| 🚀 Advanced World — Space Center | 🌙 Moon Rover + Luma |
+| 🧬 Connected Systems | 🏢 Lunar Station |
 | --- | --- |
-| ![DreamBound Advanced World Space Center gameplay](.github/screenshots/advanced-space-center.png) | ![DreamBound Moon Rover and Luma gameplay](.github/screenshots/moon-rover-luma.png) |
-| **Space Center Campus** — the modular vNext runtime with Adventure Director, live world map, simulation systems, missions, and engineering locations. | **Living Moon systems** — Moon Rover, Luma bond, Moon Base progress, Codex resources, mastery, NPCs, and lunar exploration. |
-
-<p align="center">
-  <img src=".github/screenshots/lunar-station.png" alt="DreamBound walkable Lunar Space Station interior with Hydroponics, Observatory, Discovery Lab, and Power Core" width="100%">
-</p>
-<p align="center">
-  <strong>🏢 Walkable Lunar Space Station</strong><br>
-  <sub>Hydroponics • Observatory • Discovery Lab • Power Core • Airlock • live Advanced World telemetry</sub>
-</p>
+| ![DreamBound connected world systems](.github/screenshots/unified-systems.png) | ![DreamBound unified Lunar Station](.github/screenshots/unified-lunar-station.png) |
+| **Environmental Network** — Observatory, sample analysis, greenhouse, weather sensing, and Resonance systems connected to the living simulation. | **Walkable Lunar Station** — Hydroponics, Observatory, Discovery Lab, Power Core, Airlock, and live world telemetry. |
 
 <details>
 <summary><strong>🔎 How these screenshots are verified</strong></summary>
 
-The repository runs `tools/capture_readme_screenshots.mjs` in GitHub Actions against `serve_dreambound.py`. The workflow creates known local-only test profiles/state, launches the actual Storybook and Advanced World runtimes, validates every PNG, uploads the evidence artifact, and publishes all five screenshots back to the repository.
-
-That means the gallery can be regenerated from source instead of relying on manually edited promotional images.
+The repository runs `tools/capture_readme_screenshots.mjs` in GitHub Actions against `serve_dreambound.py`. The workflow loads known local-only state into the one unified runtime, validates every PNG, and uploads the evidence artifact.
 
 </details>
 
@@ -97,93 +87,34 @@ That means the gallery can be regenerated from source instead of relying on manu
 
 If Python is unavailable, the Windows launcher falls back to opening <code>index.html</code> directly.
 
-### Which mode should I choose?
+### One game, one world
 
-| Mode | Best for | What it includes |
-| --- | --- | --- |
-| 📖 **Storybook World** | The widest collection of family activities | Six lands, guided adventures, DreamCreatures, racing, dinosaurs, magic, building, interiors, discovery systems, and sibling co-op |
-| 🚀 **Advanced World** | The newest modular engine experience | Space Center, Moon exploration, Lunar Station, Moon Rover, Luma, quests, dynamic events, NPC friendships, Moon Base Architect, Codex, and Mastery |
-| 👥 **Sibling Co-op** | Two kids playing together on one screen | Two explorers, two DreamBuddies, team activities, shared rewards, DreamLink gates, and cooperative challenges |
+There is no Storybook/Advanced mode selector anymore. **DreamBound launches directly into the unified Living World.**
 
-On the title screen, choose the **Living World / Advanced World** launch option to enter the modular engine.
+The unified runtime currently includes the Space Center, Moon surface, Lunar Station, Luma, Moon Rover/Skimmer/Glider traversal, dynamic world events, autonomous NPCs and DreamCreatures, Moon Base construction, Codex discoveries, systemic quest chains, environmental networks, world memory, accessibility controls, and adaptive performance.
 
-## 🌈 Choose your adventure
+### Legacy content migration
 
-<p align="center">
-  <img src=".github/readme-world-map.svg" alt="DreamBound journey from Storybook World to Space Center, Moon exploration, Lunar Station, and the Living World systems" width="100%">
-</p>
-
-### 📖 Storybook World
-
-Travel through:
+The former Storybook source is no longer served or packaged as a second game. Its strongest content is being migrated into the unified runtime in stages:
 
 **Home Valley → Magic Grove → Racing Ridge → Dino Valley → Builder Bay → Ocean Cove**
 
-Current Storybook systems include:
+Migration targets include Dream Home, dinosaurs, racing, magic, Builder Mode, Photo Safari, interiors, sibling co-op, DreamCreatures, and the connected Storybook quest chapters. Once migrated, the old source files can be removed entirely.
 
-| System | What young explorers can do |
-| --- | --- |
-| 🧭 **Adventures** | Follow **18 guided main adventures** with objective tracking |
-| 🌟 **Connected stories** | Play **The Sleeping Star** and **The Lost Explorer Map** |
-| 🐾 **DreamCreatures** | Rescue six creatures and visit the sanctuary |
-| 💖 **DreamBuddy** | Build friendship through interactions and shared activities |
-| 🏎️ **Racing** | Race at Rainbow Speedway / Ridge Raceway |
-| 🦴 **Dinosaurs** | Dig fossils and play Dino Egg Memory |
-| 🪄 **Magic** | Learn spells, explore Moonflower Tower, and solve the Star Chamber |
-| 🧱 **Creation** | Use Builder Mode and personalize a persistent Dream Home |
-| 🎨 **Avatar Studio** | Save hairstyles and playful accessories to each profile |
-| 📸 **Discovery** | Photo Safari, Landmark Hunt, collections, stickers, and achievements |
-| 🛴 **Travel** | Use the Explorer Scooter and Rainbow Portal fast travel |
-| 🧠 **Adaptive play** | Age-scaled Brain Sparks and challenge difficulty |
-| 💾 **Profiles** | Maintain three local child profiles with automatic saving |
-| 👥 **Sibling co-op** | Play same-screen with two explorers and cooperative activities |
-
-### 🚀 Advanced World
-
-The newer modular engine begins at the **Space Center**, expands onto the **Moon**, and continues into a persistent living lunar adventure.
-
-**Current Advanced World highlights**
-
-- 🛰️ **Space Center campus** — Mission Control, Solar Array, Rocket Workshop, and Launch Pad.
-- 🌙 **Moon exploration** — route navigation, discoveries, Moon rocks, region guidance, and ambient world polish.
-- 🏢 **Lunar Space Station** — a real walkable interior with Hydroponics, Observatory, Discovery Lab, Power Core, and Airlock.
-- 🚙 **Moon Rover** — acceleration, friction, boost, energy drain/recharge, dust trails, and optional controller rumble.
-- 💫 **Luma** — rescue a stranded lunar creature and grow a persistent companion bond.
-- 📖 **Mission Journal** — data-driven quests, progression milestones, and rewards.
-- 🌌 **Living World events** — Meteor Shower, Crystal Bloom, Aurora Wave, and Luma Star Parade rotations.
-- 🧑‍🚀 **Explorer NPCs** — Nova, Gear, and Moss move on schedules with changing dialogue and persistent friendship.
-- 🏗️ **Moon Base Architect** — build permanent Habitat, Observatory, Rover Garage, and Moon Greenhouse modules.
-- 🔭 **Discovery Codex** — tracks discoveries, rare events, Luma, engineering finds, base progress, and friendships.
-- 🧠 **Adventure Director** — adapts pacing and recommendations across Guided, Curious, Brave, and Master tiers.
-- 🏆 **Explorer Mastery** — long-term achievements across exploration, science, quests, friendships, base building, and travel.
-
-## 👥 Local sibling co-op
-
-DreamBound supports same-screen two-player play. Player 1 hosts the world while Player 2 joins from another local child profile.
-
-- **Player 1:** WASD / Arrow Keys / first gamepad
-- **Player 2:** I / J / K / L + O / second gamepad
-- **DreamLink tether:** keeps younger explorers together without split-screen complexity
-- **Team activities:** Team Raceway, Team Creature Rescue, DreamLink Magic Lesson, DreamLink Workshop, and Sibling Stars
-- **Shared progress:** cooperative rewards are applied while each explorer keeps their identity
-
-## 🎛️ Controls
+## 🎛️ Unified controls
 
 | Action | Controls |
 | --- | --- |
-| Move | WASD / Arrow Keys / Touch D-pad / Gamepad left stick |
-| Interact | E / Space / Enter / Sparkle button / Gamepad A |
-| Boost / Rover | Shift / gamepad trigger |
-| Adventure Board | 🧭 |
-| DreamBuddy | 💖 |
-| Photo Safari | 📸 |
-| Explorer Scooter | 🛴 |
-| Dream Collection | 🎒 |
+| Move | WASD / Arrow Keys / Touch pad / Gamepad |
+| Interact | E / Space / Sparkle button / Gamepad A |
+| Boost vehicle | Shift / gamepad trigger |
 | Journal | 📖 |
-| Magic Wand | 🪄 |
-| Builder Mode | 🧱 |
-| Map / Fast Travel | 🗺️ |
-| Settings | ⚙️ / Esc |
+| Settings / Accessibility | ⚙️ |
+| Luma | 🐇 |
+| Codex | 📚 |
+| Moon Base | 🏗️ |
+| Mastery | 🏆 |
+| Living World systems | 🌦️ / dynamic system chips |
 
 ## 🧒 Built for younger explorers
 
