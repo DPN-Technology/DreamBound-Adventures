@@ -37,7 +37,7 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 
 > **Child-first baseline:** no ads, no in-app purchases, no analytics, no public chat, no online accounts, no strangers, and no external links presented to children.
 
-## 🌈 Three Worlds Expansion — v0.7.0-dev
+## 🌈 Three Worlds Expansion — v0.7.1-dev
 
 | System | Current capability |
 | --- | --- |
@@ -67,6 +67,14 @@ The design goal is simple: **make learning feel like an adventure, not homework*
 - **Explorer Submarine** — unlockable, repeatable sonar expeditions with safe no-fail retries.
 - **Co-op Sonar** — when sibling co-op is active, sonar steps alternate between Player 1 and Player 2.
 - **Interior Explorer + Pathfinder** — persistent sticker/achievement progression.
+
+### v0.7.1 reliability hardening
+
+- Added a narrow DOM collection compatibility bridge for nine legacy selector sites in the current monolithic runtime.
+- Restored multi-button interaction reliability in co-op magic, Star Chamber, Fossil Scanner, Gear Builder, and Submarine sonar.
+- CI now prevents this legacy selector-debt count from growing.
+- The bridge is included in child-safety validation, secure serving, smoke tests, runtime security, and release packaging.
+- The next architecture phase is modularizing `game.js` so these legacy sites can be corrected directly and the bridge removed.
 
 ### Runtime hardening
 
