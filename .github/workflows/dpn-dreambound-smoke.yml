@@ -45,6 +45,9 @@ jobs:
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/quests.js -o /tmp/vnext-quests.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/world-events.js -o /tmp/vnext-world-events.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/base-builder.js -o /tmp/vnext-base-builder.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/npcs.js -o /tmp/vnext-npcs.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/codex.js -o /tmp/vnext-codex.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/cinematic.js -o /tmp/vnext-cinematic.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/adventure-director.js -o /tmp/vnext-director.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/achievements.js -o /tmp/vnext-achievements.js
           grep -qi "DreamBound" /tmp/index.html
@@ -61,6 +64,9 @@ jobs:
           test -s /tmp/vnext-quests.js
           test -s /tmp/vnext-world-events.js
           test -s /tmp/vnext-base-builder.js
+          test -s /tmp/vnext-npcs.js
+          test -s /tmp/vnext-codex.js
+          test -s /tmp/vnext-cinematic.js
           test -s /tmp/vnext-director.js
           test -s /tmp/vnext-achievements.js
           grep -qi "Living World Director" /tmp/vnext.html
