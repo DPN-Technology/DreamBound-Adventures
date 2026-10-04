@@ -77,7 +77,7 @@ function interact(c){
     runtime.lastTouch.set(c.id,now);state.visits++;
     if(!state.discovered.includes(c.id))state.discovered.push(c.id);
     if(state.bonds[c.id]>=3)addCodex(c);
-    if(state.bonds[c.id]>=5){runtime.follow=c.id;runtime.followUntil=performance.now()+20000};
+    if(state.bonds[c.id]>=5){runtime.follow=c.id;runtime.followUntil=performance.now()+20000;}
     save();DBX.storage.save();DBX.events.emit('hud:update');gained=true;
     if(state.bonds[c.id]===5||state.bonds[c.id]===10){
       DBX.state.stars=(DBX.state.stars||0)+3;DBX.storage.save();
@@ -108,8 +108,8 @@ function draw(ctx,t){
     ctx.shadowBlur=0;ctx.font='900 9px system-ui';ctx.lineWidth=4;ctx.strokeStyle='#292c61';ctx.fillStyle='#fff';
     ctx.strokeText(c.name,p.x,p.y-31);ctx.fillText(c.name,p.x,p.y-31);
     const bond=state.bonds[c.id]||0;
-    if(bond>=3){ctx.font='12px serif';ctx.fillText(bond>=7?'💜':'⭐',p.x+21,p.y-17)};
-    if(runtime.follow===c.id&&t<runtime.followUntil){ctx.font='10px system-ui';ctx.fillStyle='#fff2a8';ctx.fillText('FOLLOWING',p.x,p.y+43)};
+    if(bond>=3){ctx.font='12px serif';ctx.fillText(bond>=7?'💜':'⭐',p.x+21,p.y-17);}
+    if(runtime.follow===c.id&&t<runtime.followUntil){ctx.font='10px system-ui';ctx.fillStyle='#fff2a8';ctx.fillText('FOLLOWING',p.x,p.y+43);}
   }
   ctx.restore();
 }
