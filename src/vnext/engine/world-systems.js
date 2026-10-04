@@ -94,10 +94,10 @@ function draw(ctx,t){
   ctx.save();
   if(state.weather==='breeze'&&!isMoon()){
     ctx.globalAlpha=.12;
-    for(let i=0;i<5;i++){ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(150+((t/35+i*310)%1200),160+i*75,90,24,0,0,Math.PI*2);ctx.fill()}
+    for(let i=0;i<5;i++){ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(150+((t/35+i*310)%1200),160+i*75,90,24,0,0,Math.PI*2);ctx.fill();}
   }
   if(state.weather==='stardust'&&isMoon()){
-    for(const p of runtime.particles){ctx.globalAlpha=p.life*.8;ctx.fillStyle='#d8c9ff';ctx.beginPath();ctx.arc(p.x,p.y,2+p.life*2,0,Math.PI*2);ctx.fill()}
+    for(const p of runtime.particles){ctx.globalAlpha=p.life*.8;ctx.fillStyle='#d8c9ff';ctx.beginPath();ctx.arc(p.x,p.y,2+p.life*2,0,Math.PI*2);ctx.fill();}
   }
   if(state.weather==='crystal-glow'&&isMoon()){
     const a=.08+.06*Math.sin(t/420);ctx.fillStyle='rgba(105,244,255,'+a+')';ctx.fillRect(1240,0,560,1200);
