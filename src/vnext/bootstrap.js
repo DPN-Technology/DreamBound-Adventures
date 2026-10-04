@@ -72,7 +72,7 @@ function update(dt,t){
 
   DBX.companion?.update(dt,t);
   saveClock+=dt;
-  if(saveClock>1.1&&moved>0){saveClock=0;DBX.storage.save()}
+  if(saveClock>1.1&&moved>0){saveClock=0;DBX.storage.save()};
   updateTelemetry();
 }
 function updateTelemetry(){
