@@ -1224,6 +1224,9 @@ function v6StoryStep(step,message){
   story.step=step;
   const q=state.profile.quests.find(q=>q.id==='home-magic');
   if(q&&!q.done)q.progress=Math.min(5,step);
+  const open=(state.profile.quests||[]).filter(x=>!x.done);
+  const storyIndex=open.findIndex(x=>x.id==='home-magic');
+  if(storyIndex>=0)state.questCursor=storyIndex;
   saveProfile();updateQuestTracker();
   if(message)toastQuest('The Sleeping Star 🌟',message);
 }
@@ -1483,7 +1486,6 @@ function v6RestoreDreamLantern(){
   const story=state.profile.storyV6;
   if(story.chapterComplete)return;
   story.restored=true;story.chapterComplete=true;story.step=5;
-  if(!state.profile.homeUpgrades.includes('dream-lantern'))state.profile.homeUpgrades.push('dream-lantern');
   const q=state.profile.quests.find(q=>q.id==='home-magic');
   if(q&&!q.done){q.progress=5;completeQuest('home-magic')}
   unlockSticker('Star Keeper');
