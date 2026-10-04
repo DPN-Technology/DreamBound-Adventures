@@ -6,17 +6,18 @@
   <meta name="theme-color" content="#272b62">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>DreamBound v1.5 · Startrail Mystery</title>
+  <title>DreamBound Adventures · Unified Living World</title>
   <link rel="stylesheet" href="vnext.css">
   <link rel="stylesheet" href="src/vnext/engine/odyssey.css">
   <link rel="stylesheet" href="src/vnext/engine/adventure-deck.css">
 </head>
 <body>
+  <!-- Compatibility route: same unified DreamBound runtime as index.html -->
   <main id="vnextApp">
     <canvas id="vnextCanvas" aria-label="DreamBound Odyssey Network"></canvas>
     <header class="vnext-hud advanced-hud">
-      <a class="back-link" href="index.html">← DREAMBOUND</a>
-      <div class="preview-chip">v1.5 · STARTRAIL MYSTERY</div>
+      <div class="back-link" aria-label="DreamBound Adventures">✦ DREAMBOUND ADVENTURES</div>
+      <div class="preview-chip">UNIFIED LIVING WORLD</div>
       <div id="vnextZone" class="zone-chip">SPACE CENTER</div>
       <div class="compass-chip">🧭 <b id="vnextCompass">N</b></div>
       <div id="vnextVehicle" class="vehicle-chip">🥾 ON FOOT</div>
@@ -48,7 +49,7 @@
     <button id="vnextInteract" class="interact-btn">✨ DO</button>
     <nav class="mobile-pad" aria-label="Movement controls"><button data-move="up">▲</button><div><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div></nav>
     <button id="vnextAction" class="mobile-action">✨</button>
-    <button id="vnextReset" class="reset-btn">Reset v1.5</button>
+    <button id="vnextReset" class="reset-btn">Reset Adventure</button>
     <div id="vnextToast" class="toast hidden"><strong></strong><span></span></div>
     <div id="vnextModal" class="modal-layer hidden" role="dialog" aria-modal="true"><div id="vnextModalCard" class="modal-card"></div></div>
   </main>
