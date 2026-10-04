@@ -41,7 +41,9 @@ jobs:
           VERSION="${GITHUB_REF_NAME:-manual-${GITHUB_RUN_NUMBER}}"
           NAME="DreamBound-Adventures-${VERSION}"
           mkdir -p "dist/${NAME}"
-          cp index.html styles.css game.js profile-sanitizer.js dom-collection-bridge.js serve_dreambound.py vnext.html vnext.css PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md "dist/${NAME}/"\n          mkdir -p "dist/${NAME}/src"\n          cp -R src/vnext "dist/${NAME}/src/vnext"
+          cp index.html styles.css game.js profile-sanitizer.js dom-collection-bridge.js serve_dreambound.py vnext.html vnext.css PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md "dist/${NAME}/"
+          mkdir -p "dist/${NAME}/src"
+          cp -R src/vnext "dist/${NAME}/src/vnext"
           cp -R docs "dist/${NAME}/docs"
           (cd dist && zip -qr "${NAME}.zip" "${NAME}")
           (cd dist && sha256sum "${NAME}.zip" > "${NAME}.zip.sha256")
