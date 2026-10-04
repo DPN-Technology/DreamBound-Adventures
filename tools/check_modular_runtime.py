@@ -5,7 +5,7 @@ import re
 import sys
 
 root=Path(__file__).resolve().parents[1]
-html=(root/"vnext.html").read_text(encoding="utf-8",errors="replace")
+html=(root/"index.html").read_text(encoding="utf-8",errors="replace")
 core=(root/"src/vnext/core.js").read_text(encoding="utf-8",errors="replace")
 ui=(root/"src/vnext/ui.js").read_text(encoding="utf-8",errors="replace")
 boot=(root/"src/vnext/bootstrap.js").read_text(encoding="utf-8",errors="replace")
@@ -15,7 +15,7 @@ server=(root/"serve_dreambound.py").read_text(encoding="utf-8",errors="replace")
 main=(root/"index.html").read_text(encoding="utf-8",errors="replace")
 
 required_files=[
-  "vnext.html","vnext.css","src/vnext/core.js","src/vnext/input.js",
+  "index.html","vnext.css","src/vnext/core.js","src/vnext/input.js",
   "src/vnext/space-center.js","src/vnext/ui.js","src/vnext/lunar-guardian.js","src/vnext/bootstrap.js"
 ]
 missing=[p for p in required_files if not (root/p).is_file()]
@@ -45,10 +45,10 @@ for marker in ["Mission Control","Solar Array","Rocket Workshop","Launch Pad","M
 for marker in ["Lunar Space Station","Moon Rover Bay","Rescue Luma","Moon Garden","Lunar Guardian"]:
     if marker not in lunar: missing.append("lunar marker: "+marker)
 
-if 'href="vnext.html"' not in main: missing.append("main-game preview link")
+if 'href="index.html"' not in main: missing.append("main-game preview link")
 
 allow=[
-  '"/vnext.html"','"/vnext.css"','"/src/vnext/core.js"','"/src/vnext/input.js"',
+  '"/index.html"','"/vnext.css"','"/src/vnext/core.js"','"/src/vnext/input.js"',
   '"/src/vnext/space-center.js"','"/src/vnext/ui.js"','"/src/vnext/lunar-guardian.js"','"/src/vnext/bootstrap.js"'
 ]
 for marker in allow:
