@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DreamBound v1.5 Living World cinematic runtime contract."""
+"""DreamBound unified Living World capability contract."""
 from pathlib import Path
 import re
 import sys
@@ -23,14 +23,14 @@ for name in modules:
         missing.append("server allowlist: "+name)
 
 for marker in [
-    "DreamBound v1.5 · Startrail Mystery","v1.5 · STARTRAIL MYSTERY","vnextWorldEvent",
+    "UNIFIED LIVING WORLD","vnextWorldEvent",
     "vnextCinematic","vnextCodex","vnextBase","vnextCrystals","vnextEventWins"
 ]:
     if marker not in html:
         missing.append("html marker: "+marker)
 
 for marker in [
-    "DBX.VERSION='1.5.0-dev'","moonCrystals","baseModules","codexEntries",
+    "DBX.VERSION=","moonCrystals","baseModules","codexEntries",
     "completedWorldEvents","npcFriendship","meteorSamples","auroraSeen","eventWins"
 ]:
     if marker not in core:
@@ -73,7 +73,7 @@ except ValueError:
     pass
 
 if missing:
-    print("::error::DreamBound v1.5 Living World contract failed: "+", ".join(missing))
+    print("::error::DreamBound unified Living World contract failed: "+", ".join(missing))
     sys.exit(1)
 
-print("DreamBound v1.5 Living World contract: PASS")
+print("DreamBound unified Living World contract: PASS")
