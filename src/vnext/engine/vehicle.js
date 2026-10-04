@@ -5,7 +5,8 @@ const runtime={vx:0,vy:0,energy:100,distance:0,lastDust:0};
 function step(dt,input){
   const s=DBX.state;
   if(!s.roverActive)return false;
-  const accel=520,friction=Math.pow(.18,dt),max=390;
+  const boosting=!!DBX.input?.boosting?.()&&runtime.energy>8;
+  const accel=boosting?720:520,friction=Math.pow(.18,dt),max=boosting?525:390;
   runtime.vx+=input.x*accel*dt;runtime.vy+=input.y*accel*dt;
   runtime.vx*=friction;runtime.vy*=friction;
   const speed=Math.hypot(runtime.vx,runtime.vy);
@@ -17,7 +18,8 @@ function step(dt,input){
     s.player.dir=Math.atan2(runtime.vy,runtime.vx);
     const traveled=Math.hypot(runtime.vx*dt,runtime.vy*dt);
     runtime.distance+=traveled;
-    runtime.energy=Math.max(0,runtime.energy-traveled*.008);
+    runtime.energy=Math.max(0,runtime.energy-traveled*(boosting?.016:.008));
+    if(boosting&&DBX.fx&&Math.random()<.35)DBX.fx.trail(s.player.x-runtime.vx*.05,s.player.y+18,'#8ff7ff');
     if(DBX.fx&&performance.now()-runtime.lastDust>75){
       runtime.lastDust=performance.now();
       DBX.fx.spawn(s.player.x-runtime.vx*.04,s.player.y+30,{count:2,minSpeed:8,maxSpeed:28,minLife:.3,maxLife:.7,minSize:3,maxSize:8,color:'#d6d0bc',gravity:-6});
@@ -27,7 +29,7 @@ function step(dt,input){
   }
   if(runtime.energy<=0){
     s.roverActive=false;s.player.speed=250;runtime.vx=runtime.vy=0;
-    DBX.storage.save();DBX.ui?.toast('Rover recharge','Battery empty. Parked safely while it recharges.');
+    DBX.storage.save();DBX.input?.rumble?.(180,.5);DBX.audio?.error();DBX.ui?.toast('Rover recharge','Battery empty. Parked safely while it recharges.');
   }
   return true;
 }
