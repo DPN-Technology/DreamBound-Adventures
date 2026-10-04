@@ -22,6 +22,8 @@ jobs:
   analyze:
     name: CodeQL JavaScript Analysis
     runs-on: ubuntu-latest
+    env:
+      CODEQL_EXTRACTOR_JAVASCRIPT_ALLOW_MINIFIED_FILES: "true"
     timeout-minutes: 15
     steps:
       - name: Checkout
