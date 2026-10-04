@@ -43,6 +43,10 @@ jobs:
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/fx.js -o /tmp/vnext-fx.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/scenes.js -o /tmp/vnext-scenes.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/quests.js -o /tmp/vnext-quests.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/world-events.js -o /tmp/vnext-world-events.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/base-builder.js -o /tmp/vnext-base-builder.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/adventure-director.js -o /tmp/vnext-director.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/engine/achievements.js -o /tmp/vnext-achievements.js
           grep -qi "DreamBound" /tmp/index.html
           test -s /tmp/game.js
           test -s /tmp/styles.css
@@ -55,7 +59,11 @@ jobs:
           test -s /tmp/vnext-fx.js
           test -s /tmp/vnext-scenes.js
           test -s /tmp/vnext-quests.js
-          grep -qi "Advanced World Engine" /tmp/vnext.html
+          test -s /tmp/vnext-world-events.js
+          test -s /tmp/vnext-base-builder.js
+          test -s /tmp/vnext-director.js
+          test -s /tmp/vnext-achievements.js
+          grep -qi "Living World Director" /tmp/vnext.html
           echo "DreamBound local runtime shell: reachable on loopback only"
       - name: Verify security headers
         shell: bash
