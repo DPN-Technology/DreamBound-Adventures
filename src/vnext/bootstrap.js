@@ -28,8 +28,8 @@ function update(dt,t){
   const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
   let handled=false;
   if(DBX.traversal?.handleMovement)handled=DBX.traversal.handleMovement(dt,v);
-  if(!handled&&DBX.worldSystems?.movement)handled=DBX.worldSystems.movement(dt,v);
-  if(!handled&&DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
+  if(DBX.scene?.id==='surface'&&!handled&&DBX.worldSystems?.movement)handled=DBX.worldSystems.movement(dt,v);
+  if(DBX.scene?.id==='surface'&&!handled&&DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
   if(!handled&&(v.x||v.y)){
     const speed=s.player.speed||250;
     s.player.x+=v.x*speed*dt;s.player.y+=v.y*speed*dt;
@@ -97,12 +97,14 @@ function draw(t){
   ctx.save();ctx.translate(-cam.x+shake.x,-cam.y+shake.y);
   DBX.world.draw(ctx,t);
   DBX.polish?.drawAfterWorld(ctx,t);
-  DBX.autonomousWorld?.drawZones(ctx,t);
-  DBX.worldSystems?.draw(ctx,t);
+  if(DBX.scene?.id==='surface'){
+    DBX.autonomousWorld?.drawZones(ctx,t);
+    DBX.worldSystems?.draw(ctx,t);
+  }
   DBX.fx?.drawWorld(ctx,t);
   if(DBX.traversal?.state.selected==='glider')DBX.traversal.draw(ctx,t);
-  else if(DBX.worldSystems?.state.skimmerActive)DBX.worldSystems.drawVehicle(ctx,t);
-  else if(DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
+  else if(DBX.scene?.id==='surface'&&DBX.worldSystems?.state.skimmerActive)DBX.worldSystems.drawVehicle(ctx,t);
+  else if(DBX.scene?.id==='surface'&&DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
   else drawPlayer(t);
   DBX.companion?.draw(ctx,t);
   ctx.restore();
