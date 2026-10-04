@@ -1,3 +1,16 @@
+## v0.5.1-dev — Co-op Gameplay
+
+- Fixed the co-op profile-picker selector regression discovered during runtime review.
+- Added DreamLink Team Raceway with two independently controlled karts and a shared score.
+- Added Team Creature Rescue requiring both explorers to participate.
+- Added DreamLink Magic Lesson with alternating Player 1 / Player 2 turns.
+- Added DreamLink Workshop role challenge: Spark Engineer + Gear Engineer.
+- Added Sibling Stars co-op activity quest and persistent activity tracking.
+- Added shared co-op activity rewards, XP, gems, stickers and guest-profile progression.
+- Added Team DreamCreature Sanctuary behavior.
+- Expanded co-op center with playable activity guidance.
+- Added dedicated co-op contract validation to CI.
+
 ## v0.5.0-dev — Local Sibling Co-op
 
 - Added profile-aware local sibling co-op foundation.
