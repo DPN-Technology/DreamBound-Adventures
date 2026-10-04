@@ -1,3 +1,18 @@
+## v1.1.0-dev — Living Moon
+
+- Added rotating dynamic lunar world events with timers, physical event targets, rewards, and persistent completion history.
+- Added Meteor Shower, Crystal Bloom, Aurora Wave, and Luma Star Parade.
+- Added Moon Crystal resource economy.
+- Added Nova, Gear, and Moss explorer NPCs with scheduled movement, dialogue, roles, and persistent friendship.
+- Added Moon Base Architect and four permanent buildable modules: Habitat, Observatory, Rover Garage, and Moon Greenhouse.
+- Added Discovery Codex with discovery, event, base, and friendship summaries.
+- Added cinematic zone/region title cards.
+- Added named surface regions and living-world event HUD.
+- Added persistent sanitized state for resources, base modules, discoveries, event history, NPC friendship, samples, and event wins.
+- Expanded vNext hostile-state fuzz coverage for all new v1.1 fields.
+- Added all new engine modules to DreamShield child-safety scanning and the loopback server allowlist.
+- Preserved CSP connect-src none and zero remote child-runtime dependencies.
+
 ## v1.0.0-dev — Advanced World Engine
 
 - Promoted the modular runtime from preview status to the **Advanced World** first-class launch path.
