@@ -38,7 +38,8 @@ jobs:
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/dom-collection-bridge.js -o /tmp/dom-collection-bridge.js
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/vnext.html -o /tmp/vnext.html
           curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/core.js -o /tmp/vnext-core.js
-          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/bootstrap.js -o /tmp/vnext-bootstrap.js\n          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/lunar-guardian.js -o /tmp/vnext-lunar.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/bootstrap.js -o /tmp/vnext-bootstrap.js
+          curl --fail --silent --show-error --max-time 2 http://127.0.0.1:4173/src/vnext/lunar-guardian.js -o /tmp/vnext-lunar.js
           grep -qi "DreamBound" /tmp/index.html
           test -s /tmp/game.js
           test -s /tmp/styles.css
@@ -46,7 +47,8 @@ jobs:
           test -s /tmp/dom-collection-bridge.js
           test -s /tmp/vnext.html
           test -s /tmp/vnext-core.js
-          test -s /tmp/vnext-bootstrap.js\n          test -s /tmp/vnext-lunar.js
+          test -s /tmp/vnext-bootstrap.js
+          test -s /tmp/vnext-lunar.js
           grep -qi "Lunar Guardian Preview" /tmp/vnext.html
           echo "DreamBound local runtime shell: reachable on loopback only"
       - name: Verify security headers
