@@ -206,11 +206,11 @@ DBX.events.on('state:reset',()=>{reset();applyPassives();refresh()});
 
 const hud=document.querySelector('.advanced-hud');
 if(hud&&!document.querySelector('#vnextOdysseyBtn')){
-  const button=document.createElement('button');button.id='vnextOdysseyBtn';button.className='odyssey-chip';button.innerHTML='🌌 ODYSSEY <b>R<span id="vnextOdysseyRank">'+meta.rank+'</span></b>';button.onclick=openOdyssey;hud.appendChild(button);
+  const button=document.createElement('button');button.id='vnextOdysseyBtn';button.className='odyssey-chip';button.textContent='🌌 ODYSSEY R'+meta.rank;button.onclick=openOdyssey;hud.appendChild(button);
 }
 const telemetry=document.querySelector('.telemetry-stack');
 if(telemetry&&!document.querySelector('#vnextOdysseyXP')){
-  telemetry.insertAdjacentHTML('beforeend','<label>ODYSSEY XP <strong>🌌 <b id="vnextOdysseyXP">'+meta.xp+'</b></strong></label><label>SPARK POINTS <strong>✨ <b id="vnextSparkPoints">'+meta.sparkPoints+'</b></strong></label>');
+  window.DreamBoundDOM.appendHTML(telemetry,'<label>ODYSSEY XP <strong>🌌 <b id="vnextOdysseyXP">'+meta.xp+'</b></strong></label><label>SPARK POINTS <strong>✨ <b id="vnextSparkPoints">'+meta.sparkPoints+'</b></strong></label>');
 }
 DBX.odyssey={meta,open:openOdyssey,addXP,mastery,reset};
 applyPassives();refresh();
