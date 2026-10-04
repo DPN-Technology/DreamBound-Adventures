@@ -45,7 +45,8 @@ function update(dt,t){
   cam.y+=(DBX.util.clamp(s.player.y-innerHeight/2,0,Math.max(0,bounds.h-innerHeight))-cam.y)*Math.min(1,dt*6);
 
   const closest=DBX.world.currentInteractable();
-  near=closest&&closest.d<110?closest:null;
+  const radius=DBX.accessibility?.interactionRadius?.(110)||110;
+  near=closest&&closest.d<radius?closest:null;
   const prompt=document.querySelector('#vnextPrompt');
   if(near){
     prompt.classList.remove('hidden');
@@ -117,7 +118,7 @@ function drawPlayer(t){
   }
 }
 function loop(t){
-  const dt=Math.min(.034,(t-last)/1000);last=t;update(dt,t);draw(t);requestAnimationFrame(loop);
+  const dt=Math.min(.034,(t-last)/1000);last=t;DBX.accessibility?.sampleFrame?.(dt);update(dt,t);draw(t);requestAnimationFrame(loop);
 }
 document.querySelector('#vnextInteract').onclick=()=>DBX.input.requestAction();
 document.querySelector('#vnextJournal').onclick=()=>DBX.quests?.renderJournal();
