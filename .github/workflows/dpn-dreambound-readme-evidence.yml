@@ -97,7 +97,7 @@ jobs:
 
       - name: Publish screenshots to repository
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -117,6 +117,6 @@ jobs:
             if [[ -n "$sha" ]]; then
               args+=( -f "sha=$sha" )
             fi
-            gh api "\${args[@]}" >/dev/null
+            gh api "${args[@]}" >/dev/null
             echo "Published $path"
           done
