@@ -81,7 +81,7 @@ The explorer character now has a more complete drawn body, walking animation, fa
 ## Start on Windows
 
 1. Extract the ZIP to a normal folder.
-2. Double-click **PLAY-DREAMBOUND.bat**.
+2. Double-click **`PLAY-DREAMBOUND.bat`**.
 3. The launcher starts a small local web server and opens DreamBound in the default browser.
 
 Internet access is not required for gameplay. If Python is not installed, the launcher falls back to opening `index.html` directly.
