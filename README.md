@@ -58,36 +58,31 @@ DreamBound now launches as one unified Living World runtime. The former Storyboo
 
 Architecture: `docs/VNEXT_ARCHITECTURE.md`.
 
-## 🌈 Three Worlds Expansion — v0.7.1-dev
+## 🌐 Unified Living World — current runtime
 
-| System | Current capability |
+DreamBound now ships as **one player-facing game**. The root `index.html` is the canonical modular Living World runtime; there is no Storybook-vs-Living-World game chooser.
+
+### Connected regions now inside the same engine
+
+| Region | Unified runtime role |
 | --- | --- |
-| 🌎 **World** | Six connected regions with Storybook World procedural rendering |
-| 🌟 **Story** | Two connected chapters: The Sleeping Star + The Lost Explorer Map across five lands |
-| 🎨 **Avatar Studio** | Persistent hair and accessory customization |
-| 🚪 **Interiors** | Dream Home, Moonflower Tower, Star Chamber, Fossil Hall, Maker Workshop and Ocean Discovery Center |
-| 🧭 **Adventures** | 18 guided main adventures with objective tracking |
-| 🐾 **DreamCreatures** | Six rescueable creatures and a sanctuary |
-| 💖 **DreamBuddy** | Companion friendship and interaction system |
-| 🏎️ **Racing** | Rainbow Speedway / Ridge Raceway |
-| 🦴 **Dinosaurs** | Fossil digging and Dino Egg Memory |
-| 🪄 **Magic** | Lessons, unlockable spells, Moonflower Tower |
-| 🧱 **Creation** | Builder Mode and persistent Dream Home customization |
-| 📸 **Discovery** | Photo Safari, Landmark Hunt, collections and achievements |
-| 🛴 **Travel** | Explorer Scooter plus Rainbow Portal fast travel |
-| 🧠 **Adaptive play** | Age-scaled Brain Sparks and challenge difficulty |
-| 💾 **Profiles** | Three local child profiles with automatic saving |
-| 👥 **Sibling Co-op** | Two explorers, two DreamBuddies, shared rewards, DreamLink tether, 3 cooperative gates and 4 team activities |
+| 🚀 **Space Center Campus** | Mission Control, Solar Array, Rocket Workshop, Launch Pad and DreamGate Nexus |
+| 🌕 **Moon Surface** | Tranquility Basin, Crystal Ridge, Luma Hollow, Moon Base and world-event systems |
+| 🛰️ **Lunar Space Station** | Walkable station interior, Hydroponics, Observatory and Discovery Lab |
+| 🏡 **Home Valley** | Dream Home / Dream Lantern realm scene |
+| 🪄 **Magic Grove** | Moonflower Tower / resonance realm scene |
+| 🏎️ **Racing Ridge** | Rainbow Speedway / route-calibration realm scene |
+| 🦕 **Dino Valley** | Fossil Hall / fossil-scanner realm scene |
+| 🧱 **Builder Bay** | Maker Workshop / blueprint-build realm scene |
+| 🌊 **Ocean Cove** | Discovery Center / sonar-trail realm scene |
 
-### v0.7 Three Worlds systems
+The six former Storybook lands are registered through the same scene engine and use the same local progression, Odyssey rewards, DreamShield boundary, cinematic system, HUD and save environment.
 
-- **Fossil Hall** — enterable Dino Valley museum and age-adaptive fossil scanner.
-- **Maker Workshop** — enterable Builder Bay engineering lab and blueprint-driven Gear Builder.
-- **Ocean Discovery Center** — enterable aquarium lab with protected submarine dock.
-- **The Lost Explorer Map** — one chapter linking all three interiors in sequence.
-- **Explorer Submarine** — unlockable, repeatable sonar expeditions with safe no-fail retries.
-- **Co-op Sonar** — when sibling co-op is active, sonar steps alternate between Player 1 and Player 2.
-- **Interior Explorer + Pathfinder** — persistent sticker/achievement progression.
+### Legacy migration inventory
+
+The repository still contains the old monolithic `game.js`, `styles.css`, profile sanitizer and DOM compatibility bridge **only as migration source**. They are no longer loaded by `index.html`, are denied by the secure local server, and are excluded from release packages.
+
+Still to be migrated from that source into the unified engine: the deeper Dream Home customization, full racing activity, dinosaur mini-games, magic lessons, Builder Mode, Photo Safari, legacy profile slots, and sibling co-op. These are migration targets—not claims about the current unified build.
 
 ## 🌙 v0.9 Lunar Guardian
 
@@ -102,27 +97,26 @@ The modular preview now continues beyond launch into a persistent **Lunar Guardi
 - Progress is sanitized and stored locally with the rest of the vNext preview.
 - All new code lives in the separate `src/vnext/lunar-guardian.js` module.
 
-## 🚀 v0.8 Modular Space Center Preview
+## 🚀 Modular Space Center Foundation
 
-DreamBound now uses the modular Living World runtime as the single player-facing game. The previous parallel-runtime split has been retired.
+DreamBound uses the modular Living World runtime as the single player-facing game. The previous parallel-runtime split is retired.
 
-- Separate state/storage, input, world, UI, and bootstrap modules under `src/vnext/`.
+- State/storage, input, scenes, world systems, UI and bootstrap modules live under `src/vnext/`.
 - Playable Space Center campus with Mission Control, Solar Array, Rocket Workshop, and Launch Pad.
 - Launch unlocks a Moon training sector with rover-route navigation and collectible Moon rocks.
 - Local preview progress is sanitized before use and stored only in the browser.
 - No remote assets, accounts, analytics, ads, chat, fetch/XHR/WebSocket, or external child links.
-- The secure local server explicitly allowlists every preview asset.
-- DreamShield validates the preview files, JavaScript syntax, network isolation, packaging, and smoke-test reachability.
+- The secure local server explicitly allowlists only shipped unified-runtime assets and rejects the legacy runtime.
+- DreamShield validates unified runtime files, JavaScript syntax, network isolation, packaging and smoke-test reachability.
 
 Launch DreamBound normally; the advanced Living World is now the only player-facing runtime.
 
-### v0.7.1 reliability hardening
+### Legacy migration hardening
 
-- Added a narrow DOM collection compatibility bridge for nine legacy selector sites in the current monolithic runtime.
-- Restored multi-button interaction reliability in co-op magic, Star Chamber, Fossil Scanner, Gear Builder, and Submarine sonar.
-- CI now prevents this legacy selector-debt count from growing.
-- The bridge is included in child-safety validation, secure serving, smoke tests, runtime security, and release packaging.
-- The next architecture phase is modularizing `game.js` so these legacy sites can be corrected directly and the bridge removed.
+- Legacy `game.js` remains statically audited while content is migrated.
+- The compatibility bridge is retained in source only to keep migration debt measurable.
+- CI prevents the nine known legacy selector-debt sites from growing.
+- Neither the legacy game nor its bridge is served or shipped in the unified runtime.
 
 ### Runtime hardening
 
@@ -183,18 +177,20 @@ If Python is unavailable, the launcher falls back to opening **index.html** dire
 
 | Action | Controls |
 | --- | --- |
-| Move | WASD / Arrow Keys / Touch D-pad / Gamepad left stick |
-| Interact | E / Space / Enter / Sparkle button / Gamepad A |
-| Adventure Board | 🧭 |
-| DreamBuddy | 💖 |
-| Photo Safari | 📸 |
-| Explorer Scooter | 🛴 |
-| Dream Collection | 🎒 |
-| Journal | 📖 |
-| Magic Wand | 🪄 |
-| Builder Mode | 🧱 |
-| Map / Fast Travel | 🗺️ |
-| Settings | ⚙️ / Esc |
+| Move | WASD / Arrow Keys / Touch D-pad / Gamepad |
+| Interact | E / Space / Sparkle button |
+| Realms | 🌀 REALMS / DreamGate Nexus |
+| Journal | 📖 JOURNAL |
+| Companion | 🐇 LUMA |
+| Discovery Codex | 📚 CODEX |
+| Moon Base | 🏗️ BASE |
+| Mastery | 🏆 MASTERY |
+| World systems | 🌦️ WORLD |
+| Settings & accessibility | ⚙️ SETTINGS |
+
+## 📦 Legacy content migration source
+
+The historical sections and systems below describe content that exists in the retained legacy source and is being migrated into the unified engine. They are **not a second playable runtime** and are not included in release packages.
 
 ## 🌟 Story Chapter: The Sleeping Star
 
@@ -280,11 +276,12 @@ Any future feature that expands this boundary—cloud saves, online co-op, accou
 ## 🧪 Local validation
 
 ~~~bash
-node --check game.js
 python3 tools/validate_dreambound.py --mode all
+find src/vnext -type f -name "*.js" -print0 | while IFS= read -r -d '' file; do node --check "$file"; done
+python3 tools/check_unified_realms.py
 ~~~
 
-The validator checks project structure, child-safety invariants, dangerous browser APIs, unexpected external URLs, conflict markers, required policy files and repository metadata.
+The validator checks the **single shipped runtime**, child-safety invariants, dangerous browser APIs, unexpected external URLs, conflict markers, required policy files, and that legacy migration assets are not player-facing.
 
 ## 📚 Engineering documents
 
@@ -315,11 +312,11 @@ DreamBound's modular engine now behaves like a persistent **living adventure wor
 - The HUD now surfaces Moon crystals, world-event wins, mastery %, Director tier, Codex, Base and Mastery controls.
 - All new state remains local-only, sanitized, fuzzed and covered by DreamShield.
 
-## 🚀 Roadmap direction
+## 🚀 Migration roadmap
 
-The next major development phase is expected to focus on richer animated assets, deeper avatars, enterable interiors, creature habitats, additional vehicles, Space Center / Moon exploration, underwater submarine gameplay, cinematic story chapters and local sibling co-op.
+The next major work is to deepen the six migrated realms and move the remaining high-value legacy systems into modular engine components: local explorer profiles, richer avatars, Dream Home customization, full racing, dinosaur activities, magic, Builder Mode, Photo Safari, enterable realm interiors, and local sibling co-op.
 
-These are roadmap directions—not claims of features already shipped.
+Once those systems have parity in the unified engine, the migration-only legacy source files can be deleted entirely.
 
 ## 🧩 DPN Technology
 
