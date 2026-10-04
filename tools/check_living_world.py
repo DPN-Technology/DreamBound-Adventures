@@ -9,6 +9,7 @@ html=(root/"vnext.html").read_text(encoding="utf-8",errors="replace")
 core=(root/"src/vnext/core.js").read_text(encoding="utf-8",errors="replace")
 boot=(root/"src/vnext/bootstrap.js").read_text(encoding="utf-8",errors="replace")
 server=(root/"serve_dreambound.py").read_text(encoding="utf-8",errors="replace")
+quests=(root/"src/vnext/engine/quests.js").read_text(encoding="utf-8",errors="replace")
 
 modules=["world-events.js","npcs.js","base-builder.js","codex.js","cinematic.js"]
 missing=[]
@@ -49,6 +50,10 @@ for marker in [
 ]:
     if marker not in runtime:
         missing.append("living system marker: "+marker)
+
+for marker in ["living-moon","moon-architect","world-scholar","Living Moon Explorer","Moon Architect","World Scholar"]:
+    if marker not in quests:
+        missing.append("quest integration: "+marker)
 
 if re.search(r"https?://",runtime,re.I):
     missing.append("external URL in Living Moon runtime")
