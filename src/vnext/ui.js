@@ -66,7 +66,7 @@ function orderPuzzle({title,help,parts,onWin}){
     }else{
       pos=0;$('#vnextOrderProgress').textContent='○ '.repeat(parts.length);toast('Blueprint reset','Start from step 1. Nothing breaks.');
     }
-  };
+  });
   $('#vnextCloseOrder').onclick=closeModal;
 }
 DBX.ui={
