@@ -44,7 +44,7 @@ The goal is simple: **make discovery feel like an adventure instead of homework.
 
 | For kids | For families | For testers & developers |
 | --- | --- | --- |
-| Explore magical lands, the Space Center, and the Moon | Local-first play with no required child account | Modular JavaScript runtime plus a legacy Storybook runtime |
+| Explore magical lands, the Space Center, and the Moon | Local-first play with no required child account | One modular JavaScript Living World runtime |
 | Rescue DreamCreatures and befriend Luma | No ads, in-app purchases, analytics, or public chat | DreamShield validation, CodeQL, supply-chain gates, smoke tests |
 | Build, race, discover, solve, customize, and play together | Three local child profiles and automatic saving | Sanitized local state, loopback-only server, release integrity checks |
 | Choose guided or more independent challenges | Accessibility controls and age-scaled activities | Architecture, threat model, release, and security documentation |
