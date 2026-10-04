@@ -1,0 +1,38 @@
+name: "✨ DreamBound Idea"
+description: Suggest a child-friendly feature or improvement.
+title: "[IDEA] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Adventure idea
+      description: What should DreamBound add or improve?
+    validations:
+      required: true
+  - type: dropdown
+    id: age
+    attributes:
+      label: Best fit
+      options:
+        - Ages 4–5
+        - Ages 6–8
+        - All DreamBound players
+        - Parent / caregiver feature
+        - Developer / repository feature
+    validations:
+      required: true
+  - type: textarea
+    id: play
+    attributes:
+      label: How would it play?
+      description: Describe the interaction, reward, or learning loop.
+    validations:
+      required: true
+  - type: checkboxes
+    id: guard
+    attributes:
+      label: DreamShield
+      options:
+        - label: "The idea does not require ads, public chat, strangers, or child-targeted purchases."
+          required: true

@@ -1,0 +1,59 @@
+name: "🐛 DreamBound Bug"
+description: Report a reproducible problem in DreamBound Adventures.
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve DreamBound. Do not post private child information, credentials, tokens, or sensitive vulnerability details here.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "v0.4.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - World / movement
+        - Quest / progression
+        - DreamBuddy / creatures
+        - Mini-game
+        - Dream Home / builder
+        - Save / migration
+        - Controls / accessibility
+        - Launcher
+        - Visual / audio
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Keep the steps precise and avoid personal information.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: "This report does not include credentials, private child data, or an undisclosed security exploit."
+          required: true

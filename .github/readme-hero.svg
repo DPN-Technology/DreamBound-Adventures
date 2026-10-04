@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="t d">
+<title id="t">DreamBound Adventures by DPN Technology</title><desc id="d">Bright child-friendly DPN themed DreamBound repository hero.</desc>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#120d2e"/><stop offset=".45" stop-color="#31206f"/><stop offset="1" stop-color="#102e5a"/></linearGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff6fbd"/><stop offset=".48" stop-color="#8c6cff"/><stop offset="1" stop-color="#53e4df"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1280" height="360" rx="30" fill="url(#bg)"/>
+<g opacity=".16" fill="#75f4ef" font-family="monospace" font-size="20">
+<text x="32" y="42">01001100  DREAMBOUND  00110101  IMAGINATION NETWORK  10101001</text>
+<text x="105" y="330">00110100  DEVELOP  •  PIONEER  •  NAVIGATE  01001000</text>
+</g>
+<g opacity=".75" filter="url(#glow)">
+<path d="M80 105 L155 38 L138 113 L205 88 L118 190 L139 119 Z" fill="#ff6fbd"/>
+<path d="M1120 70 L1170 28 L1154 82 L1211 63 L1144 143 L1159 86 Z" fill="#58e6e0"/>
+</g>
+<g fill="#fff" opacity=".75"><circle cx="270" cy="62" r="4"/><circle cx="955" cy="53" r="6"/><circle cx="1040" cy="126" r="3"/><circle cx="225" cy="155" r="5"/><circle cx="1012" cy="255" r="5"/></g>
+<path d="M0 285 C150 210 260 315 405 258 C570 192 680 300 820 245 C975 183 1090 270 1280 205 V360 H0Z" fill="#39c77a" opacity=".78"/>
+<path d="M0 315 C200 245 330 338 515 286 C735 225 880 330 1020 284 C1130 247 1200 252 1280 236 V360 H0Z" fill="#1f8f64" opacity=".86"/>
+<g font-family="Arial,Helvetica,sans-serif" text-anchor="middle">
+<text x="640" y="112" fill="#fff" font-size="24" font-weight="800" letter-spacing="7">DPN TECHNOLOGY // IMAGINATION NETWORK</text>
+<text x="640" y="190" fill="#fff" font-size="64" font-weight="1000">DREAMBOUND</text>
+<text x="640" y="231" fill="url(#beam)" font-size="31" font-weight="900" letter-spacing="12">ADVENTURES</text>
+<text x="640" y="270" fill="#eae5ff" font-size="19" font-weight="700">Every Adventure Starts With Imagination.</text>
+</g>
+<g transform="translate(570 292)" font-family="Arial" font-size="17" font-weight="800"><rect width="140" height="36" rx="18" fill="#ffffff" opacity=".92"/><text x="70" y="24" text-anchor="middle" fill="#4e38b3">AGES 4–8 ✦</text></g>
+</svg>

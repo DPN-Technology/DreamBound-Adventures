@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="250" viewBox="0 0 1280 250" role="img" aria-label="DreamBound feature showcase">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171135"/><stop offset="1" stop-color="#243d70"/></linearGradient></defs>
+<rect width="1280" height="250" rx="28" fill="url(#g)"/>
+<text x="50" y="46" fill="#fff" font-family="Arial" font-size="18" font-weight="800" letter-spacing="4">DPN DREAMBOUND // ACTIVE SYSTEMS</text>
+<g font-family="Arial" text-anchor="middle">
+<g transform="translate(45 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#ff74ba"/><text x="137" y="37" font-size="28">🌎 🧭 🐾</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">EXPLORE</text><text x="137" y="96" fill="#cfc8f4" font-size="13">6 lands • 14 adventures</text></g>
+<g transform="translate(345 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#9a73ff"/><text x="137" y="37" font-size="28">🧱 🏡 🎨</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">CREATE</text><text x="137" y="96" fill="#cfc8f4" font-size="13">Builder Mode • Dream Home</text></g>
+<g transform="translate(645 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#65dbe8"/><text x="137" y="37" font-size="28">🏎️ 🦴 🪄</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">PLAY</text><text x="137" y="96" fill="#cfc8f4" font-size="13">Racing • Dinos • Magic</text></g>
+<g transform="translate(945 78)"><rect width="275" height="125" rx="22" fill="#ffffff12" stroke="#67e38c"/><text x="137" y="37" font-size="28">🛡️ 💾 💖</text><text x="137" y="70" fill="#fff" font-size="18" font-weight="900">DREAMSHIELD</text><text x="137" y="96" fill="#cfc8f4" font-size="13">Local-first • child-safe gates</text></g>
+</g></svg>

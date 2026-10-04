@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "🔐 Security report"
+    url: "https://github.com/DPN-Technology/DreamBound-Adventures/security"
+    about: "Use GitHub's security area for sensitive vulnerability reporting when available. Do not post exploit details in a public issue."
