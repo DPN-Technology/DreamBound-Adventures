@@ -25,8 +25,33 @@ const definitions=[
     ]
   },
   {
-    id:'buddy-bond',title:'💜 Best Moon Friends',reward:{stars:7,gems:3},
+    id:'buddy-bond',title:'💜 Best Moon Friends',reward:{stars:7,gems:3},badge:'Best Moon Friends',
     steps:[['Reach Luma Bond 5',s=>(s.lumaBond||0)>=5]]
+  },
+  {
+    id:'living-moon',title:'🌌 Living Moon Explorer',reward:{stars:10,gems:5},badge:'Living Moon Explorer',
+    steps:[
+      ['Complete a world event',s=>(s.eventWins||0)>=1],
+      ['Reach friendship 3 with an explorer',s=>Math.max(s.npcFriendship?.nova||0,s.npcFriendship?.gear||0,s.npcFriendship?.moss||0)>=3],
+      ['Build your first Moon Base module',s=>(s.baseModules||[]).length>=1]
+    ]
+  },
+  {
+    id:'moon-architect',title:'🏗️ Moon Architect',reward:{stars:14,gems:8},badge:'Moon Architect',
+    steps:[
+      ['Build Explorer Habitat',s=>(s.baseModules||[]).includes('habitat')],
+      ['Build Sky Observatory',s=>(s.baseModules||[]).includes('observatory')],
+      ['Build Rover Garage',s=>(s.baseModules||[]).includes('garage')],
+      ['Build Moon Greenhouse',s=>(s.baseModules||[]).includes('greenhouse')]
+    ]
+  },
+  {
+    id:'world-scholar',title:'📚 World Scholar',reward:{stars:12,gems:7},badge:'World Scholar',
+    steps:[
+      ['Log 6 Codex discoveries',s=>(s.codexEntries||[]).length>=6],
+      ['Complete 3 world events',s=>(s.eventWins||0)>=3],
+      ['Reach friendship 5 with two explorers',s=>[s.npcFriendship?.nova||0,s.npcFriendship?.gear||0,s.npcFriendship?.moss||0].filter(v=>v>=5).length>=2]
+    ]
   }
 ];
 function ensure(){
@@ -50,7 +75,9 @@ function tick(){
     const p=progress(q);
     if(!p.complete)continue;
     DBX.state.completedQuests.push(q.id);
-    DBX.state.stars+=q.reward.stars;DBX.state.gems+=q.reward.gems;changed=true;
+    DBX.state.stars+=q.reward.stars;DBX.state.gems+=q.reward.gems;
+    if(q.badge&&Array.isArray(DBX.state.badges)&&!DBX.state.badges.includes(q.badge))DBX.state.badges.push(q.badge);
+    changed=true;
     DBX.fx?.flash(.55);DBX.fx?.burst(DBX.state.player.x,DBX.state.player.y,'🏆');DBX.audio?.success();
     DBX.ui?.toast('Quest Complete: '+q.title,'+'+q.reward.stars+' ⭐  +'+q.reward.gems+' 💎');
     DBX.events.emit('quest:complete',{id:q.id});
@@ -65,7 +92,7 @@ function renderJournal(){
       let yes=false;try{yes=!!test(DBX.state)}catch{}
       return '<li class="'+(yes?'done':'')+'"><span>'+(yes?'✅':'○')+'</span>'+label+'</li>';
     }).join('');
-    return '<article class="quest-card '+(complete?'complete':'')+'"><header><strong>'+q.title+'</strong><b>'+p.done+'/'+p.total+'</b></header><ul>'+steps+'</ul><small>Reward: '+q.reward.stars+' ⭐ · '+q.reward.gems+' 💎</small></article>';
+    return '<article class="quest-card '+(complete?'complete':'')+'"><header><strong>'+q.title+'</strong><b>'+p.done+'/'+p.total+'</b></header><ul>'+steps+'</ul><small>Reward: '+q.reward.stars+' ⭐ · '+q.reward.gems+' 💎'+(q.badge?' · 🎟️ '+q.badge:'')+'</small></article>';
   }).join('');
   DBX.ui.openModal('<h2>📖 Explorer Mission Journal</h2><div class="quest-journal">'+rows+'</div><button id="questJournalClose" class="primary-btn">BACK TO ADVENTURE</button>');
   document.querySelector('#questJournalClose').onclick=DBX.ui.closeModal;
