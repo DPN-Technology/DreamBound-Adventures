@@ -176,6 +176,8 @@ The validator checks project structure, child-safety invariants, dangerous brows
 | [Brand Transition](BRAND-TRANSITION.md) | WonderWorld → DreamBound compatibility notes |
 | [Verification](VERIFICATION.md) | v0.4.1 verification record |
 | [Changelog](CHANGELOG.md) | Version history |
+| [Release Process](docs/RELEASE_PROCESS.md) | Validated packaging and release rules |
+| [Third-Party Licenses](THIRD_PARTY_LICENSES.md) | Runtime and CI dependency/license ledger |
 
 ## 🚀 Roadmap direction
 

@@ -14,6 +14,7 @@ REQUIRED = [
     "README.md", "SECURITY.md", "CONTRIBUTING.md",
     "docs/THREAT_MODEL.md", "docs/SECURITY_GATES.md",
     ".github/CODEOWNERS", ".github/dependabot.yml",
+    "THIRD_PARTY_LICENSES.md", "docs/RELEASE_PROCESS.md",
 ]
 FORBIDDEN_RUNTIME = {
     r"https?://": "external URL in child runtime",
