@@ -1,13 +1,25 @@
 (() => {
 'use strict';
 const DBX=window.DreamBoundVNext=window.DreamBoundVNext||{};
-DBX.VERSION='0.9.0-dev';
+DBX.VERSION='1.0.0-dev';
 DBX.WORLD={w:1800,h:1200};
 DBX.util={
   clamp:(v,min,max)=>Math.max(min,Math.min(max,v)),
   dist:(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),
   int:(v,min,max,fallback)=>{const n=Number(v);return Number.isFinite(n)?Math.max(min,Math.min(max,Math.trunc(n))):fallback},
-  bool:(v,fallback=false)=>typeof v==='boolean'?v:fallback
+  bool:(v,fallback=false)=>typeof v==='boolean'?v:fallback,
+  num:(v,min,max,fallback)=>{const n=Number(v);return Number.isFinite(n)?Math.max(min,Math.min(max,n)):fallback},
+  list:(v,allowed,max=50)=>{
+    if(!Array.isArray(v))return [];
+    const set=allowed?new Set(allowed):null,out=[];
+    for(const item of v){
+      if(typeof item!=='string')continue;
+      const clean=item.replace(/[<>\u0000-\u001f\u007f]/g,'').slice(0,48);
+      if(!clean||set&&!set.has(clean)||out.includes(clean))continue;
+      out.push(clean);if(out.length>=max)break;
+    }
+    return out;
+  }
 };
 DBX.events=(()=>{
   const map=new Map();
@@ -32,6 +44,12 @@ const defaults=()=>({
   roverActive:false,
   lumaRescued:false,
   lunarBadge:false,
+  stationDiscoveries:[],
+  completedQuests:[],
+  lumaBond:0,
+  sceneVisits:['surface'],
+  badges:[],
+  totalDistance:0,
   stars:0,
   gems:0,
   sessionStarted:Date.now()
@@ -62,6 +80,12 @@ DBX.storage={
       roverActive:DBX.util.bool(r.roverActive,false),
       lumaRescued:DBX.util.bool(r.lumaRescued,false),
       lunarBadge:DBX.util.bool(r.lunarBadge,false),
+      stationDiscoveries:DBX.util.list(r.stationDiscoveries,['Earthrise','Moon crystal pattern','Lunar dust sample'],3),
+      completedQuests:DBX.util.list(r.completedQuests,['launch-path','lunar-guardian','station-scientist','buddy-bond'],4),
+      lumaBond:DBX.util.num(r.lumaBond,0,10,0),
+      sceneVisits:DBX.util.list(r.sceneVisits,['surface','station'],2),
+      badges:DBX.util.list(r.badges,['Space Pathfinder','Lunar Guardian','Station Scientist','Best Moon Friends'],8),
+      totalDistance:DBX.util.num(r.totalDistance,0,999999999,0),
       stars:DBX.util.int(r.stars,0,9999,0),
       gems:DBX.util.int(r.gems,0,9999,0)
     };
@@ -84,6 +108,8 @@ DBX.storage={
         rocketFixed:s.rocketFixed,launched:s.launched,moonRoute:s.moonRoute,moonRocks:s.moonRocks,
         stationVisited:s.stationVisited,stationGarden:s.stationGarden,roverUnlocked:s.roverUnlocked,
         roverActive:s.roverActive,lumaRescued:s.lumaRescued,lunarBadge:s.lunarBadge,
+        stationDiscoveries:s.stationDiscoveries,completedQuests:s.completedQuests,lumaBond:s.lumaBond,
+        sceneVisits:s.sceneVisits,badges:s.badges,totalDistance:s.totalDistance,
         stars:s.stars,gems:s.gems
       }));
     }catch{}
