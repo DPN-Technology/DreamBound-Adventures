@@ -2,12 +2,12 @@
 
 > DPN Technology // DreamBound Advanced World Engine v1.0
 
-DreamBound vNext is the modular runtime that replaces continued growth of the original monolithic `game.js`. The original Storybook World remains available while systems are migrated into this engine.
+DreamBound uses one modular Living World runtime. The original monolithic `game.js` is no longer player-facing and remains only as temporary migration source until its strongest content is absorbed into the modular engine.
 
 ## Runtime layers
 
 ```text
-vnext.html
+index.html (primary) / vnext.html (compatibility route)
   ├─ core.js                 bounded state, local persistence, event bus
   ├─ input.js                keyboard, touch, gamepad, rumble
   ├─ space-center.js         Space Center + Moon surface world
