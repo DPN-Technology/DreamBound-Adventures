@@ -32,6 +32,9 @@ jobs:
           python3 tools/check_workflow_security.py
           python3 tools/check_runtime_security.py
           node tools/fuzz_profile_sanitizer.js
+          python3 tools/check_dom_collection_bridge.py
+          for file in src/vnext/*.js; do node --check "$file"; done
+          python3 tools/check_modular_runtime.py
       - name: Build source package
         shell: bash
         run: |
