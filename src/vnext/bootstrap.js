@@ -28,12 +28,12 @@ function update(dt,t){
   const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
   let handled=false;
   if(DBX.traversal?.handleMovement)handled=DBX.traversal.handleMovement(dt,v);
-  if(!handled&&DBX.worldSystems?.movement)handled=DBX.worldSystems.movement(dt,v);
-  if(!handled&&DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
+  if(DBX.scene?.id==='surface'&&!handled&&DBX.worldSystems?.movement)handled=DBX.worldSystems.movement(dt,v);
+  if(DBX.scene?.id==='surface'&&!handled&&DBX.vehicle?.step)handled=DBX.vehicle.step(dt,v);
   if(!handled&&(v.x||v.y)){
     const speed=s.player.speed||250;
     s.player.x+=v.x*speed*dt;s.player.y+=v.y*speed*dt;
-    if(DBX.scene?.id!=='station'&&!s.launched&&s.player.x>1230)s.player.x=1230;
+    if(DBX.scene?.id==='surface'&&!s.launched&&s.player.x>1230)s.player.x=1230;
     s.player.dir=Math.atan2(v.y,v.x);
   }
   if(DBX.scene?.clamp)DBX.scene.clamp(s.player);
@@ -63,7 +63,7 @@ function update(dt,t){
     else if(s.lumaRescued)DBX.companion?.interact();
   }
 
-  if(DBX.scene?.id!=='station'&&s.launched){
+  if(DBX.scene?.id==='surface'&&s.launched){
     for(const rock of DBX.world.rocks||[]){
       if(s.moonRocks.includes(rock.id))continue;
       if(Math.hypot(s.player.x-rock.x,s.player.y-rock.y)<52)DBX.ui.moonRock(rock.id);
@@ -97,12 +97,14 @@ function draw(t){
   ctx.save();ctx.translate(-cam.x+shake.x,-cam.y+shake.y);
   DBX.world.draw(ctx,t);
   DBX.polish?.drawAfterWorld(ctx,t);
-  DBX.autonomousWorld?.drawZones(ctx,t);
-  DBX.worldSystems?.draw(ctx,t);
+  if(DBX.scene?.id==='surface'){
+    DBX.autonomousWorld?.drawZones(ctx,t);
+    DBX.worldSystems?.draw(ctx,t);
+  }
   DBX.fx?.drawWorld(ctx,t);
   if(DBX.traversal?.state.selected==='glider')DBX.traversal.draw(ctx,t);
-  else if(DBX.worldSystems?.state.skimmerActive)DBX.worldSystems.drawVehicle(ctx,t);
-  else if(DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
+  else if(DBX.scene?.id==='surface'&&DBX.worldSystems?.state.skimmerActive)DBX.worldSystems.drawVehicle(ctx,t);
+  else if(DBX.scene?.id==='surface'&&DBX.state.roverActive)DBX.vehicle?.draw(ctx,t);
   else drawPlayer(t);
   DBX.companion?.draw(ctx,t);
   ctx.restore();
@@ -138,7 +140,7 @@ document.querySelector('#vnextMastery').onclick=()=>DBX.achievements?.open();
 document.querySelector('#vnextWorldSystems').onclick=()=>DBX.worldSystems?.open();
 document.querySelector('#vnextReset').onclick=()=>{
   DBX.storage.reset();DBX.vehicle?.reset();DBX.ui.closeModal();DBX.ui.updateHUD();
-  DBX.ui.toast('Adventure reset','v1.4 living-world progress cleared on this device.');
+  DBX.ui.toast('Adventure reset','Local DreamBound progress cleared on this device.');
 };
 DBX.events.on('state:reset',()=>{cam={x:0,y:0}});
 DBX.events.on('scene:changed',({id})=>{

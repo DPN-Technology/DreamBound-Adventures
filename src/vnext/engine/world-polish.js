@@ -4,7 +4,7 @@ const DBX=window.DreamBoundVNext;
 const stars=Array.from({length:70},(_,i)=>({x:1280+(i*97)%500,y:25+(i*67)%620,r:1+(i%3)*.45,p:i*.7}));
 const clouds=Array.from({length:6},(_,i)=>({x:120+i*300,y:90+(i%3)*95,s:.75+(i%3)*.18,v:7+i*1.7}));
 function drawAfterWorld(ctx,t){
-  if(DBX.scene?.id==='station'){
+  if(DBX.scene?.id!=='surface'){
     interactionGlow(ctx,t);
     return;
   }
@@ -27,7 +27,7 @@ function drawAfterWorld(ctx,t){
   // Moon star field shimmer.
   const starBudget=DBX.accessibility?.particleBudget?.(stars.length)||stars.length;
   for(const star of stars.slice(0,starBudget)){
-    const a=animate?.35+.5*(.5+.5*Math.sin(t/480+star.p)):.55;
+    const a=animate ? .35+.5*(.5+.5*Math.sin(t/480+star.p)) : .55;
     ctx.globalAlpha=a;ctx.fillStyle='#fff8c8';
     ctx.beginPath();ctx.arc(star.x,star.y,star.r,0,Math.PI*2);ctx.fill();
   }
@@ -65,10 +65,15 @@ function drawMinimap(canvas){
   const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,s=DBX.state;
   ctx.clearRect(0,0,w,h);
   ctx.fillStyle='#272b5b';ctx.beginPath();ctx.roundRect(0,0,w,h,18);ctx.fill();
-  if(DBX.scene?.id==='station'){
-    ctx.fillStyle='#68759e';ctx.beginPath();ctx.roundRect(12,12,w-24,h-24,16);ctx.fill();
-    ctx.fillStyle='#9ef3b7';ctx.fillRect(w*.42,h*.46,18,12);
-    ctx.fillStyle='#7fdfff';ctx.fillRect(w*.72,h*.26,15,10);
+  if(DBX.scene?.id&&DBX.scene.id!=='surface'){
+    const config=DBX.scene.config?.();
+    const accent=DBX.scene.id==='station'?'#71e8dd':'#8c79ff';
+    ctx.fillStyle='#11182c';ctx.beginPath();ctx.roundRect(8,8,w-16,h-16,14);ctx.fill();
+    ctx.strokeStyle=accent;ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.06)';
+    for(let x=20;x<w-10;x+=24){ctx.fillRect(x,18,1,h-36);}
+    for(let y=18;y<h-10;y+=20){ctx.fillRect(20,y,w-40,1);}
+    ctx.fillStyle=accent;ctx.font='700 7px system-ui';ctx.textAlign='center';ctx.fillText((config?.name||DBX.scene.id).toUpperCase(),w/2,16);
   }else{
     ctx.fillStyle='#7cd99a';ctx.fillRect(8,8,w*.68,h-16);
     ctx.fillStyle='#343863';ctx.fillRect(w*.7,8,w*.3-8,h-16);

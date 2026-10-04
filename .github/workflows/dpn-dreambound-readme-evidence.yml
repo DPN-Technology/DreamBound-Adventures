@@ -57,11 +57,10 @@ jobs:
       - name: Validate screenshot evidence
         shell: bash
         run: |
-          test -s .github/screenshots/storybook-world.png
-          test -s .github/screenshots/sibling-coop.png
-          test -s .github/screenshots/advanced-space-center.png
-          test -s .github/screenshots/moon-rover-luma.png
-          test -s .github/screenshots/lunar-station.png
+          test -s .github/screenshots/unified-space-center.png
+          test -s .github/screenshots/unified-moon.png
+          test -s .github/screenshots/unified-systems.png
+          test -s .github/screenshots/unified-lunar-station.png
           file .github/screenshots/*.png
           du -h .github/screenshots/*.png
 

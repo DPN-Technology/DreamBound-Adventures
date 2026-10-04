@@ -15,7 +15,7 @@ for path in required:
     if not path.is_file() or path.stat().st_size<100:
         errors.append(f"missing or empty: {path.relative_to(ROOT)}")
 
-html=(ROOT/"vnext.html").read_text(encoding="utf-8")
+html=(ROOT/"index.html").read_text(encoding="utf-8")
 server=(ROOT/"serve_dreambound.py").read_text(encoding="utf-8")
 odyssey=(ROOT/"src/vnext/engine/odyssey.js").read_text(encoding="utf-8")
 deck=(ROOT/"src/vnext/engine/adventure-deck.js").read_text(encoding="utf-8")
@@ -25,7 +25,7 @@ for asset in [
     "src/vnext/engine/adventure-deck.js","src/vnext/engine/adventure-deck.css",
 ]:
     if asset not in html:
-        errors.append(f"vnext.html does not reference {asset}")
+        errors.append(f"index.html does not reference {asset}")
     if f'/{asset}' not in server:
         errors.append(f"secure server allowlist missing /{asset}")
 

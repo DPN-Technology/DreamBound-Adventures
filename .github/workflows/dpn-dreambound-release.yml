@@ -23,32 +23,37 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - name: Validate release source
+      - name: Validate unified release source
         shell: bash
         run: |
-          node --check game.js
           python3 tools/validate_dreambound.py --mode all
-          python3 tools/check_coop_contract.py
           python3 tools/check_workflow_security.py
           python3 tools/check_runtime_security.py
-          node tools/fuzz_profile_sanitizer.js
-          python3 tools/check_dom_collection_bridge.py
           find src/vnext -type f -name "*.js" -print0 | while IFS= read -r -d '' file; do node --check "$file"; done
           python3 tools/check_modular_runtime.py
           python3 tools/check_advanced_engine.py
           python3 tools/check_living_world.py
           python3 tools/check_v12_director.py
+          python3 tools/check_unified_realms.py
           node tools/fuzz_vnext_state.js
-      - name: Build source package
+          # Legacy migration sources remain audited in Git but are not shipped.
+          node --check game.js
+          node tools/fuzz_profile_sanitizer.js
+          python3 tools/check_dom_collection_bridge.py
+      - name: Build single-runtime package
         shell: bash
         run: |
           VERSION="${GITHUB_REF_NAME:-manual-${GITHUB_RUN_NUMBER}}"
           NAME="DreamBound-Adventures-${VERSION}"
           mkdir -p "dist/${NAME}"
-          cp index.html styles.css game.js profile-sanitizer.js dom-collection-bridge.js serve_dreambound.py vnext.html vnext.css PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md "dist/${NAME}/"
+          cp index.html vnext.html vnext.css safe-dom.js serve_dreambound.py PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md "dist/${NAME}/"
           mkdir -p "dist/${NAME}/src"
           cp -R src/vnext "dist/${NAME}/src/vnext"
           cp -R docs "dist/${NAME}/docs"
+          test ! -e "dist/${NAME}/game.js"
+          test ! -e "dist/${NAME}/styles.css"
+          test ! -e "dist/${NAME}/profile-sanitizer.js"
+          test ! -e "dist/${NAME}/dom-collection-bridge.js"
           (cd dist && zip -qr "${NAME}.zip" "${NAME}")
           (cd dist && sha256sum "${NAME}.zip" > "${NAME}.zip.sha256")
       - name: Attest release package provenance
@@ -83,4 +88,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/*.zip dist/*.sha256             --repo "$GITHUB_REPOSITORY"             --title "DreamBound Adventures $GITHUB_REF_NAME"             --generate-notes
+          gh release create "$GITHUB_REF_NAME" dist/*.zip dist/*.sha256 --repo "$GITHUB_REPOSITORY" --title "DreamBound Adventures $GITHUB_REF_NAME" --generate-notes

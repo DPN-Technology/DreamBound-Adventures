@@ -5,7 +5,7 @@ import sys
 
 root=Path(__file__).resolve().parents[1]
 module=root/"src/vnext/engine/world-systems.js"
-html=(root/"vnext.html").read_text(encoding="utf-8",errors="replace")
+html=(root/"index.html").read_text(encoding="utf-8",errors="replace")
 server=(root/"serve_dreambound.py").read_text(encoding="utf-8",errors="replace")
 errors=[]
 if not module.is_file(): errors.append("missing world-systems.js")
