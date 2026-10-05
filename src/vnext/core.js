@@ -1,7 +1,7 @@
 (() => {
 'use strict';
 const DBX=window.DreamBoundVNext=window.DreamBoundVNext||{};
-DBX.VERSION='1.5.0-dev';
+DBX.VERSION='1.5.0';
 DBX.WORLD={w:1800,h:1200};
 function finitePrimitive(v,fallback=0){
   if(typeof v==='number')return Number.isFinite(v)?v:fallback;
