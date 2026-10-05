@@ -266,3 +266,12 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opaci
 .dynamic-row>span{font-size:28px}.dynamic-row strong{display:block;color:#edf4ff;font-size:11px}.dynamic-row small{color:#8fa0be;font-size:8px}.dynamic-row>b{color:#8fa0be;font-size:9px}
 .dynamic-row.complete{border-color:rgba(255,210,122,.36);background:linear-gradient(135deg,rgba(65,48,20,.62),rgba(43,35,82,.74))}.dynamic-row.complete>b{color:var(--db-gold)}
 @media(max-width:650px){.dynamic-row{grid-template-columns:auto 1fr}.dynamic-row>b{display:none}}
+
+/* Expedition motion — moving platforms and safe-reset traversal */
+.motion-panel{display:grid;gap:14px}
+.motion-kicker{color:var(--db-cyan);font:900 8px/1 system-ui;letter-spacing:1.8px}
+.motion-list{display:grid;gap:8px}
+.motion-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:11px 12px;border:1px solid rgba(126,151,204,.14);border-radius:13px;background:rgba(17,24,45,.76)}
+.motion-row>span{font-size:28px}.motion-row strong{display:block;color:#edf4ff;font-size:11px}.motion-row small{color:#8fa0be;font-size:8px}.motion-row>b{color:#8fa0be;font-size:9px}
+.motion-row.complete{border-color:rgba(111,232,220,.35);background:linear-gradient(135deg,rgba(18,52,55,.7),rgba(36,31,73,.74))}.motion-row.complete>b{color:var(--db-cyan)}
+@media(max-width:650px){.motion-row{grid-template-columns:auto 1fr}.motion-row>b{display:none}}
