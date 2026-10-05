@@ -2,12 +2,17 @@ name: DPN DreamBound Release Integrity
 
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
+    paths:
+      - RELEASE_VERSION
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: dreambound-release
+  cancel-in-progress: false
 
 jobs:
   package:
@@ -18,14 +23,31 @@ jobs:
       contents: read
       id-token: write
       attestations: write
+    outputs:
+      version: ${{ steps.version.outputs.value }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+
+      - name: Read release version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(tr -d '[:space:]' < RELEASE_VERSION)"
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::RELEASE_VERSION must match vMAJOR.MINOR.PATCH"
+            exit 1
+          fi
+          test -s "docs/releases/$VERSION.md"
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Validate unified release source
         shell: bash
         run: |
+          set -euo pipefail
           python3 tools/validate_dreambound.py --mode all
           python3 tools/check_workflow_security.py
           python3 tools/check_runtime_security.py
@@ -36,17 +58,19 @@ jobs:
           python3 tools/check_v12_director.py
           python3 tools/check_unified_realms.py
           node tools/fuzz_vnext_state.js
-          # Legacy migration sources remain audited in Git but are not shipped.
           node --check game.js
           node tools/fuzz_profile_sanitizer.js
           python3 tools/check_dom_collection_bridge.py
+
       - name: Build single-runtime package
         shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
         run: |
-          VERSION="${GITHUB_REF_NAME:-manual-${GITHUB_RUN_NUMBER}}"
+          set -euo pipefail
           NAME="DreamBound-Adventures-${VERSION}"
           mkdir -p "dist/${NAME}"
-          cp index.html vnext.html vnext.css safe-dom.js serve_dreambound.py PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md "dist/${NAME}/"
+          cp index.html vnext.html vnext.css safe-dom.js serve_dreambound.py PLAY-DREAMBOUND.bat PLAY-DREAMBOUND.ps1 README.md CHANGELOG.md BRAND-TRANSITION.md VERIFICATION.md SECURITY.md THIRD_PARTY_LICENSES.md RELEASE_VERSION "dist/${NAME}/"
           mkdir -p "dist/${NAME}/src"
           cp -R src/vnext "dist/${NAME}/src/vnext"
           cp -R docs "dist/${NAME}/docs"
@@ -56,10 +80,12 @@ jobs:
           test ! -e "dist/${NAME}/dom-collection-bridge.js"
           (cd dist && zip -qr "${NAME}.zip" "${NAME}")
           (cd dist && sha256sum "${NAME}.zip" > "${NAME}.zip.sha256")
+
       - name: Attest release package provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: "dist/*.zip"
+
       - name: Upload validated package
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
@@ -70,22 +96,39 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Publish Tagged Release
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    name: Publish GitHub Release
+    if: github.event_name == 'push'
     needs: package
     runs-on: ubuntu-latest
     timeout-minutes: 8
     permissions:
       contents: write
     steps:
+      - name: Checkout release notes
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
       - name: Download validated package
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: dreambound-release
           path: dist
+
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.package.outputs.version }}
         shell: bash
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/*.zip dist/*.sha256 --repo "$GITHUB_REPOSITORY" --title "DreamBound Adventures $GITHUB_REF_NAME" --generate-notes
+          set -euo pipefail
+          if gh release view "$VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::Release $VERSION already exists."
+            exit 1
+          fi
+          gh release create "$VERSION" dist/*.zip dist/*.sha256 \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "DreamBound Adventures $VERSION — Living World Expedition" \
+            --notes-file "docs/releases/$VERSION.md" \
+            --latest
