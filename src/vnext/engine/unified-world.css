@@ -257,3 +257,12 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opaci
 .expedition-choices button:hover{transform:translateY(-1px);border-color:rgba(111,232,220,.45)}
 .expedition-progress{text-align:center;color:var(--db-cyan);font-size:18px;letter-spacing:5px}
 @media(max-width:650px){.expedition-choices{grid-template-columns:1fr 1fr 1fr}}
+
+/* Expedition dynamics — moving teamwork objectives */
+.dynamic-panel{display:grid;gap:14px}
+.dynamic-kicker{color:var(--db-gold);font:900 8px/1 system-ui;letter-spacing:1.8px}
+.dynamic-list{display:grid;gap:8px}
+.dynamic-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:11px 12px;border:1px solid rgba(126,151,204,.14);border-radius:13px;background:rgba(17,24,45,.76)}
+.dynamic-row>span{font-size:28px}.dynamic-row strong{display:block;color:#edf4ff;font-size:11px}.dynamic-row small{color:#8fa0be;font-size:8px}.dynamic-row>b{color:#8fa0be;font-size:9px}
+.dynamic-row.complete{border-color:rgba(255,210,122,.36);background:linear-gradient(135deg,rgba(65,48,20,.62),rgba(43,35,82,.74))}.dynamic-row.complete>b{color:var(--db-gold)}
+@media(max-width:650px){.dynamic-row{grid-template-columns:auto 1fr}.dynamic-row>b{display:none}}
