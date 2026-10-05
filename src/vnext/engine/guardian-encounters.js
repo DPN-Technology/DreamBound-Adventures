@@ -70,7 +70,7 @@ function phase(g,index){
       return;
     }
     DBX.audio?.success?.();DBX.fx?.flash?.(.2);DBX.companion?.emote?.('✨');
-    if(index+1<g.phases.length){phase(g,index+1);return}
+    if(index+1<g.phases.length){phase(g,index+1);return;}
     finish(g);
   });
   document.querySelector('#guardianLeave').onclick=DBX.ui.closeModal;
@@ -114,13 +114,13 @@ function open(){
   document.querySelector('#guardianJournalClose').onclick=DBX.ui.closeModal;
 }
 const oldNearest=DBX.world.currentInteractable.bind(DBX.world);
-DBX.world.currentInteractable=()=>{const base=oldNearest(),g=nearest();if(!g)return base;if(!base)return g;return g.d<base.d?g:base};
+DBX.world.currentInteractable=()=>{const base=oldNearest(),g=nearest();if(!g)return base;if(!base)return g;return g.d<base.d?g:base;};
 const oldInteract=DBX.ui.interact.bind(DBX.ui);
-DBX.ui.interact=o=>{if(o?.action==='guardian-encounter'){const g=guardians.find(x=>x.id===o.id);if(g)start(g);return}oldInteract(o)};
+DBX.ui.interact=o=>{if(o?.action==='guardian-encounter'){const g=guardians.find(x=>x.id===o.id);if(g)start(g);return;}oldInteract(o);};
 const oldDraw=DBX.world.draw.bind(DBX.world);
 DBX.world.draw=(ctx,t)=>{oldDraw(ctx,t);draw(ctx,t)};
 const actions=document.querySelector('.mission-actions');
-if(actions&&!document.querySelector('#vnextGuardians')){const b=document.createElement('button');b.id='vnextGuardians';b.textContent='🛡️ GUARDIANS';b.onclick=open;actions.appendChild(b)}
+if(actions&&!document.querySelector('#vnextGuardians')){const b=document.createElement('button');b.id='vnextGuardians';b.textContent='🛡️ GUARDIANS';b.onclick=open;actions.appendChild(b);}
 DBX.events.on('state:reset',()=>{Object.assign(state,defaults());save()});
 DBX.guardians={state,guardians,activeGuardian,open};
 })();
