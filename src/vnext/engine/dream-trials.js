@@ -5,14 +5,14 @@ if(!DBX||!DBX.ui||!DBX.world)return;
 
 const KEY='dreambound-world-encounters-v1';
 const ENCOUNTER_IDS=['star-garden','echo-cavern','maker-heart'];
-const SECRET_IDS=['secret-a','secret-b','secret-c','secret-d','secret-e','secret-f'];
-const defaults=()=>({completed:[],secrets:[],abilities:[],attempts:{},worldLevel:0});
+const DISCOVERY_IDS=['secret-a','secret-b','secret-c','secret-d','secret-e','secret-f'];
+const defaults=()=>({completed:[],discoveries:[],abilities:[],attempts:{},worldLevel:0});
 function clean(raw){
   const r=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};
   const attempts={};for(const id of ENCOUNTER_IDS)attempts[id]=DBX.util.int(r.attempts?.[id],0,999,0);
   return {
     completed:DBX.util.list(r.completed,ENCOUNTER_IDS,ENCOUNTER_IDS.length),
-    secrets:DBX.util.list(r.secrets,SECRET_IDS,SECRET_IDS.length),
+    discoveries:DBX.util.list(r.discoveries,DISCOVERY_IDS,DISCOVERY_IDS.length),
     abilities:DBX.util.list(r.abilities,['star-sense','luma-link','maker-spark'],3),
     attempts,
     worldLevel:DBX.util.int(r.worldLevel,0,3,0)
@@ -55,7 +55,7 @@ const encounters=[
   }
 ];
 
-const secrets=[
+const discoveries=[
   {id:'secret-a',scene:'surface',x:1360,y:850,icon:'🌟',label:'Hidden Star Cache'},
   {id:'secret-b',scene:'surface',x:1695,y:875,icon:'💠',label:'Crystal Memory'},
   {id:'secret-c',scene:'home-valley',x:1420,y:820,icon:'🏮',label:'Lantern Secret'},
@@ -72,8 +72,8 @@ function nearestSpecial(){
   const e=currentEncounter();
   if(e)candidates.push({...e,action:'dream-encounter',hint:'Begin a gentle multi-stage world encounter.',d:Math.hypot(p.x-e.x,p.y-e.y)});
   if(state.abilities.includes('star-sense')){
-    for(const s of secrets){
-      if(s.scene!==scene||state.secrets.includes(s.id))continue;
+    for(const s of discoveries){
+      if(s.scene!==scene||state.discoveries.includes(s.id))continue;
       const d=Math.hypot(p.x-s.x,p.y-s.y);
       if(d<210)candidates.push({...s,name:s.label,action:'dream-secret',hint:'Star Sense has revealed something nearby.',d});
     }
@@ -120,8 +120,8 @@ function completeEncounter(enc){
   DBX.events.emit('hud:update');
 }
 function collectSecret(secret){
-  if(state.secrets.includes(secret.id))return;
-  state.secrets.push(secret.id);save();
+  if(state.discoveries.includes(secret.id))return;
+  state.discoveries.push(secret.id);save();
   DBX.state.stars=Math.min(9999,(DBX.state.stars||0)+3);
   DBX.state.moonCrystals=Math.min(999,(DBX.state.moonCrystals||0)+2);
   DBX.storage.save();DBX.odyssey?.addXP?.(24,'Secret discovered');
@@ -144,7 +144,7 @@ function openJournal(){
     '<div class="encounter-worldlevel"><span>WORLD EVOLUTION</span><b>'+state.worldLevel+'/3</b><i><em style="width:'+(state.worldLevel/3*100)+'%"></em></i></div>'+
     '<div class="encounter-list">'+rows+'</div>'+
     '<div class="ability-strip"><strong>ABILITIES</strong><span>'+abilitySummary()+'</span></div>'+
-    '<div class="ability-strip"><strong>SECRETS</strong><span>'+state.secrets.length+' / '+SECRET_IDS.length+' discovered</span></div>'+
+    '<div class="ability-strip"><strong>SECRETS</strong><span>'+state.discoveries.length+' / '+DISCOVERY_IDS.length+' discovered</span></div>'+
     '<button id="encounterJournalClose" class="primary-btn">BACK TO WORLD</button></section>'
   );
   document.querySelector('#encounterJournalClose').onclick=DBX.ui.closeModal;
@@ -160,8 +160,8 @@ function draw(ctx,t){
     ctx.font='900 9px system-ui';ctx.fillStyle='#eef4ff';ctx.fillText('DREAMTRIAL',0,38);ctx.restore();
   }
   if(state.abilities.includes('star-sense')){
-    for(const s of secrets){
-      if(s.scene!==scene||state.secrets.includes(s.id))continue;
+    for(const s of discoveries){
+      if(s.scene!==scene||state.discoveries.includes(s.id))continue;
       const d=Math.hypot(DBX.state.player.x-s.x,DBX.state.player.y-s.y);
       if(d>210)continue;
       const alpha=Math.max(.18,1-d/260);
@@ -189,7 +189,7 @@ DBX.world.currentInteractable=()=>{
 const oldInteract=DBX.ui.interact.bind(DBX.ui);
 DBX.ui.interact=o=>{
   if(o?.action==='dream-encounter'){const enc=encounters.find(x=>x.id===o.id);if(enc)openEncounter(enc);return}
-  if(o?.action==='dream-secret'){const sec=secrets.find(x=>x.id===o.id);if(sec)collectSecret(sec);return}
+  if(o?.action==='dream-secret'){const sec=discoveries.find(x=>x.id===o.id);if(sec)collectSecret(sec);return}
   oldInteract(o);
 };
 const oldDraw=DBX.world.draw.bind(DBX.world);
@@ -200,5 +200,5 @@ if(actions&&!document.querySelector('#vnextTrials')){
   const b=document.createElement('button');b.id='vnextTrials';b.textContent='🌠 TRIALS';b.onclick=openJournal;actions.appendChild(b);
 }
 DBX.events.on('state:reset',()=>{Object.assign(state,defaults());save()});
-DBX.dreamTrials={state,encounters,secrets,openJournal,currentEncounter};
+DBX.dreamTrials={state,encounters,discoveries,openJournal,currentEncounter};
 })();
