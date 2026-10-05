@@ -119,14 +119,14 @@ function completeEncounter(enc){
   DBX.ui.toast(enc.abilityName+' unlocked','+10 ⭐  +4 💎 · The world has changed.');
   DBX.events.emit('hud:update');
 }
-function collectSecret(secret){
-  if(state.discoveries.includes(secret.id))return;
-  state.discoveries.push(secret.id);save();
+function collectDiscovery(discovery){
+  if(state.discoveries.includes(discovery.id))return;
+  state.discoveries.push(discovery.id);save();
   DBX.state.stars=Math.min(9999,(DBX.state.stars||0)+3);
   DBX.state.moonCrystals=Math.min(999,(DBX.state.moonCrystals||0)+2);
-  DBX.storage.save();DBX.odyssey?.addXP?.(24,'Secret discovered');
-  DBX.fx?.burst?.(secret.x,secret.y,secret.icon);DBX.audio?.collect?.();
-  DBX.ui.toast(secret.label,'Discovery found · +3 ⭐  +2 💠');
+  DBX.storage.save();DBX.odyssey?.addXP?.(24,'Discovery logged');
+  DBX.fx?.burst?.(discovery.x,discovery.y,discovery.icon);DBX.audio?.collect?.();
+  DBX.ui.toast(discovery.label,'Discovery found · +3 ⭐  +2 💠');
   DBX.events.emit('hud:update');
 }
 function abilitySummary(){
@@ -189,7 +189,7 @@ DBX.world.currentInteractable=()=>{
 const oldInteract=DBX.ui.interact.bind(DBX.ui);
 DBX.ui.interact=o=>{
   if(o?.action==='dream-encounter'){const enc=encounters.find(x=>x.id===o.id);if(enc)openEncounter(enc);return}
-  if(o?.action==='dream-discovery'){const sec=discoveries.find(x=>x.id===o.id);if(sec)collectSecret(sec);return}
+  if(o?.action==='dream-discovery'){const sec=discoveries.find(x=>x.id===o.id);if(sec)collectDiscovery(sec);return}
   oldInteract(o);
 };
 const oldDraw=DBX.world.draw.bind(DBX.world);
