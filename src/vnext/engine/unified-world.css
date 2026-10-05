@@ -235,3 +235,16 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opaci
 .guardian-row.complete{border-color:rgba(111,232,220,.35);background:linear-gradient(135deg,rgba(18,52,55,.7),rgba(47,35,75,.76))}.guardian-row.complete>b{color:var(--db-cyan)}
 .guardian-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.guardian-stats span{padding:10px;border:1px solid rgba(126,149,196,.12);border-radius:11px;background:rgba(255,255,255,.035);color:#8e9dbb;font-size:8px;font-weight:850;letter-spacing:.6px;text-align:center}.guardian-stats b{display:block;margin-top:4px;color:#fff;font-size:14px}
 @media(max-width:650px){.guardian-choices{grid-template-columns:1fr 1fr 1fr}.guardian-hero>span{font-size:48px}.guardian-row{grid-template-columns:auto 1fr}.guardian-row>b{display:none}}
+
+/* Kinetic traversal — interactive movement routes */
+.kinetic-journal{display:grid;gap:14px}
+.kinetic-kicker{color:var(--db-cyan);font:900 8px/1 system-ui;letter-spacing:1.8px}
+.kinetic-meter{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;padding:12px;border:1px solid rgba(126,151,204,.15);border-radius:14px;background:rgba(17,24,45,.76)}
+.kinetic-meter span{color:#8fa0c2;font-size:8px;font-weight:900;letter-spacing:1px}.kinetic-meter>b{color:#fff}
+.kinetic-meter i{grid-column:1/3;display:block;height:7px;overflow:hidden;border-radius:999px;background:#090f20}
+.kinetic-meter em{display:block;height:100%;background:linear-gradient(90deg,var(--db-cyan),var(--db-violet),var(--db-gold));border-radius:999px}
+.kinetic-list{display:grid;gap:8px}
+.kinetic-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:11px 12px;border:1px solid rgba(126,151,204,.14);border-radius:13px;background:rgba(17,24,45,.76)}
+.kinetic-row>span{font-size:28px}.kinetic-row strong{display:block;color:#edf4ff;font-size:11px}.kinetic-row small{color:#8fa0be;font-size:8px}.kinetic-row>b{color:#8fa0be;font-size:9px}
+.kinetic-row.complete{border-color:rgba(111,232,220,.35);background:linear-gradient(135deg,rgba(18,52,55,.7),rgba(36,31,73,.74))}.kinetic-row.complete>b{color:var(--db-cyan)}
+@media(max-width:650px){.kinetic-row{grid-template-columns:auto 1fr}.kinetic-row>b{display:none}}
