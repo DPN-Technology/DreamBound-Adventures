@@ -26,6 +26,7 @@ function update(dt,t){
   DBX.dreamPulse?.update(dt);
   DBX.achievements?.tick();
   DBX.livingNpcs?.tick();
+  DBX.expeditionMotion?.update?.(dt,t);
   const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
   let handled=false;
   if(DBX.traversal?.handleMovement)handled=DBX.traversal.handleMovement(dt,v);
