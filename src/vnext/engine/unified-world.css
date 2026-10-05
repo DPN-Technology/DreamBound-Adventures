@@ -248,3 +248,12 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opaci
 .kinetic-row>span{font-size:28px}.kinetic-row strong{display:block;color:#edf4ff;font-size:11px}.kinetic-row small{color:#8fa0be;font-size:8px}.kinetic-row>b{color:#8fa0be;font-size:9px}
 .kinetic-row.complete{border-color:rgba(111,232,220,.35);background:linear-gradient(135deg,rgba(18,52,55,.7),rgba(36,31,73,.74))}.kinetic-row.complete>b{color:var(--db-cyan)}
 @media(max-width:650px){.kinetic-row{grid-template-columns:auto 1fr}.kinetic-row>b{display:none}}
+
+/* Expedition rooms — connected multi-room exploration */
+.expedition-panel{display:grid;gap:14px}
+.expedition-kicker{color:var(--db-cyan);font:900 8px/1 system-ui;letter-spacing:1.8px}
+.expedition-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.expedition-choices button{min-height:60px;border:1px solid rgba(126,151,204,.2);border-radius:14px;background:linear-gradient(145deg,rgba(38,50,86,.96),rgba(24,34,63,.96));color:#fff;font-size:28px;cursor:pointer}
+.expedition-choices button:hover{transform:translateY(-1px);border-color:rgba(111,232,220,.45)}
+.expedition-progress{text-align:center;color:var(--db-cyan);font-size:18px;letter-spacing:5px}
+@media(max-width:650px){.expedition-choices{grid-template-columns:1fr 1fr 1fr}}
