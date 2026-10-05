@@ -29,11 +29,11 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Install screenshot tooling
+      - name: Install integrity-locked screenshot tooling
         shell: bash
         run: |
-          npm install --no-save --ignore-scripts playwright@1.55.0
-          npx playwright install --with-deps chromium
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
 
       - name: Start secure DreamBound runtime
         shell: bash
