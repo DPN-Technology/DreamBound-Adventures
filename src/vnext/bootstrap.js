@@ -23,6 +23,7 @@ function update(dt,t){
   DBX.worldSystems?.update(dt,t);
   DBX.cinematic?.update(dt);
   DBX.director?.update(dt);
+  DBX.dreamPulse?.update(dt);
   DBX.achievements?.tick();
   DBX.livingNpcs?.tick();
   const s=DBX.state,v=DBX.input.vector(),beforeX=s.player.x,beforeY=s.player.y;
