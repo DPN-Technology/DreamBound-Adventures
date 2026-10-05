@@ -23,6 +23,7 @@ function clean(raw){
 }
 function load(){try{return clean(JSON.parse(localStorage.getItem(KEY)||'{}'))}catch{return defaults()}}
 const state=load();
+const runtime={timer:0};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
 
 const metrics={
@@ -113,6 +114,12 @@ function tick(){
   if(changed)save();
   renderChip();
 }
+function update(dt){
+  runtime.timer-=dt;
+  if(runtime.timer>0)return;
+  runtime.timer=.75;
+  tick();
+}
 function renderChip(){
   const btn=document.querySelector('#vnextPulseBtn');if(!btn)return;
   const done=completedCount();
@@ -152,6 +159,6 @@ DBX.events.on('quest:complete',tick);
 DBX.events.on('worldevent:end',tick);
 DBX.events.on('story:beat',tick);
 DBX.events.on('state:reset',()=>{Object.assign(state,defaults());save();refill()});
-DBX.dreamPulse={state,catalog,tick,open,claimBurst,progress};
+DBX.dreamPulse={state,runtime,catalog,tick,update,open,claimBurst,progress};
 mount();ensure();tick();
 })();
